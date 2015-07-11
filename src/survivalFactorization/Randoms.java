@@ -1,4 +1,4 @@
-package it.cnr.adalab.surivalfactorization;
+package survivalFactorization;
 
 
 

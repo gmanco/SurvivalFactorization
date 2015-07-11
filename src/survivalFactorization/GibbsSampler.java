@@ -1,4 +1,4 @@
-package it.cnr.adalab.surivalfactorization;
+package survivalFactorization;
 
 import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix2D;
 import data.CascadeData;
