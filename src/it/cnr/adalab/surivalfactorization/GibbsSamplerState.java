@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import data.CascadeData;
+
 public class GibbsSamplerState {
 
 	protected int[] M_k;

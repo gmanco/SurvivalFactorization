@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import data.CascadeData;
+
 public class Model {
 	int n_users;
 	int n_words;

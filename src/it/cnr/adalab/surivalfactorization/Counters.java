@@ -1,5 +1,8 @@
 package it.cnr.adalab.surivalfactorization;
 
+import data.CascadeData;
+
+
 public class Counters {
 	double[] S_k;
 	double[] A_k;

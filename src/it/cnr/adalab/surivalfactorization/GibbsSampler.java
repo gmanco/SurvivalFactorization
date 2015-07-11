@@ -1,5 +1,7 @@
 package it.cnr.adalab.surivalfactorization;
 
+import data.CascadeData;
+
 public class GibbsSampler {
 
 	double a;
@@ -16,7 +18,7 @@ public class GibbsSampler {
 
 	public Model[] runInference(CascadeData data, int n_features) {
 
-		int n_users = data.n_users;
+		int n_users = data.n_nodes;
 		int n_words = data.n_words;
 		int n_cascades = data.n_cascades;
 		int n_iterations = settings.n_iterations;
@@ -106,7 +108,7 @@ public class GibbsSampler {
 	private GibbsSamplerState sampleNextState(Model model, CascadeData data,
 			GibbsSamplerState curr_state) {
 
-		GibbsSamplerState next_state = new GibbsSamplerState(data.n_users,
+		GibbsSamplerState next_state = new GibbsSamplerState(data.n_nodes,
 				data.n_cascades, data.n_words, model.n_features);
 
 		// Counters
@@ -133,11 +135,11 @@ public class GibbsSampler {
 
 		// these are default values used in topic models
 		Alpha = new double[n_features];
-		Beta = new double[data.n_users];
+		Beta = new double[data.n_nodes];
 		for (int k = 1; k < n_features; k++)
 			Alpha[k] = 50 / n_features;
-		for (int u = 1; u < data.n_users; u++)
-			Beta[u] = 200 / data.n_users;
+		for (int u = 1; u < data.n_nodes; u++)
+			Beta[u] = 200 / data.n_nodes;
 
 	}
 
@@ -153,14 +155,14 @@ public class GibbsSampler {
 
 	private double[][] sampleA(Model model, CascadeData data,
 			GibbsSamplerState curr_state, double[][] F_curr) {
-		double[][] A_new = new double[data.n_users][model.n_features];
+		double[][] A_new = new double[data.n_nodes][model.n_features];
 
 		return A_new;
 	}
 
 	private double[][] sampleS(Model model, CascadeData data,
 			GibbsSamplerState curr_state, double[][] F_curr) {
-		double[][] S_new = new double[data.n_users][model.n_features];
+		double[][] S_new = new double[data.n_nodes][model.n_features];
 
 		return S_new;
 
