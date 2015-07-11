@@ -41,17 +41,17 @@ public class CascadeData {
         /*
          * Set of nodes ids
          */
-        protected Set<Integer> nodes;
+        protected Set<Integer> nodeSet;
         
         /*
          * Set of cascadesIds
          */
-        protected Set<Integer> cascades;
+        protected Set<Integer> cascadeSet;
         
         /*
          * Set of word ids
          */
-        protected Set<Integer> words;
+        protected Set<Integer> wordSet;
         
         // properties
         protected int n_nodes;
@@ -97,7 +97,7 @@ public class CascadeData {
         
         
         public Set<Integer> getInactiveNodesOnCascade(int cascadeId){
-            HashSet<Integer> ris=new HashSet<Integer>(this.nodes);
+            HashSet<Integer> ris=new HashSet<Integer>(this.nodeSet);
             ris.removeAll(activeNodesOnCascade[cascadeId]);
             return ris;
         }//getInactiveNodesOnCascade
@@ -133,13 +133,24 @@ public class CascadeData {
         }
         
        
+        public Set<Integer> getNodeIds(){
+            return nodeSet;
+        }
+        
+        public Set<Integer> getCascadeIds(){
+            return cascadeSet;
+        }
+        
+        public Set<Integer> getWordIds(){
+            return wordSet;
+        }
         
         /*
          * Read Content file
          */
 		private void processContentFile(String file_content) {
 			try{
-			    words=new TreeSet<Integer>();
+			    wordSet=new TreeSet<Integer>();
 			    
 			    //read dimensions    
                 BufferedReader br=new BufferedReader(new FileReader(file_content));
@@ -150,12 +161,12 @@ public class CascadeData {
                 while(line!=null){
                     tokens=line.split("\t");
                     int word=Integer.parseInt(tokens[0]);
-                    words.add(word);
+                    wordSet.add(word);
                     
                 }
                 br.close();
                 
-                this.n_words=words.size();
+                this.n_words=wordSet.size();
                 
                 this.CascadeContent=new SparseIntMatrix2D(this.n_words,this.n_cascades);
                 this.activeWordsOnCascade=new Set[this.n_cascades];
@@ -194,8 +205,8 @@ public class CascadeData {
 		private void processEventFile(String file_events) {
 		    try{
 			
-		        this.nodes=new TreeSet<Integer>();
-	            this.cascades=new TreeSet<Integer>();
+		        this.nodeSet=new TreeSet<Integer>();
+	            this.cascadeSet=new TreeSet<Integer>();
 	            this.t_max=-1;
 	            
     		    //read dimensions    
@@ -208,15 +219,15 @@ public class CascadeData {
     			    tokens=line.split("\t");
     			    int nodeId=Integer.parseInt(tokens[0]);
     			    int cascadeId=Integer.parseInt(tokens[1]);
-    			    nodes.add(nodeId);
-    			    cascades.add(cascadeId);
+    			    nodeSet.add(nodeId);
+    			    cascadeSet.add(cascadeId);
     			    line=br.readLine();
     			}
     			br.close();
 			
     			//init variables
-    			this.n_nodes=nodes.size();
-    			this.n_cascades=cascades.size();
+    			this.n_nodes=nodeSet.size();
+    			this.n_cascades=cascadeSet.size();
     			this.cascadeEvents=new SparseDoubleMatrix2D(n_nodes,n_cascades);
     			this.cascadeEventsSrt=new ArrayList[n_cascades];
     			this.activeNodesOnCascade=new HashSet[n_cascades];
@@ -265,7 +276,7 @@ public class CascadeData {
     	         br.close();
     	         
     	         //sort events within cascades
-    	         for(int cascadeId:cascades){
+    	         for(int cascadeId:cascadeSet){
                      tmp=cascadeEventsSrt[cascadeId];
                      Collections.sort(tmp);        
                  }//sort 
