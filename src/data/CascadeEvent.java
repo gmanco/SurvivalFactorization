@@ -4,41 +4,27 @@ import java.io.Serializable;
 
 public class CascadeEvent implements Comparable<CascadeEvent>, Serializable{
     
-    int nodeId;
-    int cascadeId;
-    double timestamp;
+    public int node;
+    public double timestamp;
 
-    public CascadeEvent(int nodeId, int cascadeId) {
-        this.nodeId = nodeId;
-        this.cascadeId = cascadeId;
-        this.timestamp = -1;
-    }
-
-    public CascadeEvent(int nodeId, int cascadeId, double timestamp) {
+   
+    public CascadeEvent(int nodeId,double timestamp) {
         super();
-        this.nodeId = nodeId;
-        this.cascadeId = cascadeId;
+        this.node = nodeId;
         this.timestamp = timestamp;
     }
 
    
 
     public int getNodeId() {
-        return nodeId;
+        return node;
     }
 
     public void setNodeId(int nodeId) {
-        this.nodeId = nodeId;
+        this.node = nodeId;
     }
 
-    public int getCascadeId() {
-        return cascadeId;
-    }
-
-    public void setCascadeId(int cascadeId) {
-        this.cascadeId = cascadeId;
-    }
-    
+  
     public double getTimestamp(){
         return timestamp;
     }
@@ -49,8 +35,7 @@ public class CascadeEvent implements Comparable<CascadeEvent>, Serializable{
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + cascadeId;
-        result = prime * result + nodeId;
+        result = prime * result + node;
         return result;
     }
 
@@ -63,9 +48,7 @@ public class CascadeEvent implements Comparable<CascadeEvent>, Serializable{
         if (getClass() != obj.getClass())
             return false;
         CascadeEvent other = (CascadeEvent) obj;
-        if (cascadeId != other.cascadeId)
-            return false;
-        if (nodeId != other.nodeId)
+        if (node != other.node)
             return false;
         return true;
     }

@@ -1,30 +1,35 @@
 package it.cnr.adalab.surivalfactorization;
 
-import java.util.HashMap;
+import java.io.Serializable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import data.CascadeData;
+import data.WordOccurrence;
 
-public class Model {
-	int n_users;
-	int n_words;
-	int n_features;
-	int n_cascades;
-	HyperParameters hyperParams;
-	double[][] A;
-	double[][] S;
-	double[][] Phi;
-	double[][] F;
+public class Model implements Serializable{
+	
+    int n_nodes;
+    int n_words;
+    int n_features;
+    int n_cascades;
+    
+    HyperParameters hyperParams;
+    
+    private double[][] A;
+    private double[][] S;
+    private double[][] Phi;
+    private double[][] F;
 
 	public Model() {
-		this.n_users = -1;
+		this.n_nodes = -1;
 		this.n_words = -1;
 		this.n_features = -1;
 	}
 
 	public Model(Model m) {
-		this.n_users = m.n_users;
+		this.n_nodes = m.n_nodes;
 		this.n_words = m.n_words;
 		this.n_features = m.n_features;
 		this.hyperParams = m.hyperParams;
@@ -35,7 +40,7 @@ public class Model {
 	}
 
 	public Model(int n_users, int n_words, int n_features, HyperParameters h) {
-		this.n_users = n_users;
+		this.n_nodes = n_users;
 		this.n_words = n_words;
 		this.n_features = n_features;
 		this.hyperParams = h;
@@ -47,7 +52,7 @@ public class Model {
 		double[] C = hyperParams.getC();
 		double[] D = hyperParams.getD();
 
-		final int N = this.n_users;
+		final int N = this.n_nodes;
 		final int K = this.n_features;
 		final int W = this.n_words;
 
@@ -66,18 +71,7 @@ public class Model {
 
 	}
 
-	public double[] computeF(Set<Integer> W_c) {
-		Iterator<Integer> it = W_c.iterator();
-		double[] F = new double[n_features];
-		for (int i = 0; i < n_features; i++)
-			F[i] = 1;
-		while (it.hasNext()) {
-			int w = it.next();
-			for (int k = 0; k < n_features; k++)
-				F[k] *= Phi[w][k];
-		}
-		return F;
-	}
+	
 
 	public double computeLLk(CascadeData data) {
 		double llk = 0;
@@ -85,7 +79,7 @@ public class Model {
 		for (int c = 1; c < n_cascades; c++){
 			double[] curr_llk = new double[n_features];
 			
-			double[][] cascade = data.getCascadeEvents(c);
+			//double[][] cascade = data.getCascadeEvents(c);
 			
 			for (int k = 1; k < n_features; k++){
 				
@@ -94,15 +88,67 @@ public class Model {
 		}
 		
 		return llk;
-	}
+	}//computeLLk
+	
+	
+	public double[] computeF(List<WordOccurrence> W_c) {
+       
+        double[] F = new double[n_features];
+        for (int k = 0; k < n_features; k++)
+            F[k] = 1;
+       
+        for(WordOccurrence wo:W_c){
+            int w=wo.word;
+            for (int k = 0; k < n_features; k++)
+                F[k] *= Phi[w][k];
+        }
+        return F;
+    }//computeF
+	
 
 	public double[][] computeFAllCascades(CascadeData data) {
 		double[][] F_curr = new double[n_cascades][n_features];
 		for (int c = 1; c < n_cascades; c++) {
-			HashMap<Integer, Double> W_c = data.getContent(c);
-			F_curr[c] = computeF(W_c.keySet());
+			List<WordOccurrence>W_c = data.getCascadeContent(c);
+			F_curr[c] = computeF(W_c);
 		}
 		return F_curr;
-	}
+	}//computeFAllCascades
 
-}
+    public void setN_nodes(int n_nodes) {
+        this.n_nodes = n_nodes;
+    }
+
+    public void setN_words(int n_words) {
+        this.n_words = n_words;
+    }
+
+    public void setN_features(int n_features) {
+        this.n_features = n_features;
+    }
+
+    public void setN_cascades(int n_cascades) {
+        this.n_cascades = n_cascades;
+    }
+
+    public void setHyperParams(HyperParameters hyperParams) {
+        this.hyperParams = hyperParams;
+    }
+
+    public void setA(double[][] a) {
+        A = a;
+    }
+
+    public void setS(double[][] s) {
+        S = s;
+    }
+
+    public void setPhi(double[][] phi) {
+        Phi = phi;
+    }
+
+    public void setF(double[][] f) {
+        F = f;
+    }
+
+}//Model

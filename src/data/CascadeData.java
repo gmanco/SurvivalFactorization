@@ -5,38 +5,25 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix2D;
-import cern.colt.matrix.tint.impl.SparseIntMatrix2D;
 
 public class CascadeData {
 	   
-        
+        /*
+         * Provides fast access to t_u(c)
+         */
         protected SparseDoubleMatrix2D cascadeEvents;
     
         /*
          * For each cascade it contains an ArrayList of cascade events (sorted)
          */
-        protected ArrayList<CascadeEvent>[] cascadeEventsSrt; 
+        protected List<CascadeEvent>[] cascadeEventsSrt; 
         
-        /*
-         * For each cascade it contains the set of active users
-         */
-        protected Set<Integer>[]activeNodesOnCascade;
-        
-        
-        /*
-         *  2-dim sparse matrix word x cascade
-         */
-        protected SparseIntMatrix2D CascadeContent; 
-       
-        /*
-         * For each cascade it contains the set of active words
-         */
-        protected Set<Integer>[]activeWordsOnCascade;
+        protected List<WordOccurrence>[] cascadeContent;
          
         /*
          * Set of nodes ids
@@ -54,17 +41,17 @@ public class CascadeData {
         protected Set<Integer> wordSet;
         
         // properties
-        protected int n_nodes;
-        protected int n_cascades;
-        protected int n_words = 0;
-        protected double t_max;    
+        public int n_nodes;
+        public int n_cascades;
+        public int n_words = 0;
+        public double t_max;    
         
         
         public CascadeData(String file_events,String file_content){
             // here we read the file
             // file_cascade is in the format (u,c,t_u(c))
-            // file_content is in the format (w,c,n_{w,c})
-        		processEventFile(file_events);    
+            // file_content is in the format (w,c,n_{w,c})	
+            processEventFile(file_events);    
         	
             if (file_content != null)
             		processContentFile(file_content);            
@@ -72,11 +59,16 @@ public class CascadeData {
         
         
         
+        public List<WordOccurrence> getCascadeContent(int c) {
+            return cascadeContent[c];
+         }//WordOccurrence
+        
+        
         /*
          * Return the activation timestamp for the pair
          * (node,cascade). Returns -1 if missing
          */
-        public double getTimestamp(int nodeId,int cascadeId){
+        public double getActivationTimestamp(int nodeId,int cascadeId){
             Double t=cascadeEvents.get(nodeId, cascadeId);
             if(t==null){
                 t=-1.0;
@@ -84,28 +76,13 @@ public class CascadeData {
             return t;
         }//getTimestamp
         
+       
         
-        public Set<Integer> activeNodesOnCascade(int cascadeId){
-            return this.activeNodesOnCascade[cascadeId];
-        }//activeNodesOnCascade
-        
-        
-        public ArrayList<CascadeEvent> getSrtEventsForCascade(int cascadeId){
+        public List<CascadeEvent> getCascadeEvents(int cascadeId){
             return cascadeEventsSrt[cascadeId];
         }//getSrtEventsForCascade
         
-        
-        
-        public Set<Integer> getInactiveNodesOnCascade(int cascadeId){
-            HashSet<Integer> ris=new HashSet<Integer>(this.nodeSet);
-            ris.removeAll(activeNodesOnCascade[cascadeId]);
-            return ris;
-        }//getInactiveNodesOnCascade
-        
-        
-        public Set<Integer> activeWordsOnCascade(int cascadeId){
-            return this.activeWordsOnCascade[cascadeId];
-        }//activeNodesOnCascade
+       
         
         
         public void getInfo(){
@@ -116,15 +93,15 @@ public class CascadeData {
                 
         
         
-        public double getNNodes(){
+        public int getNNodes(){
             return n_nodes;
         }
         
-        public double getNCascades(){
+        public int getNCascades(){
             return n_cascades;
         }
         
-        public double getNWords(){
+        public int getNWords(){
             return n_words;
         }
                 
@@ -160,35 +137,36 @@ public class CascadeData {
                 
                 while(line!=null){
                     tokens=line.split("\t");
-                    int word=Integer.parseInt(tokens[0]);
+                    int word=Integer.parseInt(tokens[0])-1;
                     wordSet.add(word);
-                    
+                    line=br.readLine();
                 }
                 br.close();
                 
                 this.n_words=wordSet.size();
                 
-                this.CascadeContent=new SparseIntMatrix2D(this.n_words,this.n_cascades);
-                this.activeWordsOnCascade=new Set[this.n_cascades];
+                this.cascadeContent=new ArrayList[n_cascades];
                
                 br=new BufferedReader(new FileReader(file_content));
                 line=br.readLine();
                 line=br.readLine();//skip header
              
-                Set<Integer> activeWordsTmp;
+                List<WordOccurrence>contentTmp;
                 while(line!=null){
                     tokens=line.split("\t");
-                    int word=Integer.parseInt(tokens[0]);
-                    int cascadeId=Integer.parseInt(tokens[1]);
+                    int word=Integer.parseInt(tokens[0])-1;
+                    int cascadeId=Integer.parseInt(tokens[1])-1;
                     int cnt=Integer.parseInt(tokens[2]);
-                    this.CascadeContent.setQuick(word, cascadeId, cnt);
-                    
-                    activeWordsTmp=activeWordsOnCascade[cascadeId];
-                    if(activeWordsTmp==null){
-                        activeWordsTmp=new HashSet<Integer>();
-                        activeWordsOnCascade[cascadeId]=activeWordsTmp;
+                   
+                    contentTmp=cascadeContent[cascadeId];
+                    if(contentTmp==null){
+                        contentTmp=new ArrayList<WordOccurrence>();
+                        cascadeContent[cascadeId]=contentTmp;
                     }
-                    activeWordsTmp.add(word);   
+                    contentTmp.add(new WordOccurrence(word, cnt));
+                    
+                   
+                    line=br.readLine();
                 }
                 br.close();
 			    
@@ -217,8 +195,8 @@ public class CascadeData {
     			
     			while(line!=null){
     			    tokens=line.split("\t");
-    			    int nodeId=Integer.parseInt(tokens[0]);
-    			    int cascadeId=Integer.parseInt(tokens[1]);
+    			    int nodeId=Integer.parseInt(tokens[0])-1;
+    			    int cascadeId=Integer.parseInt(tokens[1])-1;
     			    nodeSet.add(nodeId);
     			    cascadeSet.add(cascadeId);
     			    line=br.readLine();
@@ -230,21 +208,18 @@ public class CascadeData {
     			this.n_cascades=cascadeSet.size();
     			this.cascadeEvents=new SparseDoubleMatrix2D(n_nodes,n_cascades);
     			this.cascadeEventsSrt=new ArrayList[n_cascades];
-    			this.activeNodesOnCascade=new HashSet[n_cascades];
     			
     			//read cascades
     			 br=new BufferedReader(new FileReader(file_events));
     	         line=br.readLine();
     	         line=br.readLine();//skip header
     	        
-    	         ArrayList<CascadeEvent>tmp;
-    	         Set<Integer>tmpSet;
+    	         List<CascadeEvent>tmp;
     	         while(line!=null){
     	                tokens=line.split("\t");
-    	                int nodeId=Integer.parseInt(tokens[0]);
-    	                int cascadeId=Integer.parseInt(tokens[1]);
+    	                int nodeId=Integer.parseInt(tokens[0]) -1 ;
+    	                int cascadeId=Integer.parseInt(tokens[1]) -1;
     	                double timestamp=Double.parseDouble(tokens[2]);
-    	                CascadeEvent ce=new CascadeEvent(nodeId, cascadeId,timestamp);
     	              
     	                //set the timestamp
     	                cascadeEvents.set(nodeId, cascadeId, timestamp);
@@ -255,16 +230,8 @@ public class CascadeData {
     	                    tmp=new ArrayList<CascadeEvent>();
     	                    cascadeEventsSrt[cascadeId]=tmp;
     	                }
-    	                tmp.add(ce);
+    	                tmp.add(new CascadeEvent(nodeId,timestamp));
     	              
-    	                //add nodeId to activeUsersForCascade
-    	                tmpSet=activeNodesOnCascade[cascadeId];
-    	                if(tmpSet==null){
-                            tmpSet=new HashSet<Integer>();
-                            activeNodesOnCascade[cascadeId]=tmpSet;
-                        }
-    	                tmpSet.add(nodeId);
-    	                
     	                //check t_max
     	                if(this.t_max<timestamp){
     	                    this.t_max=timestamp;
@@ -286,7 +253,18 @@ public class CascadeData {
     		    }
 		}//processEventFile
 
+      public static void main(String[] args) throws Exception{
+        String file_events="/Users/barbieri/Dropbox/shared ICAR/SurvivalFactorization/exp/meme_tracker/debug/cleaned_debug_activations";
+        String file_content="/Users/barbieri/Dropbox/shared ICAR/SurvivalFactorization/exp/meme_tracker/debug/cleaned_debug_content";
+    
+        CascadeData data=new CascadeData(file_events, file_content);
+        data.getInfo();
       
+      }
+
+
+
+   
         
 
 }

@@ -1,5 +1,6 @@
 package it.cnr.adalab.surivalfactorization;
 
+import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix2D;
 import data.CascadeData;
 
 public class GibbsSampler {
@@ -18,9 +19,9 @@ public class GibbsSampler {
 
 	public Model[] runInference(CascadeData data, int n_features) {
 
-		int n_users = data.n_nodes;
-		int n_words = data.n_words;
-		int n_cascades = data.n_cascades;
+		int n_nodes = data.getNNodes();
+		int n_words = data.getNWords();
+		int n_cascades = data.getNCascades();
 		int n_iterations = settings.n_iterations;
 		int burnin = settings.burnin;
 
@@ -33,12 +34,12 @@ public class GibbsSampler {
 		inferHyperParams(data, n_features);
 
 		// init paramers
-		Model model = new Model(n_users, n_words, n_features, new HyperParameters(a,b,C,D));
+		Model model = new Model(n_nodes, n_words, n_features, new HyperParameters(a,b,C,D));
 		model.init(rnd);
 
 		long tot_time = 0;
 
-		GibbsSamplerState curr_state = new GibbsSamplerState(n_users,
+		GibbsSamplerState curr_state = new GibbsSamplerState(n_nodes,
 				n_cascades, n_words, n_features);
 
 		double[] p = (new Dirichlet(Alpha)).nextDistribution();
@@ -59,13 +60,13 @@ public class GibbsSampler {
 			double[][] F_curr = computeF(model, data);
 
 			double[][] A_new = sampleA(model, data, curr_state, F_curr);
-			model.A = A_new;
+			model.setA(A_new);
 
 			double[][] S_new = sampleS(model, data, curr_state, F_curr);
-			model.S = S_new;
+			model.setS(S_new);
 
 			double[][] Phi_new = samplePhi(model, data, curr_state, F_curr);
-			model.Phi = Phi_new;
+			model.setPhi(Phi_new);
 
 			if (epoch > burnin) {
 				Model curr_model = new Model(model);

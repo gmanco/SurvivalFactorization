@@ -1,7 +1,10 @@
 package it.cnr.adalab.surivalfactorization;
 
-public class HyperParameters {
-	double a; 
+import java.io.Serializable;
+
+public class HyperParameters implements Serializable {
+	
+    double a; 
 	double b; 
 	double[] C;
 	double [] D;
@@ -29,4 +32,4 @@ public class HyperParameters {
 		return D;
 	}
 
-}
+}//HyperParameters
