@@ -5,6 +5,7 @@ import java.util.List;
 import utils.Weka_Utils;
 
 import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix2D;
+import cern.colt.matrix.tint.impl.SparseIntMatrix2D;
 import data.CascadeData;
 import data.CascadeEvent;
 import data.WordOccurrence;
@@ -130,9 +131,9 @@ public class GibbsSampler {
 		int[] M_k = curr_state.M_k;
 		int[] M_v = curr_state.M_v;
 		int[] Z = curr_state.Z;
-		SparseDoubleMatrix2D Y = curr_state.Y;
+		SparseIntMatrix2D Y = curr_state.Y;
 
-		SparseDoubleMatrix2D Y_new = sampleY(model, data, Y, Z, M_v,counters);
+		SparseIntMatrix2D Y_new = sampleY(model, data, Y, Z, M_v);
 		int[] Z_new = sampleZ(model, data, Y_new, Z, M_k,counters);
 
 		next_state.update(data, Z_new, Y_new);
@@ -192,7 +193,7 @@ public class GibbsSampler {
 	}//samplePhi
 
 	private int[] sampleZ(Model model, CascadeData data,
-			SparseDoubleMatrix2D Y, int[] z, int[] m_k,Counters counters) {
+	        SparseIntMatrix2D Y, int[] z, int[] m_k,Counters counters) {
 	  
 	    int Z_new[]=new int[data.n_cascades];
 	    
@@ -262,7 +263,7 @@ public class GibbsSampler {
 	 * Compute log Prob(Z_c=k| events_c)
 	 */
 	private double[] computeLogProbEvents(Model model, CascadeData data,
-            int c,SparseDoubleMatrix2D Y, Counters counters) {
+            int c,SparseIntMatrix2D Y, Counters counters) {
 
 	    int n_features=model.n_features;
        
@@ -327,10 +328,70 @@ public class GibbsSampler {
       return logProbEvents;
     }//computeLogProbEvents
 
-    private SparseDoubleMatrix2D sampleY(Model model, CascadeData data,
-			SparseDoubleMatrix2D y, int[] z, int[] m_v,Counters counters) {
-		// TODO Auto-generated method stub
-		return null;
+	/*
+	 * Y(c,u) contains the id of the influencer node.
+	 */
+    private SparseIntMatrix2D sampleY(Model model, CascadeData data,
+            SparseIntMatrix2D Y, int[] z, int[] m_v) {
+
+        int n_nodes=data.n_nodes;
+        int n_cascades=data.n_cascades;
+        
+        double A[][]=model.getA();
+        
+        
+        SparseIntMatrix2D Y_new =new SparseIntMatrix2D(n_cascades,n_nodes);
+        
+        double sum_A=0.0;
+        Multinomial multinomial;
+        for(int c=0;c<n_cascades;c++){
+            List<CascadeEvent> cascadeEvents=data.getCascadeEvents(c);
+            int n_events_cascade=cascadeEvents.size();
+            
+            // get the active component for cascade c
+            int k_c=z[c];
+           
+            for(int e=0;e<n_events_cascade;e++){
+                CascadeEvent ce=cascadeEvents.get(e);
+                int u=ce.node;
+             
+                int old_influencer=Y.get(c,u);
+                m_v[old_influencer]=Math.max(m_v[old_influencer]-1,0);
+ 
+                if(e>0){ // skip first activation
+                    
+                    //the number of previous events is (e-1)
+                    double logProbInfluencers[]= new double[e];
+                    for(int e1=0;e1<e;e1++){
+                        CascadeEvent e_prime=cascadeEvents.get(e1);
+                        int v=e_prime.node;
+                        logProbInfluencers[e1]=(A[v][k_c]/sum_A)+Math.log(m_v[v]+Beta[v]);
+                    }// for each previous event   
+                    
+                    multinomial=new Multinomial(Weka_Utils.logs2probs(logProbInfluencers));
+                   
+                    //sample index of the event that triggered the activation
+                    int e1=multinomial.sample();
+                    
+                    //get the corresponding node
+                    int v=cascadeEvents.get(e1).node;
+                    
+                    //update counter of influence for v
+                    m_v[v]++;
+                    //set influencer
+                    Y_new.set(c,u,v);
+                }// (e>0)
+                
+                //update the denominator with the contribute of the current node
+                sum_A+=A[u][k_c];
+            
+            }//for each event
+            
+            
+        }// for each cascade
+
+        
+        return Y_new;
 	}//sampleY
 
-}
+}//GibbsSampler

@@ -3,6 +3,7 @@ package survivalFactorization;
 import java.util.List;
 
 import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix2D;
+import cern.colt.matrix.tint.impl.SparseIntMatrix2D;
 
 import data.CascadeData;
 import data.CascadeEvent;
@@ -13,7 +14,7 @@ public class GibbsSamplerState {
 	protected int[] M_k;
 	protected int[] M_v;
 	protected int[] Z;
-	protected SparseDoubleMatrix2D Y;
+	protected SparseIntMatrix2D Y; //n_cascades x n_users
 
 	int n_nodes;
 	int n_words;
@@ -41,11 +42,11 @@ public class GibbsSamplerState {
 		this.M_k = new int[n_features];
 		this.M_v = new int[n_features];
 		this.Z = new int[n_cascades];
-		this.Y = new SparseDoubleMatrix2D(n_cascades, n_users);
+		this.Y = new SparseIntMatrix2D(n_cascades, n_users);
 	}
 
 	protected void update(CascadeData data, int[] z_new,
-			SparseDoubleMatrix2D y_new) {
+	        SparseIntMatrix2D y_new) {
 		resetCounters();
 		this.Z = z_new;
 		this.Y = y_new;
