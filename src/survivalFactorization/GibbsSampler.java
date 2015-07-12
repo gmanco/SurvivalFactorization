@@ -45,6 +45,9 @@ public class GibbsSampler {
 		double[] p = (new Dirichlet(Alpha)).nextDistribution();
 
 		curr_state.randomInitZ(p);
+		
+		Counters counters=new Counters(n_cascades, n_nodes, n_features);
+		counters.update(data, model);
 		// Gibbs sampling
 		//
 		// Z is n_cascades x 1
@@ -52,24 +55,29 @@ public class GibbsSampler {
 		//
 		for (int epoch = 0; epoch < n_iterations; epoch++) {
 			long t = System.currentTimeMillis();
-
+			
+			
+			
 			GibbsSamplerState next_state = sampleNextState(model, data,
-					curr_state);
+					curr_state,counters);
 			curr_state = next_state;
 
 			double[][] F_curr = computeF(model, data);
 
-			double[][] A_new = sampleA(model, data, curr_state, F_curr);
+			double[][] A_new = sampleA(model, data, curr_state, F_curr,counters);
 			model.setA(A_new);
 
-			double[][] S_new = sampleS(model, data, curr_state, F_curr);
+			double[][] S_new = sampleS(model, data, curr_state, F_curr,counters);
 			model.setS(S_new);
 
-			double[][] Phi_new = samplePhi(model, data, curr_state, F_curr);
+			double[][] Phi_new = samplePhi(model, data, curr_state, F_curr,counters);
 			model.setPhi(Phi_new);
 
+			//now it's time to update counters
+            counters.update(data, model);
+            
 			if (epoch > burnin) {
-				Model curr_model = new Model(model);
+			    Model curr_model = new Model(model);
 				models[epoch - burnin] = curr_model;
 			}
 
@@ -79,7 +87,7 @@ public class GibbsSampler {
 
 			// print out information about iteration
 			if (epoch % settings.llk_interval == 0 && settings.compute_llk == 1) {
-				double llk = model.computeLLk(data);
+				double llk = model.computeLLk(data,counters);
 				System.out
 						.format("Iteration %d completed [elapsed time: %.0fs (llk: %-.2f)].\n",
 								epoch, iteration_time, llk);
@@ -107,7 +115,7 @@ public class GibbsSampler {
 	}
 
 	private GibbsSamplerState sampleNextState(Model model, CascadeData data,
-			GibbsSamplerState curr_state) {
+			GibbsSamplerState curr_state,Counters counters) {
 
 		GibbsSamplerState next_state = new GibbsSamplerState(data.n_nodes,
 				data.n_cascades, data.n_words, model.n_features);
@@ -118,14 +126,14 @@ public class GibbsSampler {
 		int[] Z = curr_state.Z;
 		SparseDoubleMatrix2D Y = curr_state.Y;
 
-		SparseDoubleMatrix2D Y_new = sampleY(model, data, Y, Z, M_v);
-		int[] Z_new = sampleZ(model, data, Y_new, Z, M_k);
+		SparseDoubleMatrix2D Y_new = sampleY(model, data, Y, Z, M_v,counters);
+		int[] Z_new = sampleZ(model, data, Y_new, Z, M_k,counters);
 
 		next_state.update(data, Z_new, Y_new);
 
 		return next_state;
 
-	}
+	}//sampleNextState
 
 	protected void inferHyperParams(CascadeData data, int n_features) {
 		
@@ -155,14 +163,14 @@ public class GibbsSampler {
 	}
 
 	private double[][] sampleA(Model model, CascadeData data,
-			GibbsSamplerState curr_state, double[][] F_curr) {
+			GibbsSamplerState curr_state, double[][] F_curr,Counters counters) {
 		double[][] A_new = new double[data.n_nodes][model.n_features];
 
 		return A_new;
 	}
 
 	private double[][] sampleS(Model model, CascadeData data,
-			GibbsSamplerState curr_state, double[][] F_curr) {
+			GibbsSamplerState curr_state, double[][] F_curr,Counters counters) {
 		double[][] S_new = new double[data.n_nodes][model.n_features];
 
 		return S_new;
@@ -170,7 +178,7 @@ public class GibbsSampler {
 	}
 
 	private double[][] samplePhi(Model model, CascadeData data,
-			GibbsSamplerState curr_state, double[][] F_curr) {
+			GibbsSamplerState curr_state, double[][] F_curr,Counters counters) {
 		double[][] Phi_new = new double[data.n_words][model.n_features];
 
 		return Phi_new;
@@ -178,13 +186,15 @@ public class GibbsSampler {
 	}
 
 	private int[] sampleZ(Model model, CascadeData data,
-			SparseDoubleMatrix2D y, int[] z, int[] m_k) {
+			SparseDoubleMatrix2D y, int[] z, int[] m_k,Counters counters) {
 		// TODO Auto-generated method stub
+	    
+	    
 		return null;
-	}
+	}//sampleZ
 
 	private SparseDoubleMatrix2D sampleY(Model model, CascadeData data,
-			SparseDoubleMatrix2D y, int[] z, int[] m_v) {
+			SparseDoubleMatrix2D y, int[] z, int[] m_v,Counters counters) {
 		// TODO Auto-generated method stub
 		return null;
 	}

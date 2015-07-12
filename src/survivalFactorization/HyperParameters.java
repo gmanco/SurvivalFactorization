@@ -1,9 +1,14 @@
 package survivalFactorization;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class HyperParameters implements Serializable {
 	
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     double a; 
 	double b; 
 	double[] C;
@@ -16,7 +21,14 @@ public class HyperParameters implements Serializable {
 		this.D = d2;
 	}
 
-	public double getA() {
+	public HyperParameters(HyperParameters h) {
+        this.a=h.a;
+        this.b=h.b;
+        this.C=Arrays.copyOf(h.C, h.C.length);
+        this.D=Arrays.copyOf(h.D, h.D.length);
+    }
+
+    public double getA() {
 		return a;
 	}
 

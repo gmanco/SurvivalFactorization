@@ -1,9 +1,9 @@
 package survivalFactorization;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+
+import utils.MatrixUtilities;
 
 import data.CascadeData;
 import data.CascadeEvent;
@@ -25,7 +25,6 @@ public class Model implements Serializable{
     private double[][] A; // n_nodes x n_features
     private double[][] S;  // n_nodes x n_features
     private double[][] Phi; // n_words x n_features
-    private double[][] F; // n_cascade x n_features
 
 	public Model() {
 		this.n_nodes = -1;
@@ -33,15 +32,30 @@ public class Model implements Serializable{
 		this.n_features = -1;
 	}
 
+	/*
+	 * This is the deep copy constructor
+	 */
 	public Model(Model m) {
 		this.n_nodes = m.n_nodes;
 		this.n_words = m.n_words;
 		this.n_features = m.n_features;
 		this.hyperParams = m.hyperParams;
-		this.A = m.A;
-		this.S = m.S;
-		this.Phi = m.Phi;
-		this.F = m.F;
+
+        final int N = this.n_nodes;
+        final int K = this.n_features;
+        final int W = this.n_words;
+        
+        this.A = new double[N][K];
+        MatrixUtilities.copy(m.A, this.A);
+        
+        this.S = new double[N][K];
+        MatrixUtilities.copy(m.S, this.S);
+        
+        this.Phi = new double[W][K];
+        MatrixUtilities.copy(m.Phi, this.Phi);
+        
+       this.hyperParams=new HyperParameters(m.hyperParams);
+
 	}
 
 	public Model(int n_users, int n_words, int n_features, HyperParameters h) {
@@ -74,30 +88,12 @@ public class Model implements Serializable{
 				Phi[w][k] = rng.nextGamma(C[w], D[w]);
 		}
 
-	}
+	}//init
 
 	
 
-	public double computeLLk(CascadeData data) {
-		double llk = 0;
-		//compute S_k[k]=\sum_u S[u][k]
-		double S_k[]=new double[n_features];
-		for(int u=0;u<n_nodes;u++){
-		    for(int k=0;k<n_features;k++){
-		        S_k[k]+=S[u][k];
-		    }
-		}//for each node
-		
-		//compute Phi_k[k]=\sum_w Phi[w][k]
-		double Phi_k[]=new double[n_features];
-		for(int w=0;w<n_words;w++){
-		    for(int k=0;k<n_features;k++){
-		        Phi_k[k]+=Phi[w][k];
-		    }
-		}// for each word
-		    
-		
-		
+	public double computeLLk(CascadeData data, Counters counters) {
+		double llk=0.0;
 		
 		for (int c = 0; c < n_cascades; c++){
 			List<CascadeEvent> cascadeEvents=data.getCascadeEvents(c);
@@ -105,78 +101,36 @@ public class Model implements Serializable{
 		    int n_events_cascade=cascadeEvents.size();
 		
 		    double F_c[]=computeF(cascadeContent);
-		    
-			   
-		    double A_c_k[]=new double[n_features];
-		    double tilde_A_c_k[]=new double[n_features];
-		    double S_c_k[]=new double[n_features];
-		    
-		    //first scan: compute counters
-		    for(int e=0;e<n_events_cascade;e++){
-		        CascadeEvent ce=cascadeEvents.get(e);
-		        int u=ce.node;
-		        double t=ce.timestamp;
-		        for(int k=0;k<n_features;k++){
-	                if(e>0){ //skip first activation
-    		            S_c_k[k]+=S[u][k];
-	                }
-	                A_c_k[k]+=A[u][k];
-	                tilde_A_c_k[k]+=A[u][k]*t;
-	            }
-		    }//first scan
-		   
+		      
 		    
 		    double first_component[]=new double[n_features];
 		    for(int k=0;k<n_features;k++){
-		        first_component[k]=-F_c[k]*(S_k[k]-S_c_k[k])*(data.t_max*A_c_k[k]-tilde_A_c_k[k]);
+		        first_component[k]=-F_c[k]*(counters.S_k[k]-counters.S_c_k[c][k])*(data.t_max*counters.A_c_k[c][k]-counters.tilde_A_c_k[c][k]);
 		    }
 		    
-		    double secondComponent[]=new double[n_features];
+		    double[]secondComponent=new double[n_features];
+		    double[]thirdComponent=new double[n_features];
 		   
-	        double sum_log_S_active[]=new double[n_features];
-            double sum_log_cumulative_A[]=new double[n_features];
-		    double cumulative_A_v_k[]=new double[n_features];
-		    double cumulative_tilde_A_v_k[]=new double[n_features];
 		    //second scan
 		    for(int e=0;e<n_events_cascade;e++){
                 CascadeEvent ce=cascadeEvents.get(e);
                 int u=ce.node;
                 double t_u=ce.timestamp;
-		    
-                //note the order of these updates: it matters!
+
                 for(int k=0;k<n_features;k++){
-                    secondComponent[k]+=S[u][k]*(t_u*cumulative_A_v_k[k]-cumulative_tilde_A_v_k[k]); 
-                    
-                    if(Math.log(S[u][k])>0)
-                        sum_log_S_active[k]+=Math.log(S[u][k]); // this goes into the third component
-                    else
-                        throw new RuntimeException();
-                    
-                    if(e>1) { //this goes into the third component
-                        if(cumulative_A_v_k[k]>0)
-                            sum_log_cumulative_A[k]+=Math.log(cumulative_A_v_k[k]);
-                        else
-                            throw new RuntimeException();
-                    }
-                    
-                    //update cumulatives
-                    cumulative_A_v_k[k]+=A[u][k];
-                    cumulative_tilde_A_v_k[k]+=A[u][k]*t_u;
-                  
+                    secondComponent[k]+=S[u][k]*(t_u*counters.A_c_u_k[c].get(u, k)-counters.tilde_A_c_u_k[c].get(u,k));
+                    thirdComponent[k]+=Math.log(counters.A_c_u_k[c].get(u,k)-A[u][k]);
                 }//for each k
               
 		    }// for each event
 		    
-		    //multiply for F_c_k
+		    
 		    for(int k=0;k<n_features;k++){
 		        secondComponent[k]=-F_c[k]*secondComponent[k];
+		        thirdComponent[k]+=counters.S_c_k[c][k]+(n_events_cascade-1)*Math.log(F_c[k]);
 		    }
 		    
-		    double third_component[]=new double[n_features];
-		    for(int k=0;k<n_features;k++){
-		        third_component[k]+=sum_log_cumulative_A[k]+sum_log_S_active[k]+(n_events_cascade-1)*F_c[k];
-		    }// for each k
-		    
+	   
 		    //compute llk on the content
 		    double content_llk[]=new double[n_features];
 		    for(WordOccurrence wo:cascadeContent){
@@ -191,12 +145,12 @@ public class Model implements Serializable{
 		    }// for each word
 		    
 		    for(int k=0;k<n_features;k++){
-		        content_llk[k]-=(cascadeContent.size())*Phi_k[k];
+		        content_llk[k]-=(cascadeContent.size())*counters.Phi_k[k];
 		    }//for each k
 		    
 		    //finally.. 
 			for(int k=0;k<n_features;k++){
-			    llk+=first_component[k]+secondComponent[k]+third_component[k]+content_llk[k];
+			    llk+=first_component[k]+secondComponent[k]+thirdComponent[k]+content_llk[k];
 			}//for each k
 			
 			
@@ -204,8 +158,6 @@ public class Model implements Serializable{
 		
 		return llk;
 	}//computeLLk
-	
-	
 	
 
     public double[] computeF(List<WordOccurrence> W_c) {
@@ -231,6 +183,7 @@ public class Model implements Serializable{
 		}
 		return F_curr;
 	}//computeFAllCascades
+	
 
     public void setN_nodes(int n_nodes) {
         this.n_nodes = n_nodes;
@@ -255,7 +208,21 @@ public class Model implements Serializable{
     public void setA(double[][] a) {
         A = a;
     }
+    
 
+    public double[][] getA() {
+        return A;
+    }
+
+    public double[][] getS() {
+        return S;
+    }
+
+    public double[][] getPhi() {
+        return Phi;
+    }
+
+   
     public void setS(double[][] s) {
         S = s;
     }
@@ -264,8 +231,6 @@ public class Model implements Serializable{
         Phi = phi;
     }
 
-    public void setF(double[][] f) {
-        F = f;
-    }
+
 
 }//Model
