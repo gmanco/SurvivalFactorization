@@ -111,7 +111,7 @@ public class Model implements Serializable{
 		    double[]secondComponent=new double[n_features];
 		    double[]thirdComponent=new double[n_features];
 		   
-		    //second scan
+		    //scan over events
 		    for(int e=0;e<n_events_cascade;e++){
                 CascadeEvent ce=cascadeEvents.get(e);
                 int u=ce.node;

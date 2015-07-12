@@ -1,7 +1,13 @@
 package survivalFactorization;
 
+import java.util.List;
+
+import utils.Weka_Utils;
+
 import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix2D;
 import data.CascadeData;
+import data.CascadeEvent;
+import data.WordOccurrence;
 
 public class GibbsSampler {
 
@@ -167,7 +173,7 @@ public class GibbsSampler {
 		double[][] A_new = new double[data.n_nodes][model.n_features];
 
 		return A_new;
-	}
+	}//sampleA
 
 	private double[][] sampleS(Model model, CascadeData data,
 			GibbsSamplerState curr_state, double[][] F_curr,Counters counters) {
@@ -175,7 +181,7 @@ public class GibbsSampler {
 
 		return S_new;
 
-	}
+	}//sampleS
 
 	private double[][] samplePhi(Model model, CascadeData data,
 			GibbsSamplerState curr_state, double[][] F_curr,Counters counters) {
@@ -183,20 +189,148 @@ public class GibbsSampler {
 
 		return Phi_new;
 
-	}
+	}//samplePhi
 
 	private int[] sampleZ(Model model, CascadeData data,
-			SparseDoubleMatrix2D y, int[] z, int[] m_k,Counters counters) {
-		// TODO Auto-generated method stub
+			SparseDoubleMatrix2D Y, int[] z, int[] m_k,Counters counters) {
+	  
+	    int Z_new[]=new int[data.n_cascades];
 	    
-	    
-		return null;
+	    int n_features=model.n_features;
+	    int n_cascades=data.n_cascades;
+	           
+        Multinomial multinomial;
+        
+	    for (int c = 0; c < n_cascades; c++){
+	        
+	        double logProbEvents[]=computeLogProbEvents(model,data,c,Y,counters);
+	        double logProbContent[]=computeLogProbContent(model,data,c,counters);
+	        
+	        //update m_k by removing the old assignment
+	        int k_old=z[c];
+	        m_k[k_old]=Math.max(m_k[k_old]-1,0);
+	        
+	        double logPrior[]=new double[n_features];
+	        for(int k=0;k<n_features;k++){
+	            logPrior[k]=Math.log(m_k[k]+Alpha[k]);
+	        }
+	        
+	        double logProbCascade[]=new double[n_features];
+	        for(int k=0;k<n_features;k++){
+	            logProbCascade[k]=logProbEvents[k]+logProbContent[k]+logPrior[k];
+	        }
+	        
+	        double theta[]=Weka_Utils.logs2probs(logProbCascade);
+	        
+	        multinomial = new Multinomial(theta);
+	        int k_new=multinomial.sample();
+	        m_k[k_new]++;
+	        Z_new[c]=k_new;
+	        
+	    }// for each cascade
+	      
+		return Z_new;
 	}//sampleZ
 
-	private SparseDoubleMatrix2D sampleY(Model model, CascadeData data,
+	/*
+	 * Computes log Prob(z_c=k| content_c)
+	 */
+	private double[] computeLogProbContent(Model model, CascadeData data,
+            int c, Counters counters) {
+      
+	    int n_features=model.n_features;
+	    List<WordOccurrence> cascadeContent=data.getCascadeContent(c);
+	    double Phi[][]=model.getPhi();
+        
+        double logProbContent[]=new double[n_features];
+        for(WordOccurrence wo:cascadeContent){
+            int w=wo.word;
+            int n_w_c=wo.cnt;
+            for(int k=0;k<n_features;k++){
+                logProbContent[k]+=n_w_c*Math.log(Phi[w][k]);
+            }
+        }//for each word
+        
+        int contentLength=cascadeContent.size();
+        for(int k=0;k<n_features;k++){
+            logProbContent[k]-=contentLength*counters.Phi_k[k];
+        }
+        return logProbContent;
+    }//computeLogProbContent
+
+    /*
+	 * Compute log Prob(Z_c=k| events_c)
+	 */
+	private double[] computeLogProbEvents(Model model, CascadeData data,
+            int c,SparseDoubleMatrix2D Y, Counters counters) {
+
+	    int n_features=model.n_features;
+       
+        double A[][]=model.getA();
+        double S[][]=model.getS();
+        
+        double firstComponent[]=new double[n_features];
+        double secondComponent[]=new double[n_features];
+        
+        double thirdComponent_A[]=new double[n_features];
+        double thirdComponent_B[]=new double[n_features];
+        double thirdComponent_C[]=new double[n_features];
+        double thirdComponent_D[]=new double[n_features];
+        double thirdComponent_E[]=new double[n_features];
+
+        
+        
+        List<CascadeEvent> cascadeEvents=data.getCascadeEvents(c);
+        List<WordOccurrence> cascadeContent=data.getCascadeContent(c);
+        int n_events_cascade=cascadeEvents.size();
+    
+        double F_c[]=model.computeF(cascadeContent);
+        
+        for(int k=0;k<n_features;k++){
+            firstComponent[k]=(n_events_cascade-1)*Math.log(F_c[k]);
+            thirdComponent_A[k]=counters.tilde_S_c_k[c][k]*counters.A_c_k[c][k];
+            thirdComponent_C[k]=counters.tilde_A_c_k[c][k]*counters.S_c_k[c][k];
+            thirdComponent_E[k]=(counters.S_k[k]-counters.S_c_k[c][k])*
+                                    (data.t_max*counters.A_c_k[c][k]-counters.tilde_A_c_k[c][k]);
+        }
+        
+        // scan over events
+        for(int e=0;e<n_events_cascade;e++){
+            CascadeEvent ce=cascadeEvents.get(e);
+            int u=ce.node;
+            double t_u=ce.timestamp;
+
+            for(int k=0;k<n_features;k++){
+               if(e>1){
+                   // id influencer
+                   int v = (int) (Y.get(c, u));
+                   secondComponent[k]+=Math.log(A[v][k]*S[u][k]);
+               }
+               thirdComponent_B[k]+=A[u][k]*counters.tilde_S_c_u_k[c].get(u,k); 
+               thirdComponent_D[k]+=A[u][k]*t_u*counters.S_c_u_k[c].get(u,k); 
+                
+            }//for each k
+          
+        }// for each event
+        
+        double thirdComponent[]=new double[n_features];
+        for(int k=0;k<n_features;k++){
+            thirdComponent[k]=-F_c[k]*(thirdComponent_A[k]-thirdComponent_B[k]-thirdComponent_C[k]+thirdComponent_D[k]+thirdComponent_E[k]);
+        }
+        
+      double logProbEvents[]=new double[n_features];
+ 
+      for(int k=0;k<n_features;k++){
+          logProbEvents[k]=firstComponent[k]+secondComponent[k]+thirdComponent[k];
+      }
+        
+      return logProbEvents;
+    }//computeLogProbEvents
+
+    private SparseDoubleMatrix2D sampleY(Model model, CascadeData data,
 			SparseDoubleMatrix2D y, int[] z, int[] m_v,Counters counters) {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}//sampleY
 
 }
