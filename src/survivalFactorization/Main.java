@@ -8,8 +8,8 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        String file_events="/Users/barbieri/Dropbox/shared ICAR/SurvivalFactorization/exp/meme_tracker/debug/cleaned_debug_activations";
-        String file_content="/Users/barbieri/Dropbox/shared ICAR/SurvivalFactorization/exp/meme_tracker/debug/cleaned_debug_content";
+        String file_events= args[1];// "/Users/barbieri/Dropbox/shared ICAR/SurvivalFactorization/exp/meme_tracker/debug/cleaned_debug_activations"
+        String file_content=args[2]; //"/Users/barbieri/Dropbox/shared ICAR/SurvivalFactorization/exp/meme_tracker/debug/cleaned_debug_content";
     
         CascadeData data=new CascadeData(file_events, file_content);
         data.getInfo();
