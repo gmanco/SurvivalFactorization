@@ -2,6 +2,8 @@ package survivalFactorization;
 
 import java.util.List;
 
+import utils.Multinomial;
+
 import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix2D;
 import cern.colt.matrix.tint.impl.SparseIntMatrix2D;
 
@@ -33,14 +35,14 @@ public class GibbsSamplerState {
 		this.n_cascades = n_cascades;
 		this.N_k_u_v = new SparseDoubleMatrix2D[n_features];
 		this.L_k_u_v = new SparseDoubleMatrix2D[n_features];
-		for (int c = 1; c < n_features; c++) {
-			this.N_k_u_v[c] = new SparseDoubleMatrix2D(n_users, n_users);
-			this.L_k_u_v[c] = new SparseDoubleMatrix2D(n_users, n_users);
+		for (int k = 0; k < n_features; k++) {
+			this.N_k_u_v[k] = new SparseDoubleMatrix2D(n_users, n_users);
+			this.L_k_u_v[k] = new SparseDoubleMatrix2D(n_users, n_users);
 		}
 		this.N_k_w = new int[n_words][n_features];
 		this.C_k_w = new int[n_words][n_features];
 		this.M_k = new int[n_features];
-		this.M_v = new int[n_features];
+		this.M_v = new int[n_nodes];
 		this.Z = new int[n_cascades];
 		this.Y = new SparseIntMatrix2D(n_cascades, n_users);
 	}
@@ -79,9 +81,10 @@ public class GibbsSamplerState {
     
     				// time gap between activations
     				double delta_uv = t_u - t_v;
-    				if(delta_uv==0)
-    				    throw new RuntimeException("Delta is zero");
-    				
+    				if(delta_uv==0){
+    				    System.err.println("Delta is zero");
+    				    delta_uv=Double.MIN_VALUE;
+    				}
     				// update counters
     				N_k_u_v[k].set(u, v, N_k_u_v[k].get(u, v) + 1);
     				L_k_u_v[k].set(u, v, L_k_u_v[k].get(u, v) + Math.log(delta_uv));
@@ -111,14 +114,14 @@ public class GibbsSamplerState {
 	public void resetCounters() {
 		this.N_k_u_v = new SparseDoubleMatrix2D[n_features];
 		this.L_k_u_v = new SparseDoubleMatrix2D[n_features];
-		for (int c = 1; c < n_features; c++) {
-			this.N_k_u_v[c] = new SparseDoubleMatrix2D(n_nodes, n_nodes);
-			this.L_k_u_v[c] = new SparseDoubleMatrix2D(n_nodes, n_nodes);
+		for (int k = 0; k < n_features; k++) {
+			this.N_k_u_v[k] = new SparseDoubleMatrix2D(n_nodes, n_nodes);
+			this.L_k_u_v[k] = new SparseDoubleMatrix2D(n_nodes, n_nodes);
 		}
 		this.N_k_w = new int[n_words][n_features];
 		this.C_k_w = new int[n_words][n_features];
 		this.M_k = new int[n_features];
-		this.M_v = new int[n_features];
+		this.M_v = new int[n_nodes];
 	}//resetCounters
 
 }//GibbsSamplerState

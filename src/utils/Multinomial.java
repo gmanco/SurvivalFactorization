@@ -1,4 +1,4 @@
-package survivalFactorization;
+package utils;
 
 import java.util.Random;
 
@@ -8,7 +8,7 @@ double[] distribution;
 int range;
 
 //Constructor
-Multinomial(double[] probabilities){
+public Multinomial(double[] probabilities){
 	range = probabilities.length + 1;
 	// We build the distribution array one larger than the array of probabilities
 	// to permit distribution[0] to act as a minimum bound for searching.
@@ -26,7 +26,7 @@ Multinomial(double[] probabilities){
 	distribution[range - 1] = 1.0;
 }
 
-int sample() {
+public int sample() {
 	// Straightforward binary search on an array of doubles to find
 	// index such that distribution[i] is greater than random number while
 	// distribution[i-1] is less.

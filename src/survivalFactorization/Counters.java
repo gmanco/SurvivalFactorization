@@ -5,7 +5,6 @@ import java.util.List;
 import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix2D;
 import data.CascadeData;
 import data.CascadeEvent;
-import data.WordOccurrence;
 
 
 public class Counters {
@@ -51,7 +50,7 @@ public class Counters {
         A_c_k = new double[n_cascades][n_features];
         
         tilde_S_c_k = new double[n_cascades][n_features];
-        tilde_S_c_k = new double[n_cascades][n_features];
+        tilde_A_c_k = new double[n_cascades][n_features];
 
        // log_S_c_k = new double[n_cascades][n_features];
        // log_A_c_k = new double[n_cascades][n_features];
@@ -81,7 +80,7 @@ public class Counters {
 	    double Phi[][]=model.getPhi();
 	    
 	    int n_nodes=model.n_nodes;
-	    int n_cascades=model.n_cascades;
+	    int n_cascades=data.n_cascades;
 	    int n_features=model.n_features;
 	    int n_words=model.n_words;
 	    

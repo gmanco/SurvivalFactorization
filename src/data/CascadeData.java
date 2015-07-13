@@ -60,7 +60,10 @@ public class CascadeData {
         
         
         public List<WordOccurrence> getCascadeContent(int c) {
-            return cascadeContent[c];
+            List l= cascadeContent[c];
+            if(l==null)
+                l=new ArrayList<WordOccurrence>();
+            return l;
          }//WordOccurrence
         
         
@@ -79,7 +82,10 @@ public class CascadeData {
        
         
         public List<CascadeEvent> getCascadeEvents(int cascadeId){
-            return cascadeEventsSrt[cascadeId];
+            List<CascadeEvent> events= cascadeEventsSrt[cascadeId];
+            if(events==null)
+                events=new ArrayList<CascadeEvent>();
+            return events;
         }//getSrtEventsForCascade
         
        

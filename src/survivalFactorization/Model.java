@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import utils.MatrixUtilities;
+import utils.Randoms;
 
 import data.CascadeData;
 import data.CascadeEvent;
@@ -18,7 +19,6 @@ public class Model implements Serializable{
     int n_nodes;
     int n_words;
     int n_features;
-    int n_cascades;
     
     HyperParameters hyperParams;
     
@@ -26,11 +26,6 @@ public class Model implements Serializable{
     private double[][] S;  // n_nodes x n_features
     private double[][] Phi; // n_words x n_features
 
-	public Model() {
-		this.n_nodes = -1;
-		this.n_words = -1;
-		this.n_features = -1;
-	}
 
 	/*
 	 * This is the deep copy constructor
@@ -94,7 +89,7 @@ public class Model implements Serializable{
 
 	public double computeLLk(CascadeData data, Counters counters) {
 		double llk=0.0;
-		
+		int n_cascades=data.n_cascades;
 		for (int c = 0; c < n_cascades; c++){
 			List<CascadeEvent> cascadeEvents=data.getCascadeEvents(c);
 			List<WordOccurrence> cascadeContent=data.getCascadeContent(c);
@@ -119,7 +114,12 @@ public class Model implements Serializable{
 
                 for(int k=0;k<n_features;k++){
                     secondComponent[k]+=S[u][k]*(t_u*counters.A_c_u_k[c].get(u, k)-counters.tilde_A_c_u_k[c].get(u,k));
-                    thirdComponent[k]+=Math.log(counters.A_c_u_k[c].get(u,k)-A[u][k]);
+                   
+                    double a=counters.A_c_u_k[c].get(u,k)-A[u][k];
+                    if(a>0)
+                        thirdComponent[k]+=Math.log(counters.A_c_u_k[c].get(u,k)-A[u][k]);
+                    else
+                        throw new RuntimeException(""+counters.A_c_u_k[c].get(u,k)+"\t"+A[u][k]);
                 }//for each k
               
 		    }// for each event
@@ -127,7 +127,11 @@ public class Model implements Serializable{
 		    
 		    for(int k=0;k<n_features;k++){
 		        secondComponent[k]=-F_c[k]*secondComponent[k];
-		        thirdComponent[k]+=counters.S_c_k[c][k]+(n_events_cascade-1)*Math.log(F_c[k]);
+		        if(F_c[k]>0){
+		            thirdComponent[k]+=counters.S_c_k[c][k]+(n_events_cascade-1)*Math.log(F_c[k]);
+		        }
+		        else throw new RuntimeException();
+		       
 		    }
 		    
 	   
@@ -164,7 +168,7 @@ public class Model implements Serializable{
        
         double[] F = new double[n_features];
         for (int k = 0; k < n_features; k++)
-            F[k] = 1;
+            F[k] = 1.0;
        
         for(WordOccurrence wo:W_c){
             int w=wo.word;
@@ -176,7 +180,9 @@ public class Model implements Serializable{
 	
 
 	public double[][] computeFAllCascades(CascadeData data) {
-		double[][] F_curr = new double[n_cascades][n_features];
+	      int n_cascades=data.n_cascades;
+
+	    double[][] F_curr = new double[n_cascades][n_features];
 		for (int c = 0; c < n_cascades; c++) {
 			List<WordOccurrence>W_c = data.getCascadeContent(c);
 			F_curr[c] = computeF(W_c);
@@ -197,9 +203,6 @@ public class Model implements Serializable{
         this.n_features = n_features;
     }
 
-    public void setN_cascades(int n_cascades) {
-        this.n_cascades = n_cascades;
-    }
 
     public void setHyperParams(HyperParameters hyperParams) {
         this.hyperParams = hyperParams;

@@ -1097,8 +1097,8 @@ public class Weka_Utils {
 		
 		 double[] result = new double[a.length];
 		 for(int i = 0; i < a.length; i++) {
-		 result[i] = Math.exp(a[i] - max);
-		 sum += result[i];
+		     result[i] = Math.exp(a[i] - max);
+		     sum += result[i];
 		 }
 		
 		 normalize(result, sum);

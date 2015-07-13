@@ -1,10 +1,13 @@
 package survivalFactorization;
 
+import java.util.Arrays;
 import java.util.List;
 
+import utils.Dirichlet;
+import utils.Multinomial;
+import utils.Randoms;
 import utils.Weka_Utils;
 
-import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix2D;
 import cern.colt.matrix.tint.impl.SparseIntMatrix2D;
 import data.CascadeData;
 import data.CascadeEvent;
@@ -25,8 +28,10 @@ public class GibbsSampler {
 	}
 
 	public Model[] runInference(CascadeData data, int n_features) {
-
-		int n_nodes = data.getNNodes();
+	    System.out.println();
+	    System.out.println("**** RUNNING INFERENCE ****");
+		
+	    int n_nodes = data.getNNodes();
 		int n_words = data.getNWords();
 		int n_cascades = data.getNCascades();
 		int n_iterations = settings.n_iterations;
@@ -71,16 +76,29 @@ public class GibbsSampler {
 
 			double[][] F_curr = computeF(model, data);
 
+			long tic=System.currentTimeMillis();
+	        System.out.print("Sampling A...");
 			double[][] A_new = sampleA(model, data, curr_state, F_curr,counters);
 			model.setA(A_new);
+	        long toc=(System.currentTimeMillis()-tic)/1000;
+	        System.out.println(" Done ("+toc+" secs)");
 
+	            
+	        tic=System.currentTimeMillis();
+            System.out.print("Sampling S...");
 			double[][] S_new = sampleS(model, data, curr_state, F_curr,counters);
 			model.setS(S_new);
+			toc=(System.currentTimeMillis()-tic)/1000;
+            System.out.println(" Done ("+toc+" secs)");
 
+            tic=System.currentTimeMillis();
+            System.out.print("Sampling Phi...");
 			double[][] Phi_new = samplePhi(model, data, curr_state, F_curr,counters);
 			model.setPhi(Phi_new);
-
-			//now it's time to update counters
+			toc=(System.currentTimeMillis()-tic)/1000;
+            System.out.println(" Done ("+toc+" secs)");
+			
+            //now it's time to update counters
             counters.update(data, model);
             
 			if (epoch > burnin) {
@@ -93,14 +111,14 @@ public class GibbsSampler {
 			tot_time += iteration_time;
 
 			// print out information about iteration
-			if (epoch % settings.llk_interval == 0 && settings.compute_llk == 1) {
+			if (epoch % settings.llk_interval == 0 && settings.compute_llk) {
 				double llk = model.computeLLk(data,counters);
 				System.out
-						.format("Iteration %d completed [elapsed time: %.0fs (llk: %-.2f)].\n",
+						.format("Iteration %d completed [elapsed time: %d s (llk: %.5f )].\n",
 								epoch, iteration_time, llk);
 			} else
 				System.out.format(
-						"Iteration %d completed [elapsed time: %.0fs].\n",
+						"Iteration %d completed [elapsed time: %d s].\n",
 						epoch, iteration_time);
 
 		}
@@ -133,10 +151,19 @@ public class GibbsSampler {
 		int[] Z = curr_state.Z;
 		SparseIntMatrix2D Y = curr_state.Y;
 
+		long tic=System.currentTimeMillis();
+		System.out.print("Sampling Y...");
 		SparseIntMatrix2D Y_new = sampleY(model, data, Y, Z, M_v);
+		long toc=(System.currentTimeMillis()-tic)/1000;
+		System.out.println(" Done ("+toc+" secs)");
+		
+		tic=System.currentTimeMillis();
+		System.out.print("Sampling Z...");
 		int[] Z_new = sampleZ(model, data, Y_new, Z, M_k,counters);
-
-		next_state.update(data, Z_new, Y_new);
+		toc=(System.currentTimeMillis()-tic)/1000;
+	    System.out.println(" Done ("+toc+" secs)");
+		
+	    next_state.update(data, Z_new, Y_new);
 
 		return next_state;
 
@@ -147,48 +174,51 @@ public class GibbsSampler {
 		
 		inferPriorRates(data);
 
-		inferPriorWords(data, n_features);
+		inferPriorWords(data);
 
 		// these are default values used in topic models
 		Alpha = new double[n_features];
 		Beta = new double[data.n_nodes];
-		for (int k = 1; k < n_features; k++)
-			Alpha[k] = 50 / n_features;
-		for (int u = 1; u < data.n_nodes; u++)
-			Beta[u] = 200 / data.n_nodes;
+		for (int k = 0; k < n_features; k++)
+			Alpha[k] = (double)50 / n_features;
+		
+		for (int u = 0; u < data.n_nodes; u++)
+			Beta[u] = (double)200 / data.n_nodes;
+		
+	}//inferHyperParams
 
-	}
-
-	private void inferPriorWords(CascadeData data, int n_features) {
-		// TODO Auto-generated method stub
-
+	private void inferPriorWords(CascadeData data) {
+		this.C=new double[data.n_words];
+		Arrays.fill(C,1.0);
+		this.D=new double[data.n_words];
+        Arrays.fill(D,1.0);
 	}
 
 	private void inferPriorRates(CascadeData data) {
-		// TODO Auto-generated method stub
-
+	    this.a=2;
+        this.b=2;
 	}
 
 	private double[][] sampleA(Model model, CascadeData data,
 			GibbsSamplerState curr_state, double[][] F_curr,Counters counters) {
-		double[][] A_new = new double[data.n_nodes][model.n_features];
-
-		return A_new;
+		//double[][] A_new = new double[data.n_nodes][model.n_features];
+		//return A_new;
+	    return model.getA();
 	}//sampleA
 
 	private double[][] sampleS(Model model, CascadeData data,
 			GibbsSamplerState curr_state, double[][] F_curr,Counters counters) {
-		double[][] S_new = new double[data.n_nodes][model.n_features];
-
-		return S_new;
+//		double[][] S_new = new double[data.n_nodes][model.n_features];
+//		return S_new;
+	    return model.getS();
 
 	}//sampleS
 
 	private double[][] samplePhi(Model model, CascadeData data,
 			GibbsSamplerState curr_state, double[][] F_curr,Counters counters) {
-		double[][] Phi_new = new double[data.n_words][model.n_features];
-
-		return Phi_new;
+//		double[][] Phi_new = new double[data.n_words][model.n_features];
+//		return Phi_new;
+	    return model.getPhi();
 
 	}//samplePhi
 
@@ -283,6 +313,8 @@ public class GibbsSampler {
         
         List<CascadeEvent> cascadeEvents=data.getCascadeEvents(c);
         List<WordOccurrence> cascadeContent=data.getCascadeContent(c);
+       
+        
         int n_events_cascade=cascadeEvents.size();
     
         double F_c[]=model.computeF(cascadeContent);
@@ -354,19 +386,26 @@ public class GibbsSampler {
             for(int e=0;e<n_events_cascade;e++){
                 CascadeEvent ce=cascadeEvents.get(e);
                 int u=ce.node;
-             
+                double t_u=ce.timestamp;
                 int old_influencer=Y.get(c,u);
                 m_v[old_influencer]=Math.max(m_v[old_influencer]-1,0);
  
                 if(e>0){ // skip first activation
                     
-                    //the number of previous events is (e-1)
+                    //the number of previous events is (e-1) and they go from 0 to e
                     double logProbInfluencers[]= new double[e];
+                   // Arrays.fill(logProbInfluencers, -Double.MAX_VALUE);
                     for(int e1=0;e1<e;e1++){
                         CascadeEvent e_prime=cascadeEvents.get(e1);
-                        int v=e_prime.node;
-                        logProbInfluencers[e1]=(A[v][k_c]/sum_A)+Math.log(m_v[v]+Beta[v]);
+                        int v=e_prime.node;      
+                        double t_v=e_prime.timestamp;
+                        //if(t_v<t_u)// skip if t_v==t_u because delta goes to zero
+                            logProbInfluencers[e1]=(A[v][k_c]/sum_A)+Math.log(m_v[v]+Beta[v]);
+                       /* else{ 
+                            break;
+                        }*/
                     }// for each previous event   
+                    
                     
                     multinomial=new Multinomial(Weka_Utils.logs2probs(logProbInfluencers));
                    
