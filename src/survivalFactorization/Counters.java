@@ -74,6 +74,8 @@ public class Counters {
 	 * Update counters 
 	 */
 	public void update(CascadeData data, Model model){
+		//reset counters
+	    init();
 		
 	    double A[][]=model.getA();
 	    double S[][]=model.getS();

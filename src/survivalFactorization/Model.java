@@ -115,11 +115,13 @@ public class Model implements Serializable{
                 for(int k=0;k<n_features;k++){
                     secondComponent[k]+=S[u][k]*(t_u*counters.A_c_u_k[c].get(u, k)-counters.tilde_A_c_u_k[c].get(u,k));
                    
-                    double a=counters.A_c_u_k[c].get(u,k)-A[u][k];
-                    if(a>0)
-                        thirdComponent[k]+=Math.log(counters.A_c_u_k[c].get(u,k)-A[u][k]);
-                    else
-                        throw new RuntimeException(""+counters.A_c_u_k[c].get(u,k)+"\t"+A[u][k]);
+                    if(e>0){
+                        double a=counters.A_c_u_k[c].get(u,k)-A[u][k];
+                        if(a>0)
+                            thirdComponent[k]+=Math.log(counters.A_c_u_k[c].get(u,k)-A[u][k]);
+                        else
+                            throw new RuntimeException(""+counters.A_c_u_k[c].get(u,k)+"\t"+A[u][k]);
+                    }
                 }//for each k
               
 		    }// for each event

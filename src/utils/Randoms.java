@@ -187,7 +187,7 @@ public class Randoms extends java.util.Random {
     return x;
   }
 
-  
+  // alpha=shape beta=scale
   /** Return a random double drawn from a Gamma distribution with mean alpha*beta and variance alpha*beta^2. */
   public synchronized double nextGamma(double alpha, double beta) {
     return nextGamma(alpha,beta,0);

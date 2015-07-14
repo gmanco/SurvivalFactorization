@@ -15,6 +15,9 @@ import data.WordOccurrence;
 
 public class GibbsSampler {
 
+    
+    static double DEFAULT_SHAPE=1.0;
+    static double DEFAULT_SCALE=1.0;
 	double a;
 	double b;
 	double[] C; // n_words
@@ -23,6 +26,8 @@ public class GibbsSampler {
 	double[] Beta; // n_users
 	SamplerSettings settings;
 
+	boolean debug=true;
+	
 	public GibbsSampler(SamplerSettings settings) {
 		this.settings = settings;
 	}
@@ -73,7 +78,20 @@ public class GibbsSampler {
 			GibbsSamplerState next_state = sampleNextState(model, data,
 					curr_state,counters);
 			curr_state = next_state;
-
+			
+			
+			if(debug){
+			    /*
+			     * Print current state
+			     */
+			    try {
+                    curr_state.printSummaryStatus(data,settings.curr_state_log);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+			}
+			
+			
 			double[][] F_curr = computeF(model, data);
 
 			long tic=System.currentTimeMillis();
@@ -151,26 +169,37 @@ public class GibbsSampler {
 		int[] Z = curr_state.Z;
 		SparseIntMatrix2D Y = curr_state.Y;
 
+		/*
+		 * SAMPLE Y
+		 */
 		long tic=System.currentTimeMillis();
 		System.out.print("Sampling Y...");
 		SparseIntMatrix2D Y_new = sampleY(model, data, Y, Z, M_v);
 		long toc=(System.currentTimeMillis()-tic)/1000;
 		System.out.println(" Done ("+toc+" secs)");
 		
+		/*
+		 * SAMPLE Z
+		 */
 		tic=System.currentTimeMillis();
 		System.out.print("Sampling Z...");
 		int[] Z_new = sampleZ(model, data, Y_new, Z, M_k,counters);
 		toc=(System.currentTimeMillis()-tic)/1000;
 	    System.out.println(" Done ("+toc+" secs)");
 		
+	    /*
+	     * Update the state
+	     */
 	    next_state.update(data, Z_new, Y_new);
 
 		return next_state;
 
 	}//sampleNextState
 
+	/*
+	 * This method initializes hyper-parameters
+	 */
 	protected void inferHyperParams(CascadeData data, int n_features) {
-		
 		
 		inferPriorRates(data);
 
@@ -189,14 +218,14 @@ public class GibbsSampler {
 
 	private void inferPriorWords(CascadeData data) {
 		this.C=new double[data.n_words];
-		Arrays.fill(C,1.0);
+		Arrays.fill(C,DEFAULT_SCALE);
 		this.D=new double[data.n_words];
-        Arrays.fill(D,1.0);
+        Arrays.fill(D,DEFAULT_SCALE);
 	}
 
 	private void inferPriorRates(CascadeData data) {
-	    this.a=2;
-        this.b=2;
+	    this.a=DEFAULT_SHAPE;
+        this.b=DEFAULT_SCALE;
 	}
 
 	private double[][] sampleA(Model model, CascadeData data,
@@ -383,29 +412,36 @@ public class GibbsSampler {
             // get the active component for cascade c
             int k_c=z[c];
            
+            // loop on events
             for(int e=0;e<n_events_cascade;e++){
                 CascadeEvent ce=cascadeEvents.get(e);
                 int u=ce.node;
                 double t_u=ce.timestamp;
+                
+                /*
+                 * Remove the old influencer from counters
+                 */
                 int old_influencer=Y.get(c,u);
                 m_v[old_influencer]=Math.max(m_v[old_influencer]-1,0);
  
+            
                 if(e>0){ // skip first activation
                     
                     //the number of previous events is (e-1) and they go from 0 to e
                     double logProbInfluencers[]= new double[e];
-                   // Arrays.fill(logProbInfluencers, -Double.MAX_VALUE);
+                    
+                    //loop on previous events
                     for(int e1=0;e1<e;e1++){
                         CascadeEvent e_prime=cascadeEvents.get(e1);
                         int v=e_prime.node;      
                         double t_v=e_prime.timestamp;
-                        //if(t_v<t_u)// skip if t_v==t_u because delta goes to zero
+                        if(m_v[v]+Beta[v]>0)
                             logProbInfluencers[e1]=(A[v][k_c]/sum_A)+Math.log(m_v[v]+Beta[v]);
-                       /* else{ 
-                            break;
-                        }*/
+                        else
+                            throw new RuntimeException();
                     }// for each previous event   
                     
+                   
                     
                     multinomial=new Multinomial(Weka_Utils.logs2probs(logProbInfluencers));
                    
@@ -433,4 +469,5 @@ public class GibbsSampler {
         return Y_new;
 	}//sampleY
 
+   
 }//GibbsSampler

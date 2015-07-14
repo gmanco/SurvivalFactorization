@@ -7,7 +7,8 @@ public class SamplerSettings {
 	public int burnin=10;
 	public int llk_interval=5;
 	public boolean compute_llk=true;
-    
+    public String curr_state_log="resources/curr_state_info";
+	
 	public static SamplerSettings getDefaultSettings(){
 	    SamplerSettings s=new SamplerSettings();
 	    return s;

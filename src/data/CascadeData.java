@@ -92,9 +92,12 @@ public class CascadeData {
         
         
         public void getInfo(){
+            System.out.println("*** Statistics cascade data ****");
             System.out.format("Number of nodes: %d\n",n_nodes);
             System.out.format("Number of cascades %d\n",n_cascades);
             System.out.format("Number of words %d\n",n_words);
+            System.out.format("T_max %f\n",t_max);
+            System.out.println("*********************************");
         }//getInfo        
                 
         
@@ -132,7 +135,9 @@ public class CascadeData {
          * Read Content file
          */
 		private void processContentFile(String file_content) {
-			try{
+			System.out.print("Reading cascade content file from "+file_content+" ...");
+		    long tic=System.currentTimeMillis();
+		    try{
 			    wordSet=new TreeSet<Integer>();
 			    
 			    //read dimensions    
@@ -179,6 +184,8 @@ public class CascadeData {
 			}catch(Exception e){
 			    e.printStackTrace();
 			}
+		    long time=(System.currentTimeMillis()-tic)/1000;
+            System.out.print(" Done ("+time+" secs)\n");
 			
 		}//processContentFile
 
@@ -187,6 +194,9 @@ public class CascadeData {
 		 * Read event file
 		 */
 		private void processEventFile(String file_events) {
+		   
+		    System.out.print("Reading event file from "+file_events +" ... ");
+		    long tic=System.currentTimeMillis();
 		    try{
 			
 		        this.nodeSet=new TreeSet<Integer>();
@@ -257,6 +267,8 @@ public class CascadeData {
     		    }catch(Exception e ){
     		        e.printStackTrace();
     		    }
+		    long time=(System.currentTimeMillis()-tic)/1000;
+		    System.out.print(" Done ("+time+" secs)\n");
 		}//processEventFile
 
       public static void main(String[] args) throws Exception{

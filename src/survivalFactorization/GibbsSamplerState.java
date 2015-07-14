@@ -1,5 +1,7 @@
 package survivalFactorization;
 
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.List;
 
 import utils.Multinomial;
@@ -13,6 +15,8 @@ import data.WordOccurrence;
 
 public class GibbsSamplerState {
 
+    static double MIN_DELTA=1.0;
+    
 	protected int[] M_k;
 	protected int[] M_v;
 	protected int[] Z;
@@ -82,8 +86,8 @@ public class GibbsSamplerState {
     				// time gap between activations
     				double delta_uv = t_u - t_v;
     				if(delta_uv==0){
-    				    System.err.println("Delta is zero");
-    				    delta_uv=Double.MIN_VALUE;
+    				   // System.err.println("Delta is zero");
+    				    delta_uv=MIN_DELTA;;
     				}
     				// update counters
     				N_k_u_v[k].set(u, v, N_k_u_v[k].get(u, v) + 1);
@@ -124,4 +128,76 @@ public class GibbsSamplerState {
 		this.M_v = new int[n_nodes];
 	}//resetCounters
 
+	public void printSummaryStatus(CascadeData data,String file) throws Exception{
+	    PrintWriter pw=new PrintWriter(new FileWriter(file));
+	    pw.println(" SUMMARY OF THE CURRENT STATE");
+	    pw.println();
+	    printZ(Z, data,pw);
+	    printMk(pw);
+	    printY(Y, data,pw);
+	    printMv(pw);
+	    pw.flush();
+	    pw.close();
+	}
+	 
+    private void printZ(int Z[],CascadeData data,PrintWriter pw){
+        pw.println("****** Z *********");
+        int n_cascades=data.n_cascades;
+        pw.println("CascadeId \t Z");
+        for(int c=0;c<n_cascades;c++){
+           pw.println(""+c+"\t"+Z[c]);
+        }//for each c   
+        pw.println("********************");
+    }//printZ
+    
+    
+    private void printY(SparseIntMatrix2D Y, CascadeData data,PrintWriter pw){
+        
+        int n_cascades=data.n_cascades;
+        pw.println("****************** Y ******************************************");
+        pw.println("Cascade \t Node \t Timestamp \t NodeInfluencer \t TimestampInfluencer \t Delta");
+
+        for(int c=0;c<n_cascades;c++){
+            List<CascadeEvent> cascadeEvents=data.getCascadeEvents(c);
+            int n_events_cascade=cascadeEvents.size();
+        
+            for(int e=0;e<n_events_cascade;e++){
+                CascadeEvent ce=cascadeEvents.get(e);
+                int u=ce.node;
+                double t_u=ce.timestamp;
+                if(e>0){
+                    int v=Y.get(c,u);
+                    double t_v=data.getActivationTimestamp(v, c);
+                    double delta=t_u-t_v;
+                    pw.format("%d \t %d \t %.3f \t %d \t %.3f \t %.3f %n", c,u,t_u,v,t_v,delta);
+                }
+            
+            }// for each event
+        }//for each c
+        pw.println("****************************************************************");
+        pw.println();
+    }//printY
+    
+    private void printMv(PrintWriter pw){
+        pw.println();
+        pw.println("***********************");
+        pw.println("NodeId\t CntInfluencer");
+        for(int u=0;u<M_v.length;u++)
+            pw.println(""+u+"\t"+M_v[u]);
+        pw.println("***********************");
+    }
+    
+    
+    private void printMk(PrintWriter pw){
+        pw.println();
+        pw.println("***********************");
+        pw.println("Feature\t Cnt");
+        for(int k=0;k<M_k.length;k++)
+            pw.println(""+k+"\t"+M_k[k]);
+        pw.println("***********************");
+    }
+    
+    
+    
+    
 }//GibbsSamplerState
