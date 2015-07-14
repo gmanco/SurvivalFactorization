@@ -147,6 +147,22 @@ public class GibbsSamplerState {
 		}//for each cascade
 		
 	}//update
+	
+	protected void updateGamma(CascadeData data, double[][] F_curr,
+			Counters counters) {
+		// loop on cascade
+		for (int c = 0; c < n_cascades; c++) {
+
+			// factor associated with cascade c
+			int k_c = Z[c];
+
+			// update Gamma_k and tilde_Gamma_k
+			Gamma_k[k_c] += F_curr[c][k_c] * counters.A_c_k[c][k_c];
+			tilde_Gamma_k[k_c] += F_curr[c][k_c] * counters.tilde_A_c_k[c][k_c];
+
+		}// for each cascade
+
+	}// updateGamma
 
 	public void randomInitZ(double[] p) {
 		Multinomial m = new Multinomial(p);

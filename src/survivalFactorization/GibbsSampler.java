@@ -81,19 +81,31 @@ public class GibbsSampler {
 			
 			
 			
-
+			// FIXME: UPDATE ALL COUNTERS INVOLVING PHI
+			
+			
 			long tic=System.currentTimeMillis();
 	        System.out.print("Sampling A...");
 			double[][] A_new = sampleA(model, data, curr_state, F_curr,counters);
 			model.setA(A_new);
+			
+			// FIXME: UPDATE THE A COUNTERS
+			counters.updateA(data, model);
+			curr_state.updateGamma(data, F_curr, counters);
+
+			
 	        long toc=(System.currentTimeMillis()-tic)/1000;
 	        System.out.println(" Done ("+toc+" secs)");
 
-	            
+
 	        tic=System.currentTimeMillis();
             System.out.print("Sampling S...");
 			double[][] S_new = sampleS(model, data, curr_state, F_curr,counters);
 			model.setS(S_new);
+			
+			// FIXME: UPDATE THE S COUNTERS
+			counters.updateS(data, model);
+
 			toc=(System.currentTimeMillis()-tic)/1000;
             System.out.println(" Done ("+toc+" secs)");
 
@@ -303,14 +315,15 @@ public class GibbsSampler {
             
             shape_u=new double[n_features];
             scale_u=new double[n_features];
-            Arrays.fill(scale_u, model.hyperParams.b);
+// FIXME: this is useless            Arrays.fill(scale_u, model.hyperParams.b);
             
             
             /*
              * Compute shape
              */
             for(int k=0;k<n_features;k++){
-                shape_u[k]=curr_state.n_k_u_pre[u][k]+curr_state.Gamma_k[k]*data.t_max-curr_state.tilde_Gamma_k[k]+model.hyperParams.a; 
+                shape_u[k]=curr_state.n_k_u_pre[u][k]+model.hyperParams.a;
+                	scale_u[k]=curr_state.Gamma_k[k]*data.t_max-curr_state.tilde_Gamma_k[k] + model.hyperParams.b;
             }
             
           
@@ -324,12 +337,17 @@ public class GibbsSampler {
                 double t_u=data.getActivationTimestamp(u, c);
                 
                 double contribute_cascade=0.0;
+                double debugA = t_u*counters.A_c_u_k[c].get(u, k_c);
+                double debugB = counters.tilde_A_c_u_k[c].get(u, k_c);
+                double debugC = data.t_max*counters.A_c_k[c][k_c];
+                double debugD = counters.tilde_A_c_k[c][k_c];
+                double debugE = curr_state.Gamma_k[k_c]*data.t_max;
+                double debugF = curr_state.tilde_Gamma_k[k_c];
                 contribute_cascade=F_curr[c][k_c]*(
                                     t_u*counters.A_c_u_k[c].get(u, k_c)
                                     - counters.tilde_A_c_u_k[c].get(u, k_c)
-                                    - counters.A_c_k[c][k_c]
+                                    - data.t_max*counters.A_c_k[c][k_c]
                                     + counters.tilde_A_c_k[c][k_c]
-                                    + data.t_max*curr_state.Gamma_k[k_c]
                                     );
                
                                    

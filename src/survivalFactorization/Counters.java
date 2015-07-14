@@ -138,4 +138,106 @@ public class Counters {
 	    
 	}//update
 
+	/*
+	 * Update counters 
+	 */
+	public void updateA(CascadeData data, Model model){
+		//reset counters
+	    init();
+		
+	    double A[][]=model.getA();
+	    
+	    int n_nodes=model.n_nodes;
+	    int n_cascades=data.n_cascades;
+	    int n_features=model.n_features;
+	    
+	    // compute factor wise counters
+	    for(int k=0;k<n_features;k++)
+    	    for(int u=0;u<n_nodes;u++){
+    	            A_k[k]+=A[u][k];
+    	    }
+	    
+	    // compute cascade and event based counter
+	    for (int c = 0; c < n_cascades; c++){
+            List<CascadeEvent> cascadeEvents=data.getCascadeEvents(c);
+            int n_events_cascade=cascadeEvents.size();
+                  
+            // data structure for recursive definitions
+            double cumulative_A_v_k[]=new double[n_features];
+            double cumulative_tilde_A_v_k[]=new double[n_features];
+            
+            // loop over events
+            for(int e=0;e<n_events_cascade;e++){
+                CascadeEvent ce=cascadeEvents.get(e);
+                int u=ce.node;
+                double t=ce.timestamp;
+				for (int k = 0; k < n_features; k++) {
+					// log_A_c_k[c][k]+=Math.log(A[u][k]);
+					A_c_k[c][k] += A[u][k];
+					tilde_A_c_k[c][k] += A[u][k] * t;
+
+					cumulative_A_v_k[k] += A[u][k];
+					cumulative_tilde_A_v_k[k] += A[u][k] * t;
+
+					A_c_u_k[c].set(u, k, cumulative_A_v_k[k]);
+					tilde_A_c_u_k[c].set(u, k, cumulative_tilde_A_v_k[k]);
+
+				}// for each k
+			}//
+	    
+	    }//for each cascade
+	    
+	    
+	}//update
+	
+	/*
+	 * Update counters 
+	 */
+	public void updateS(CascadeData data, Model model){
+		//reset counters
+	    init();
+		
+	    double S[][]=model.getS();
+	    
+	    int n_nodes=model.n_nodes;
+	    int n_cascades=data.n_cascades;
+	    int n_features=model.n_features;
+	    
+	    // compute factor wise counters
+	    for(int k=0;k<n_features;k++)
+    	    for(int u=0;u<n_nodes;u++){
+    	            S_k[k]+=S[u][k];
+    	    }
+	    
+	    // compute cascade and event based counter
+	    for (int c = 0; c < n_cascades; c++){
+            List<CascadeEvent> cascadeEvents=data.getCascadeEvents(c);
+            int n_events_cascade=cascadeEvents.size();
+                  
+            // data structure for recursive definitions
+            double cumulative_S_v_k[]=new double[n_features];
+            double cumulative_tilde_S_v_k[]=new double[n_features];
+            
+            // loop over events
+            for(int e=0;e<n_events_cascade;e++){
+                CascadeEvent ce=cascadeEvents.get(e);
+                int u=ce.node;
+                double t=ce.timestamp;
+				for (int k = 0; k < n_features; k++) {
+					S_c_k[c][k] += S[u][k];
+					// log_S_c_k[c][k]+=Math.log(S[u][k]);
+					tilde_S_c_k[c][k] += S[u][k] * t;
+
+					cumulative_S_v_k[k] += S[u][k];
+					cumulative_tilde_S_v_k[k] += S[u][k] * t;
+
+					S_c_u_k[c].set(u, k, cumulative_S_v_k[k]);
+					tilde_S_c_u_k[c].set(u, k, cumulative_tilde_S_v_k[k]);
+				}// for each k
+			}//
+	    
+	    }//for each cascade
+	    
+	    
+	}//update
 }//Counters
