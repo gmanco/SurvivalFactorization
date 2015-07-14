@@ -251,9 +251,9 @@ public class GibbsSampler {
 		for(int u=0;u<n_nodes;u++){
 		    
 		    double shape_u[]=new double[n_features];
-		    double scale_u[]=new double[n_features];
+		    double rate_u[]=new double[n_features];
 		    Arrays.fill(shape_u, model.hyperParams.a);
-		    Arrays.fill(scale_u, model.hyperParams.b);
+		    Arrays.fill(rate_u, model.hyperParams.b);
 		    
 		    
 		    /*
@@ -264,7 +264,7 @@ public class GibbsSampler {
 		    }
 		    
 		    /*
-		     * Compute scale
+		     * Compute rate
 		     */
 		    Set<Integer> cascades_u=data.getCascadeIdsForNode(u);
 		    for(int c:cascades_u){
@@ -283,13 +283,13 @@ public class GibbsSampler {
 		                           );
 		                         
 		        
-		        scale_u[k_c]+=contribute_cascade;
+		        rate_u[k_c]+=contribute_cascade;
 		    }//for each cascade on which the user is active
 		    
 		    
 		   // sample from gamma
 		   for(int k=0;k<n_features;k++){
-		       A_new[u][k]=randomGenerator.nextGamma(shape_u[k],scale_u[k]);
+		       A_new[u][k]=randomGenerator.nextGamma(shape_u[k],1.0/rate_u[k]);
 		   }
 		}// for each node
 		
@@ -307,23 +307,22 @@ public class GibbsSampler {
         int n_features=model.n_features;
         
         double shape_u[]=null;
-        double scale_u[]=null;
+        double rate_u[]=null;
+ 
         Set<Integer> cascades_u=null;
         
         // loop on the nodes
         for(int u=0;u<n_nodes;u++){
             
             shape_u=new double[n_features];
-            scale_u=new double[n_features];
-// FIXME: this is useless            Arrays.fill(scale_u, model.hyperParams.b);
-            
+            rate_u=new double[n_features];
             
             /*
-             * Compute shape
+             * Compute rate
              */
             for(int k=0;k<n_features;k++){
                 shape_u[k]=curr_state.n_k_u_pre[u][k]+model.hyperParams.a;
-                	scale_u[k]=curr_state.Gamma_k[k]*data.t_max-curr_state.tilde_Gamma_k[k] + model.hyperParams.b;
+                	rate_u[k]=curr_state.Gamma_k[k]*data.t_max-curr_state.tilde_Gamma_k[k] + model.hyperParams.b;
             }
             
           
@@ -346,13 +345,13 @@ public class GibbsSampler {
                                     );
                
                                    
-                scale_u[k_c]+=contribute_cascade;
+                rate_u[k_c]+=contribute_cascade;
             }//for each cascade on which the user is active
             
             
            // sample from gamma
            for(int k=0;k<n_features;k++){
-               S_new[u][k]=randomGenerator.nextGamma(shape_u[k],scale_u[k]);
+               S_new[u][k]=randomGenerator.nextGamma(shape_u[k],1.0/rate_u[k]);
            }
            
         }// for each node
