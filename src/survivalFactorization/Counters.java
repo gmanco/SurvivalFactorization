@@ -13,7 +13,6 @@ public class Counters {
     public double[] S_k;
     public double[] A_k;
     public double[] Phi_k;
-  
 
 	// cascade based counter
     public double[][] S_c_k;
@@ -46,7 +45,6 @@ public class Counters {
 	    S_k=new double[n_features];
 	    A_k=new double[n_features];
 	    Phi_k=new double[n_features];
-	
 	    
 	    S_c_k = new double[n_cascades][n_features];
         A_c_k = new double[n_cascades][n_features];
@@ -114,30 +112,26 @@ public class Counters {
                 CascadeEvent ce=cascadeEvents.get(e);
                 int u=ce.node;
                 double t=ce.timestamp;
-                for(int k=0;k<n_features;k++){
-                    if(e>0){ //skip first activation
-                        S_c_k[c][k]+=S[u][k];
-                       // log_S_c_k[c][k]+=Math.log(S[u][k]);
-                        tilde_S_c_k[c][k]+=S[u][k]*t;
-                    }
-                    //log_A_c_k[c][k]+=Math.log(A[u][k]);
-                    A_c_k[c][k]+=A[u][k];
-                    tilde_A_c_k[c][k]+=A[u][k]*t;
-                    
-                    cumulative_S_v_k[k]+=S[u][k];
-                    cumulative_tilde_S_v_k[k]+=S[u][k]*t;
-                    cumulative_A_v_k[k]+=A[u][k];
-                    cumulative_tilde_A_v_k[k]+=A[u][k]*t;
-                    
-                    S_c_u_k[c].set(u,k,cumulative_S_v_k[k]);
-                    tilde_S_c_u_k[c].set(u, k, cumulative_tilde_S_v_k[k]);
-                    A_c_u_k[c].set(u,k,cumulative_A_v_k[k]);
-                    tilde_A_c_u_k[c].set(u,k,cumulative_tilde_A_v_k[k]);
-                    
-                }// for each k
-            }//for each event
-           
-            
+				for (int k = 0; k < n_features; k++) {
+					S_c_k[c][k] += S[u][k];
+					// log_S_c_k[c][k]+=Math.log(S[u][k]);
+					tilde_S_c_k[c][k] += S[u][k] * t;
+					// log_A_c_k[c][k]+=Math.log(A[u][k]);
+					A_c_k[c][k] += A[u][k];
+					tilde_A_c_k[c][k] += A[u][k] * t;
+
+					cumulative_S_v_k[k] += S[u][k];
+					cumulative_tilde_S_v_k[k] += S[u][k] * t;
+					cumulative_A_v_k[k] += A[u][k];
+					cumulative_tilde_A_v_k[k] += A[u][k] * t;
+
+					S_c_u_k[c].set(u, k, cumulative_S_v_k[k]);
+					tilde_S_c_u_k[c].set(u, k, cumulative_tilde_S_v_k[k]);
+					A_c_u_k[c].set(u, k, cumulative_A_v_k[k]);
+					tilde_A_c_u_k[c].set(u, k, cumulative_tilde_A_v_k[k]);
+
+				}// for each k
+			}//
 	    
 	    }//for each cascade
 	    
