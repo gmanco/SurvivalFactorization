@@ -270,7 +270,7 @@ public class GibbsSampler {
 		    }//for each cascade on which the user is active
 		    
 		    
-		    
+		   // sample from gamma
 		   for(int k=0;k<n_features;k++){
 		       A_new[u][k]=randomGenerator.nextGamma(shape_u[k],scale_u[k]);
 		   }
@@ -409,7 +409,7 @@ public class GibbsSampler {
             double t_u=ce.timestamp;
 
             for(int k=0;k<n_features;k++){
-               if(e>1){
+               if(e>0){
                    // id influencer
                    int v = (int) (Y.get(c, u));
                    secondComponent[k]+=Math.log(A[v][k]*S[u][k]);
