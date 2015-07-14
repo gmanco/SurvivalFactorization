@@ -2,6 +2,7 @@ package survivalFactorization;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import utils.Dirichlet;
 import utils.Multinomial;
@@ -233,18 +234,46 @@ public class GibbsSampler {
 		int n_nodes=data.n_nodes;
 		int n_features=model.n_features;
 		
+		
+		// loop on the nodes
 		for(int u=0;u<n_nodes;u++){
 		    
 		    double shape_u[]=new double[n_features];
 		    double scale_u[]=new double[n_features];
 		    
-		    for(int k=0;k<n_features;k++)
+		    /*
+		     * Compute shape
+		     */
+		    for(int k=0;k<n_features;k++){
 		        shape_u[k]=curr_state.n_k_u_post.get(u, k)+model.hyperParams.a; 
+		    }
+		    
+		    /*
+		     * Compute scale
+		     */
+		    Set<Integer> cascades_u=data.getCascadeIdsForNode(u);
+		    for(int c:cascades_u){
+		        int k_c=curr_state.Z[c];
+		        double t_u=data.getActivationTimestamp(u, c);
+		        
+		        double contribute_cascade=0.0;
+		        contribute_cascade=F_curr[c][k_c]*(
+		                           counters.S_k[k_c]*data.t_max 
+		                           +2*counters.S_c_k[c][k_c]*t_u
+		                           -counters.S_c_u_k[c].get(u, k_c)*t_u
+		                           -counters.tilde_S_c_k[c][k_c]
+		                           +counters.tilde_S_c_u_k[c].get(u,k_c)
+		                           +counters.S_k[k_c]*data.t_max
+		                           - counters.S_c_k[c][k_c]*data.t_max) + model.hyperParams.b;
+		                           
+		        scale_u[k_c]+=contribute_cascade;
+		    }//for each cascade on which the user is active
 		    
 		    
 		    
-		   for(int k=0;k<n_features;k++)
+		   for(int k=0;k<n_features;k++){
 		       A_new[u][k]=randomGenerator.nextGamma(shape_u[k],scale_u[k]);
+		   }
 		}// for each node
 		
 		
