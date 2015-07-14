@@ -26,7 +26,6 @@ public class GibbsSampler {
 	double[] Beta; // n_users
 	SamplerSettings settings;
 
-	boolean debug=true;
 	
 	public GibbsSampler(SamplerSettings settings) {
 		this.settings = settings;
@@ -80,18 +79,6 @@ public class GibbsSampler {
 			curr_state = next_state;
 			
 			
-			if(debug){
-			    /*
-			     * Print current state
-			     */
-			    try {
-                    curr_state.printSummaryStatus(data,settings.curr_state_log);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-			}
-			
-			
 			double[][] F_curr = computeF(model, data);
 
 			long tic=System.currentTimeMillis();
@@ -134,6 +121,17 @@ public class GibbsSampler {
 				System.out
 						.format("Iteration %d completed [elapsed time: %d s (llk: %.5f )].\n",
 								epoch, iteration_time, llk);
+				
+				 /*
+                 * Print current state
+                 */
+				if(settings.curr_state_log!=null)
+                    try {
+                        curr_state.printSummaryStatus(data,settings.curr_state_log);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                
 			} else
 				System.out.format(
 						"Iteration %d completed [elapsed time: %d s].\n",

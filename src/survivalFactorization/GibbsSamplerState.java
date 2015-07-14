@@ -136,6 +136,8 @@ public class GibbsSamplerState {
 	    printMk(pw);
 	    printY(Y, data,pw);
 	    printMv(pw);
+	    pw.println();
+	    pw.println("===========================================================");
 	    pw.flush();
 	    pw.close();
 	}
