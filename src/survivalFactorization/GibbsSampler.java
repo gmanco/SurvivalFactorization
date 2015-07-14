@@ -337,12 +337,7 @@ public class GibbsSampler {
                 double t_u=data.getActivationTimestamp(u, c);
                 
                 double contribute_cascade=0.0;
-                double debugA = t_u*counters.A_c_u_k[c].get(u, k_c);
-                double debugB = counters.tilde_A_c_u_k[c].get(u, k_c);
-                double debugC = data.t_max*counters.A_c_k[c][k_c];
-                double debugD = counters.tilde_A_c_k[c][k_c];
-                double debugE = curr_state.Gamma_k[k_c]*data.t_max;
-                double debugF = curr_state.tilde_Gamma_k[k_c];
+            
                 contribute_cascade=F_curr[c][k_c]*(
                                     t_u*counters.A_c_u_k[c].get(u, k_c)
                                     - counters.tilde_A_c_u_k[c].get(u, k_c)
