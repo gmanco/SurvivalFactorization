@@ -270,7 +270,7 @@ public class GibbsSampler {
 		                           -counters.S_k[k_c]*t_u
 		                           );
 		                         
-		        int a=10;
+		        
 		        scale_u[k_c]+=contribute_cascade;
 		    }//for each cascade on which the user is active
 		    
@@ -300,12 +300,14 @@ public class GibbsSampler {
             
             double shape_u[]=new double[n_features];
             double scale_u[]=new double[n_features];
+            Arrays.fill(scale_u, model.hyperParams.b);
+            
             
             /*
              * Compute shape
              */
             for(int k=0;k<n_features;k++){
-                shape_u[k]=curr_state.n_k_u_pre.get(u, k)+model.hyperParams.a; 
+                shape_u[k]=curr_state.n_k_u_pre.get(u, k)+curr_state.Gamma_k[k]*data.t_max-curr_state.tilde_Gamma_k[k]+model.hyperParams.a; 
             }
             
             /*
@@ -318,13 +320,15 @@ public class GibbsSampler {
                 
                 double contribute_cascade=0.0;
                 contribute_cascade=F_curr[c][k_c]*(
-                                    t_u*counters.A_c_u_k[c].get(u, k_c)-counters.tilde_A_c_u_k[c].get(u, k_c)
-                                    -counters.A_c_k[c][k_c]+ counters.tilde_A_c_k[c][k_c]
-                                    +data.t_max*curr_state.Gamma_k[k_c]
-                                );
+                                    t_u*counters.A_c_u_k[c].get(u, k_c)
+                                    - counters.tilde_A_c_u_k[c].get(u, k_c)
+                                    - counters.A_c_k[c][k_c]
+                                    + counters.tilde_A_c_k[c][k_c]
+                                    + data.t_max*curr_state.Gamma_k[k_c]
+                                    );
                
                                    
-                scale_u[k_c]=0.0;
+                scale_u[k_c]+=contribute_cascade;
             }//for each cascade on which the user is active
             
             
@@ -333,7 +337,7 @@ public class GibbsSampler {
                S_new[u][k]=randomGenerator.nextGamma(shape_u[k],scale_u[k]);
            }
            
-        }
+        }// for each node
 		
 		return S_new;
 
