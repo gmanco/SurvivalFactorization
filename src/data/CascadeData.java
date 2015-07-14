@@ -174,19 +174,16 @@ public class CascadeData {
                 line=br.readLine();
                 line=br.readLine();//skip header
              
-                List<WordOccurrence>contentTmp;
                 while(line!=null){
                     tokens=line.split("\t");
                     int word=Integer.parseInt(tokens[0])-1;
                     int cascadeId=Integer.parseInt(tokens[1])-1;
                     int cnt=Integer.parseInt(tokens[2]);
                    
-                    contentTmp=cascadeContent[cascadeId];
-                    if(contentTmp==null){
-                        contentTmp=new ArrayList<WordOccurrence>();
-                        cascadeContent[cascadeId]=contentTmp;
+                    if(cascadeContent[cascadeId]==null){
+                        cascadeContent[cascadeId]=new ArrayList<WordOccurrence>();
                     }
-                    contentTmp.add(new WordOccurrence(word, cnt));
+                    cascadeContent[cascadeId].add(new WordOccurrence(word, cnt));
                     
                    
                     line=br.readLine();
@@ -243,8 +240,6 @@ public class CascadeData {
     	         line=br.readLine();
     	         line=br.readLine();//skip header
     	         
-    	         Set<Integer>tmp_cascadeForNode;
-    	         List<CascadeEvent>tmp;
     	         while(line!=null){
     	                tokens=line.split("\t");
     	                int nodeId=Integer.parseInt(tokens[0]) -1 ;
@@ -255,19 +250,15 @@ public class CascadeData {
     	                cascadeEvents.set(nodeId, cascadeId, timestamp);
     	                
     	                // add event to CascadeEventsSrt
-    	                tmp=cascadeEventsSrt[cascadeId];
-    	                if(tmp==null){
-    	                    tmp=new ArrayList<CascadeEvent>();
-    	                    cascadeEventsSrt[cascadeId]=tmp;
+    	                if(cascadeEventsSrt[cascadeId]==null){
+    	                    cascadeEventsSrt[cascadeId]=new ArrayList<CascadeEvent>();
     	                }
-    	                tmp.add(new CascadeEvent(nodeId,timestamp));
+    	                cascadeEventsSrt[cascadeId].add(new CascadeEvent(nodeId,timestamp));
     	              
-    	                tmp_cascadeForNode=cascadesForNode[nodeId];
-    	                if(tmp_cascadeForNode==null){
-    	                    tmp_cascadeForNode=new HashSet<Integer>();
-    	                    cascadesForNode[nodeId]=tmp_cascadeForNode;
+    	                if(cascadesForNode[nodeId]==null){
+    	                    cascadesForNode[nodeId]=new HashSet<Integer>();
     	                }
-    	                tmp_cascadeForNode.add(cascadeId);
+    	                cascadesForNode[nodeId].add(cascadeId);
     	                	                
     	                //check t_max
     	                if(this.t_max<timestamp){
@@ -281,8 +272,7 @@ public class CascadeData {
     	         
     	         //sort events within cascades
     	         for(int cascadeId:cascadeSet){
-                     tmp=cascadeEventsSrt[cascadeId];
-                     Collections.sort(tmp);        
+                     Collections.sort(cascadeEventsSrt[cascadeId]);        
                  }//sort 
     	         
     		    }catch(Exception e ){

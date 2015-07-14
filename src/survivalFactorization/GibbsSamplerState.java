@@ -114,8 +114,8 @@ public class GibbsSamplerState {
     				// time gap between activations
     				double delta_uv = t_u - t_v;
     				if(delta_uv==0){
-    				   // System.err.println("Delta is zero");
-    				    delta_uv=MIN_DELTA;;
+    				    //System.err.println("Delta is zero");
+    				    delta_uv=MIN_DELTA;
     				}
     				// update counters
     				N_k_u_v[k_c].set(u, v, N_k_u_v[k_c].get(u, v) + 1);

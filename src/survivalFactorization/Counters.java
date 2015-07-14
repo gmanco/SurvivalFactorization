@@ -84,7 +84,7 @@ public class Counters {
 	    int n_nodes=model.n_nodes;
 	    int n_cascades=data.n_cascades;
 	    int n_features=model.n_features;
-	    int n_words=model.n_words;
+	    int n_words=data.n_words;
 	    
 	    // compute factor wise counters
 	    for(int k=0;k<n_features;k++){
@@ -114,9 +114,7 @@ public class Counters {
                 double t=ce.timestamp;
 				for (int k = 0; k < n_features; k++) {
 					S_c_k[c][k] += S[u][k];
-					// log_S_c_k[c][k]+=Math.log(S[u][k]);
 					tilde_S_c_k[c][k] += S[u][k] * t;
-					// log_A_c_k[c][k]+=Math.log(A[u][k]);
 					A_c_k[c][k] += A[u][k];
 					tilde_A_c_k[c][k] += A[u][k] * t;
 
@@ -203,6 +201,8 @@ public class Counters {
 	 * Update counters 
 	 */
 	public void updateS(CascadeData data, Model model){
+	   
+	    //reset counters for S
 	    S_k=new double[n_features];
         S_c_k = new double[n_cascades][n_features];        
         tilde_S_c_k = new double[n_cascades][n_features];
@@ -214,11 +214,7 @@ public class Counters {
         }//for each cascade
 		
 	    double S[][]=model.getS();
-	    
-	    int n_nodes=model.n_nodes;
-	    int n_cascades=data.n_cascades;
-	    int n_features=model.n_features;
-	    
+	        
 	    // compute factor wise counters
 	    for(int k=0;k<n_features;k++)
     	    for(int u=0;u<n_nodes;u++){
@@ -241,7 +237,6 @@ public class Counters {
                 double t=ce.timestamp;
 				for (int k = 0; k < n_features; k++) {
 					S_c_k[c][k] += S[u][k];
-					// log_S_c_k[c][k]+=Math.log(S[u][k]);
 					tilde_S_c_k[c][k] += S[u][k] * t;
 
 					cumulative_S_v_k[k] += S[u][k];

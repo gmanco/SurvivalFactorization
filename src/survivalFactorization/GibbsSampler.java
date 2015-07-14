@@ -65,6 +65,8 @@ public class GibbsSampler {
 		
 		Counters counters=new Counters(n_cascades, n_nodes, n_features);
 		counters.update(data, model);
+		
+		
 		// Gibbs sampling
 		//
 		// Z is n_cascades x 1
@@ -79,17 +81,12 @@ public class GibbsSampler {
 					curr_state,F_curr,counters);
 			curr_state = next_state;
 			
-			
-			
-			// FIXME: UPDATE ALL COUNTERS INVOLVING PHI
-			
-			
+					
 			long tic=System.currentTimeMillis();
 	        System.out.print("Sampling A...");
 			double[][] A_new = sampleA(model, data, curr_state, F_curr,counters);
 			model.setA(A_new);
 			
-			// FIXME: UPDATE THE A COUNTERS
 			counters.updateA(data, model);
 			curr_state.updateGamma(data, F_curr, counters);
 
@@ -103,7 +100,6 @@ public class GibbsSampler {
 			double[][] S_new = sampleS(model, data, curr_state, F_curr,counters);
 			model.setS(S_new);
 			
-			// FIXME: UPDATE THE S COUNTERS
 			counters.updateS(data, model);
 
 			toc=(System.currentTimeMillis()-tic)/1000;
@@ -116,6 +112,9 @@ public class GibbsSampler {
 			toc=(System.currentTimeMillis()-tic)/1000;
             System.out.println(" Done ("+toc+" secs)");
 			
+            // FIXME: UPDATE ALL COUNTERS INVOLVING PHI
+
+            
             //now it's time to update counters
             counters.update(data, model);
             
@@ -322,7 +321,7 @@ public class GibbsSampler {
              */
             for(int k=0;k<n_features;k++){
                 shape_u[k]=curr_state.n_k_u_pre[u][k]+model.hyperParams.a;
-                	rate_u[k]=curr_state.Gamma_k[k]*data.t_max-curr_state.tilde_Gamma_k[k] + model.hyperParams.b;
+                rate_u[k]=curr_state.Gamma_k[k]*data.t_max-curr_state.tilde_Gamma_k[k] + model.hyperParams.b;
             }
             
           
@@ -356,6 +355,7 @@ public class GibbsSampler {
            
         }// for each node
 		
+        
 		return S_new;
 
 	}//sampleS
@@ -420,15 +420,16 @@ public class GibbsSampler {
 	    double Phi[][]=model.getPhi();
         
         double logProbContent[]=new double[n_features];
+        int contentLength=0;
         for(WordOccurrence wo:cascadeContent){
             int w=wo.word;
             int n_w_c=wo.cnt;
+            contentLength+=n_w_c;
             for(int k=0;k<n_features;k++){
                 logProbContent[k]+=n_w_c*Math.log(Phi[w][k]);
             }
         }//for each word
         
-        int contentLength=cascadeContent.size();
         for(int k=0;k<n_features;k++){
             logProbContent[k]-=contentLength*counters.Phi_k[k];
         }
@@ -483,7 +484,9 @@ public class GibbsSampler {
                if(e>0){
                    // id influencer
                    int v = (int) (Y.get(c, u));
-                   secondComponent[k]+=Math.log(A[v][k]*S[u][k]);
+                   if(A[v][k]*S[u][k]>0)
+                       secondComponent[k]+=Math.log(A[v][k]*S[u][k]);
+                   else throw new RuntimeException();
                }
                thirdComponent_B[k]+=A[u][k]*counters.tilde_S_c_u_k[c].get(u,k); 
                thirdComponent_D[k]+=A[u][k]*t_u*counters.S_c_u_k[c].get(u,k); 
@@ -520,7 +523,6 @@ public class GibbsSampler {
         
         SparseIntMatrix2D Y_new =new SparseIntMatrix2D(n_cascades,n_nodes);
         
-        double sum_A=0.0;
         Multinomial multinomial;
         for(int c=0;c<n_cascades;c++){
             List<CascadeEvent> cascadeEvents=data.getCascadeEvents(c);
@@ -546,7 +548,7 @@ public class GibbsSampler {
                     
                     //the number of previous events is (e-1) and they go from 0 to e
                     double probInfluencers[]= new double[e];
-//                    double sumOfProbs = 0;
+
 
 					// loop on previous events
 					for (int e1 = 0; e1 < e; e1++) {
@@ -560,7 +562,6 @@ public class GibbsSampler {
 									* (m_v[v] + Beta[v]);
 						else
 							throw new RuntimeException();
-						// sumOfProbs += probInfluencers[e1];
 					}// for each previous event
                     
                     multinomial=new Multinomial(probInfluencers);
@@ -577,8 +578,7 @@ public class GibbsSampler {
                     Y_new.set(c,u,v);
                 }// (e>0)
                 
-                //update the denominator with the contribute of the current node
-                sum_A+=A[u][k_c];
+              
             
             }//for each event
             
