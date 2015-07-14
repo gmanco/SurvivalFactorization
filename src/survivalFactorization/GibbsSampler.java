@@ -269,7 +269,8 @@ public class GibbsSampler {
 		                           -counters.S_c_k[c][k_c]*data.t_max
 		                           -counters.S_k[k_c]*t_u
 		                           );
-		                           
+		                         
+		        int a=10;
 		        scale_u[k_c]+=contribute_cascade;
 		    }//for each cascade on which the user is active
 		    
