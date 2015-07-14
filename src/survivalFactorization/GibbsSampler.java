@@ -297,6 +297,7 @@ public class GibbsSampler {
         double shape_u[]=null;
         double scale_u[]=null;
         Set<Integer> cascades_u=null;
+        
         // loop on the nodes
         for(int u=0;u<n_nodes;u++){
             
