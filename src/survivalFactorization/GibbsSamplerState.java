@@ -20,6 +20,9 @@ public class GibbsSamplerState {
 	protected int[] M_k;
 	protected int[] M_v;
 	protected int[] Z;
+	public double [] Gamma_k;
+	public double [] tilde_Gamma_k;
+	
 	protected SparseIntMatrix2D Y; //n_cascades x n_users
 
 	int n_nodes;
@@ -70,7 +73,7 @@ public class GibbsSamplerState {
 	 * this method updates the counters of the gibbs sampler state
 	 */
 	protected void update(CascadeData data, int[] z_new,
-	        SparseIntMatrix2D y_new) {
+	        SparseIntMatrix2D y_new,double[][]F_curr,Counters counters) {
 		
 	    // first of all: reset counters
 	    resetCounters();
@@ -80,7 +83,7 @@ public class GibbsSamplerState {
 		this.Y = y_new;
 
 		//loop on cascade
-		for (int c = 1; c < n_cascades; c++) {
+		for (int c = 0; c < n_cascades; c++) {
 		    
 		    // factor associated with cascade c
 			int k_c = Z[c];
@@ -135,6 +138,11 @@ public class GibbsSamplerState {
                 C_k_w[w][k_c] += n_w;
 			}//for each word in the cascade
 
+			
+			//update Gamma_k and tilde_Gamma_k
+			Gamma_k[k_c]+=F_curr[c][k_c]*counters.A_c_k[c][k_c];
+			tilde_Gamma_k[k_c]+=F_curr[c][k_c]*counters.tilde_A_c_k[c][k_c];
+			
 		}//for each cascade
 		
 	}//update
@@ -161,6 +169,8 @@ public class GibbsSamplerState {
 		this.C_k_w = new int[n_words][n_features];
 		this.M_k = new int[n_features];
 		this.M_v = new int[n_nodes];
+		this.Gamma_k=new double[n_features];
+		this.tilde_Gamma_k=new double[n_features];
 	}//resetCounters
 
 	/*

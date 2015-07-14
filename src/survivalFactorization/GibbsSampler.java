@@ -73,14 +73,14 @@ public class GibbsSampler {
 		for (int epoch = 0; epoch < n_iterations; epoch++) {
 			long t = System.currentTimeMillis();
 			
-			
+			double[][] F_curr = computeF(model, data);
 			
 			GibbsSamplerState next_state = sampleNextState(model, data,
-					curr_state,counters);
+					curr_state,F_curr,counters);
 			curr_state = next_state;
 			
 			
-			double[][] F_curr = computeF(model, data);
+			
 
 			long tic=System.currentTimeMillis();
 	        System.out.print("Sampling A...");
@@ -157,7 +157,7 @@ public class GibbsSampler {
 	}
 
 	private GibbsSamplerState sampleNextState(Model model, CascadeData data,
-			GibbsSamplerState curr_state,Counters counters) {
+			GibbsSamplerState curr_state,double[][]F_curr,Counters counters) {
 
 		GibbsSamplerState next_state = new GibbsSamplerState(data.n_nodes,
 				data.n_cascades, data.n_words, model.n_features);
@@ -189,7 +189,7 @@ public class GibbsSampler {
 	    /*
 	     * Update the state
 	     */
-	    next_state.update(data, Z_new, Y_new);
+	    next_state.update(data, Z_new, Y_new,F_curr,counters);
 
 		return next_state;
 
@@ -240,12 +240,15 @@ public class GibbsSampler {
 		    
 		    double shape_u[]=new double[n_features];
 		    double scale_u[]=new double[n_features];
+		    Arrays.fill(shape_u, model.hyperParams.a);
+		    Arrays.fill(scale_u, model.hyperParams.b);
+		    
 		    
 		    /*
 		     * Compute shape
 		     */
 		    for(int k=0;k<n_features;k++){
-		        shape_u[k]=curr_state.n_k_u_post.get(u, k)+model.hyperParams.a; 
+		        shape_u[k]+=curr_state.n_k_u_post.get(u, k); 
 		    }
 		    
 		    /*
@@ -257,14 +260,15 @@ public class GibbsSampler {
 		        double t_u=data.getActivationTimestamp(u, c);
 		        
 		        double contribute_cascade=0.0;
-		        contribute_cascade=F_curr[c][k_c]*(
-		                           counters.S_k[k_c]*data.t_max 
-		                           +2*counters.S_c_k[c][k_c]*t_u
-		                           -counters.S_c_u_k[c].get(u, k_c)*t_u
-		                           -counters.tilde_S_c_k[c][k_c]
-		                           +counters.tilde_S_c_u_k[c].get(u,k_c)
+		        contribute_cascade+=F_curr[c][k_c]*(
+		                           2*counters.S_c_k[c][k_c]*t_u 
+		                           - counters.S_c_u_k[c].get(u,k_c)*t_u
+		                           - counters.tilde_S_c_k[c][k_c]
+		                           +counters.S_c_u_k[c].get(u,k_c)
 		                           +counters.S_k[k_c]*data.t_max
-		                           - counters.S_c_k[c][k_c]*data.t_max) + model.hyperParams.b;
+		                           -counters.S_c_k[c][k_c]*data.t_max
+		                           -counters.S_k[k_c]*t_u
+		                           );
 		                           
 		        scale_u[k_c]+=contribute_cascade;
 		    }//for each cascade on which the user is active
@@ -283,9 +287,54 @@ public class GibbsSampler {
 
 	private double[][] sampleS(Model model, CascadeData data,
 			GibbsSamplerState curr_state, double[][] F_curr,Counters counters) {
-//		double[][] S_new = new double[data.n_nodes][model.n_features];
-//		return S_new;
-	    return model.getS();
+		
+	    double[][] S_new = new double[data.n_nodes][model.n_features];
+
+		int n_nodes=data.n_nodes;
+        int n_features=model.n_features;
+        
+        
+        // loop on the nodes
+        for(int u=0;u<n_nodes;u++){
+            
+            double shape_u[]=new double[n_features];
+            double scale_u[]=new double[n_features];
+            
+            /*
+             * Compute shape
+             */
+            for(int k=0;k<n_features;k++){
+                shape_u[k]=curr_state.n_k_u_pre.get(u, k)+model.hyperParams.a; 
+            }
+            
+            /*
+             * Compute scale
+             */
+            Set<Integer> cascades_u=data.getCascadeIdsForNode(u);
+            for(int c:cascades_u){
+                int k_c=curr_state.Z[c];
+                double t_u=data.getActivationTimestamp(u, c);
+                
+                double contribute_cascade=0.0;
+                contribute_cascade=F_curr[c][k_c]*(
+                                    t_u*counters.A_c_u_k[c].get(u, k_c)-counters.tilde_A_c_u_k[c].get(u, k_c)
+                                    -counters.A_c_k[c][k_c]+ counters.tilde_A_c_k[c][k_c]
+                                    +data.t_max*curr_state.Gamma_k[k_c]
+                                );
+               
+                                   
+                scale_u[k_c]=0.0;
+            }//for each cascade on which the user is active
+            
+            
+           // sample from gamma
+           for(int k=0;k<n_features;k++){
+               S_new[u][k]=randomGenerator.nextGamma(shape_u[k],scale_u[k]);
+           }
+           
+        }
+		
+		return S_new;
 
 	}//sampleS
 

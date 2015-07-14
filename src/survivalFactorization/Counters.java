@@ -13,6 +13,7 @@ public class Counters {
     public double[] S_k;
     public double[] A_k;
     public double[] Phi_k;
+  
 
 	// cascade based counter
     public double[][] S_c_k;
@@ -45,6 +46,7 @@ public class Counters {
 	    S_k=new double[n_features];
 	    A_k=new double[n_features];
 	    Phi_k=new double[n_features];
+	
 	    
 	    S_c_k = new double[n_cascades][n_features];
         A_c_k = new double[n_cascades][n_features];
@@ -133,7 +135,9 @@ public class Counters {
                     tilde_A_c_u_k[c].set(u,k,cumulative_tilde_A_v_k[k]);
                     
                 }// for each k
-            }//
+            }//for each event
+           
+            
 	    
 	    }//for each cascade
 	    
