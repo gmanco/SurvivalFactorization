@@ -433,6 +433,10 @@ public class GibbsSampler {
                         CascadeEvent e_prime=cascadeEvents.get(e1);
                         int v=e_prime.node;      
                         double t_v=e_prime.timestamp;
+                        if(t_u-t_v==0){
+                            // FIXME
+                        }
+                        
                         if(m_v[v]+Beta[v]>0)
                             logProbInfluencers[e1]=(A[v][k_c]/sum_A)+Math.log(m_v[v]+Beta[v]);
                         else
