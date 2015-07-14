@@ -426,26 +426,25 @@ public class GibbsSampler {
                 if(e>0){ // skip first activation
                     
                     //the number of previous events is (e-1) and they go from 0 to e
-                    double logProbInfluencers[]= new double[e];
+                    double probInfluencers[]= new double[e];
+//                    double sumOfProbs = 0;
+
+					// loop on previous events
+					for (int e1 = 0; e1 < e; e1++) {
+						CascadeEvent e_prime = cascadeEvents.get(e1);
+						int v = e_prime.node;
+						double t_v = e_prime.timestamp;
+						if (t_u - t_v == 0) {
+							probInfluencers[e1] = 0;
+						} else if (m_v[v] + Beta[v] > 0)
+							probInfluencers[e1] = A[v][k_c]
+									* (m_v[v] + Beta[v]);
+						else
+							throw new RuntimeException();
+						// sumOfProbs += probInfluencers[e1];
+					}// for each previous event
                     
-                    //loop on previous events
-                    for(int e1=0;e1<e;e1++){
-                        CascadeEvent e_prime=cascadeEvents.get(e1);
-                        int v=e_prime.node;      
-                        double t_v=e_prime.timestamp;
-                        if(t_u-t_v==0){
-                            // FIXME
-                        }
-                        
-                        if(m_v[v]+Beta[v]>0)
-                            logProbInfluencers[e1]=(A[v][k_c]/sum_A)+Math.log(m_v[v]+Beta[v]);
-                        else
-                            throw new RuntimeException();
-                    }// for each previous event   
-                    
-                   
-                    
-                    multinomial=new Multinomial(Weka_Utils.logs2probs(logProbInfluencers));
+                    multinomial=new Multinomial(probInfluencers);
                    
                     //sample index of the event that triggered the activation
                     int e1=multinomial.sample();
