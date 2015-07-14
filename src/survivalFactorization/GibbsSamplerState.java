@@ -118,6 +118,7 @@ public class GibbsSamplerState {
     				N_k_u_v[k_c].set(u, v, N_k_u_v[k_c].get(u, v) + 1);
     				L_k_u_v[k_c].set(u, v, L_k_u_v[k_c].get(u, v) + Math.log(delta_uv));
     				
+    				//update pre and post
     				n_k_u_pre.set(k_c,u,n_k_u_pre.get(k_c, u)+1);
                     n_k_u_post.set(k_c,v,n_k_u_post.get(k_c, v)+1);
 

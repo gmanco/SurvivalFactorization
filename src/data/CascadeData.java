@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -22,6 +23,9 @@ public class CascadeData {
          * For each cascade it contains an ArrayList of cascade events (sorted)
          */
         protected List<CascadeEvent>[] cascadeEventsSrt; 
+        
+        protected Set<Integer>[]cascadesForNode;
+        
         
         protected List<WordOccurrence>[] cascadeContent;
          
@@ -57,7 +61,15 @@ public class CascadeData {
             		processContentFile(file_content);            
         }
         
-        
+        /*
+         * Returns a set with cascade ids on which the node is active
+         */
+        public Set<Integer> getCascadeIdsForNode(int node){
+            Set<Integer> ris=cascadesForNode[node];
+            if(ris==null)
+                ris=new HashSet<Integer>();
+            return ris;
+        }//getCascadeIdsForNode
         
         public List<WordOccurrence> getCascadeContent(int c) {
             List l= cascadeContent[c];
@@ -224,12 +236,14 @@ public class CascadeData {
     			this.n_cascades=cascadeSet.size();
     			this.cascadeEvents=new SparseDoubleMatrix2D(n_nodes,n_cascades);
     			this.cascadeEventsSrt=new ArrayList[n_cascades];
+    			this.cascadesForNode=new HashSet[n_nodes];
     			
     			//read cascades
     			 br=new BufferedReader(new FileReader(file_events));
     	         line=br.readLine();
     	         line=br.readLine();//skip header
-    	        
+    	         
+    	         Set<Integer>tmp_cascadeForNode;
     	         List<CascadeEvent>tmp;
     	         while(line!=null){
     	                tokens=line.split("\t");
@@ -248,6 +262,13 @@ public class CascadeData {
     	                }
     	                tmp.add(new CascadeEvent(nodeId,timestamp));
     	              
+    	                tmp_cascadeForNode=cascadesForNode[nodeId];
+    	                if(tmp_cascadeForNode==null){
+    	                    tmp_cascadeForNode=new HashSet<Integer>();
+    	                    cascadesForNode[nodeId]=tmp_cascadeForNode;
+    	                }
+    	                tmp_cascadeForNode.add(cascadeId);
+    	                	                
     	                //check t_max
     	                if(this.t_max<timestamp){
     	                    this.t_max=timestamp;

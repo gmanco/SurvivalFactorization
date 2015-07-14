@@ -25,10 +25,11 @@ public class GibbsSampler {
 	double[] Alpha; // n_features
 	double[] Beta; // n_users
 	SamplerSettings settings;
-
+	Randoms randomGenerator;
 	
 	public GibbsSampler(SamplerSettings settings) {
 		this.settings = settings;
+		this.randomGenerator= new Randoms(settings.seed);
 	}
 
 	public Model[] runInference(CascadeData data, int n_features) {
@@ -41,9 +42,8 @@ public class GibbsSampler {
 		int n_iterations = settings.n_iterations;
 		int burnin = settings.burnin;
 
-		// seed the seed
-		int seed = settings.seed;
-		Randoms rnd = new Randoms(seed);
+	
+		
 
 		Model[] models = new Model[n_iterations - burnin];
 
@@ -51,7 +51,7 @@ public class GibbsSampler {
 
 		// init paramers
 		Model model = new Model(n_nodes, n_words, n_features, new HyperParameters(a,b,C,D));
-		model.init(rnd);
+		model.init(randomGenerator);
 
 		long tot_time = 0;
 
@@ -228,9 +228,28 @@ public class GibbsSampler {
 
 	private double[][] sampleA(Model model, CascadeData data,
 			GibbsSamplerState curr_state, double[][] F_curr,Counters counters) {
-		//double[][] A_new = new double[data.n_nodes][model.n_features];
-		//return A_new;
-	    return model.getA();
+		double[][] A_new = new double[data.n_nodes][model.n_features];
+		
+		int n_nodes=data.n_nodes;
+		int n_features=model.n_features;
+		
+		for(int u=0;u<n_nodes;u++){
+		    
+		    double shape_u[]=new double[n_features];
+		    double scale_u[]=new double[n_features];
+		    
+		    for(int k=0;k<n_features;k++)
+		        shape_u[k]=curr_state.n_k_u_post.get(u, k)+model.hyperParams.a; 
+		    
+		    
+		    
+		   for(int k=0;k<n_features;k++)
+		       A_new[u][k]=randomGenerator.nextGamma(shape_u[k],scale_u[k]);
+		}// for each node
+		
+		
+		return A_new;
+	   
 	}//sampleA
 
 	private double[][] sampleS(Model model, CascadeData data,
