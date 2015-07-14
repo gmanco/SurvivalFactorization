@@ -248,7 +248,7 @@ public class GibbsSampler {
 		     * Compute shape
 		     */
 		    for(int k=0;k<n_features;k++){
-		        shape_u[k]+=curr_state.n_k_u_post.get(u, k); 
+		        shape_u[k]+=curr_state.n_k_u_post[u][k]; 
 		    }
 		    
 		    /*
@@ -264,7 +264,7 @@ public class GibbsSampler {
 		                           2*counters.S_c_k[c][k_c]*t_u 
 		                           - counters.S_c_u_k[c].get(u,k_c)*t_u
 		                           - counters.tilde_S_c_k[c][k_c]
-		                           +counters.S_c_u_k[c].get(u,k_c)
+		                           +counters.tilde_S_c_u_k[c].get(u,k_c)
 		                           +counters.S_k[k_c]*data.t_max
 		                           -counters.S_c_k[c][k_c]*data.t_max
 		                           -counters.S_k[k_c]*t_u
@@ -294,12 +294,14 @@ public class GibbsSampler {
 		int n_nodes=data.n_nodes;
         int n_features=model.n_features;
         
-        
+        double shape_u[]=null;
+        double scale_u[]=null;
+        Set<Integer> cascades_u=null;
         // loop on the nodes
         for(int u=0;u<n_nodes;u++){
             
-            double shape_u[]=new double[n_features];
-            double scale_u[]=new double[n_features];
+            shape_u=new double[n_features];
+            scale_u=new double[n_features];
             Arrays.fill(scale_u, model.hyperParams.b);
             
             
@@ -307,14 +309,16 @@ public class GibbsSampler {
              * Compute shape
              */
             for(int k=0;k<n_features;k++){
-                shape_u[k]=curr_state.n_k_u_pre.get(u, k)+curr_state.Gamma_k[k]*data.t_max-curr_state.tilde_Gamma_k[k]+model.hyperParams.a; 
+                shape_u[k]=curr_state.n_k_u_pre[u][k]+curr_state.Gamma_k[k]*data.t_max-curr_state.tilde_Gamma_k[k]+model.hyperParams.a; 
             }
             
+          
             /*
              * Compute scale
              */
-            Set<Integer> cascades_u=data.getCascadeIdsForNode(u);
+            cascades_u=data.getCascadeIdsForNode(u);
             for(int c:cascades_u){
+               
                 int k_c=curr_state.Z[c];
                 double t_u=data.getActivationTimestamp(u, c);
                 

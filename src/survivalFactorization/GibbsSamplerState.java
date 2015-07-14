@@ -38,12 +38,12 @@ public class GibbsSamplerState {
 	/*
 	 * \sum_v n^k_{u,v}
 	 */
-	SparseDoubleMatrix2D n_k_u_pre; // n_features x n_users 
+	double[][] n_k_u_pre; //  n_users x n_features
 	
 	/*
      * \sum_v n^k_{v,u}
      */
-	SparseDoubleMatrix2D n_k_u_post; // n_features x n_users
+	double [][] n_k_u_post; //  n_users x n_features 
 	
 	SparseDoubleMatrix2D[] L_k_u_v; // n_features x n_users x n_users
 	int[][] N_k_w; // n_words x n_features
@@ -122,8 +122,9 @@ public class GibbsSamplerState {
     				L_k_u_v[k_c].set(u, v, L_k_u_v[k_c].get(u, v) + Math.log(delta_uv));
     				
     				//update pre and post
-    				n_k_u_pre.set(k_c,u,n_k_u_pre.get(k_c, u)+1);
-                    n_k_u_post.set(k_c,v,n_k_u_post.get(k_c, v)+1);
+    				n_k_u_pre[u][k_c]++;
+    				n_k_u_post[v][k_c]++;
+    				
 
     				M_v[v]++;
     			}
@@ -159,8 +160,8 @@ public class GibbsSamplerState {
 	private void resetCounters() {
 		this.N_k_u_v = new SparseDoubleMatrix2D[n_features];
 		this.L_k_u_v = new SparseDoubleMatrix2D[n_features];
-		this.n_k_u_pre=new SparseDoubleMatrix2D(n_features,n_nodes);
-        this.n_k_u_post=new SparseDoubleMatrix2D(n_features,n_nodes);
+		this.n_k_u_pre=new double[n_nodes][n_features];
+        this.n_k_u_post=new double[n_nodes][n_features];
 		for (int k = 0; k < n_features; k++) {
 			this.N_k_u_v[k] = new SparseDoubleMatrix2D(n_nodes, n_nodes);
 			this.L_k_u_v[k] = new SparseDoubleMatrix2D(n_nodes, n_nodes);
