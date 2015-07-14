@@ -26,8 +26,23 @@ public class GibbsSamplerState {
 	int n_words;
 	int n_features;
 	int n_cascades;
-	SparseDoubleMatrix2D[] N_k_u_v; // n_users x n_users x n_features
-	SparseDoubleMatrix2D[] L_k_u_v; // n_users x n_users x n_features
+	
+	/*
+	 * N_k_u_v[u](u,v) = \sum_{c: u \in V^+(c), v \prec_c u} z_{c,k}* y^c_{u,v}
+	 */
+	SparseDoubleMatrix2D[] N_k_u_v; // n_features x n_users x n_users x 
+	
+	/*
+	 * \sum_v n^k_{u,v}
+	 */
+	SparseDoubleMatrix2D n_k_u_pre; // n_features x n_users 
+	
+	/*
+     * \sum_v n^k_{v,u}
+     */
+	SparseDoubleMatrix2D n_k_u_post; // n_features x n_users
+	
+	SparseDoubleMatrix2D[] L_k_u_v; // n_features x n_users x n_users
 	int[][] N_k_w; // n_words x n_features
 	int[][] C_k_w; // n_words x n_features
 
@@ -37,30 +52,40 @@ public class GibbsSamplerState {
 		this.n_words = n_words;
 		this.n_features = n_features;
 		this.n_cascades = n_cascades;
-		this.N_k_u_v = new SparseDoubleMatrix2D[n_features];
-		this.L_k_u_v = new SparseDoubleMatrix2D[n_features];
-		for (int k = 0; k < n_features; k++) {
-			this.N_k_u_v[k] = new SparseDoubleMatrix2D(n_users, n_users);
-			this.L_k_u_v[k] = new SparseDoubleMatrix2D(n_users, n_users);
-		}
-		this.N_k_w = new int[n_words][n_features];
-		this.C_k_w = new int[n_words][n_features];
-		this.M_k = new int[n_features];
-		this.M_v = new int[n_nodes];
+		
+		/*
+		 * Initialize counter
+		 */
+		resetCounters();
+		
+		/*
+		 * Initialize structures for latent factors
+		 */
 		this.Z = new int[n_cascades];
 		this.Y = new SparseIntMatrix2D(n_cascades, n_users);
 	}
 
+	/*
+	 * Given a new status of latent variable,
+	 * this method updates the counters of the gibbs sampler state
+	 */
 	protected void update(CascadeData data, int[] z_new,
 	        SparseIntMatrix2D y_new) {
-		resetCounters();
+		
+	    // first of all: reset counters
+	    resetCounters();
+	    
+	    //update the status of the latent variable
 		this.Z = z_new;
 		this.Y = y_new;
 
+		//loop on cascade
 		for (int c = 1; c < n_cascades; c++) {
-			int k = Z[c];
-			M_k[k]++;
-
+		    
+		    // factor associated with cascade c
+			int k_c = Z[c];
+			
+			M_k[k_c]++;
 			
 			// current cascade (activation times)
 			List<CascadeEvent> cascadeEvents=data.getCascadeEvents(c);
@@ -76,7 +101,7 @@ public class GibbsSamplerState {
     			    
     				int u = curr.node;
     				double t_u = curr.timestamp;
-    
+    				
     				// id influencer
     				int v = (int) (Y.get(c, u));
     
@@ -90,8 +115,12 @@ public class GibbsSamplerState {
     				    delta_uv=MIN_DELTA;;
     				}
     				// update counters
-    				N_k_u_v[k].set(u, v, N_k_u_v[k].get(u, v) + 1);
-    				L_k_u_v[k].set(u, v, L_k_u_v[k].get(u, v) + Math.log(delta_uv));
+    				N_k_u_v[k_c].set(u, v, N_k_u_v[k_c].get(u, v) + 1);
+    				L_k_u_v[k_c].set(u, v, L_k_u_v[k_c].get(u, v) + Math.log(delta_uv));
+    				
+    				n_k_u_pre.set(k_c,u,n_k_u_pre.get(k_c, u)+1);
+                    n_k_u_post.set(k_c,v,n_k_u_post.get(k_c, v)+1);
+
     				M_v[v]++;
     			}
 			
@@ -101,8 +130,8 @@ public class GibbsSamplerState {
 			for(WordOccurrence wo:cascadeContent){
 			    int w=wo.word;
 			    int n_w=wo.cnt;
-			    N_k_w[w][k] += n_events_cascade - 1;
-                C_k_w[w][k] += n_w;
+			    N_k_w[w][k_c] += n_events_cascade - 1;
+                C_k_w[w][k_c] += n_w;
 			}//for each word in the cascade
 
 		}//for each cascade
@@ -115,9 +144,14 @@ public class GibbsSamplerState {
 			Z[c] = m.sample();
 	}//randomInitZ
 
-	public void resetCounters() {
+	/*
+	 * Allocate new counters
+	 */
+	private void resetCounters() {
 		this.N_k_u_v = new SparseDoubleMatrix2D[n_features];
 		this.L_k_u_v = new SparseDoubleMatrix2D[n_features];
+		this.n_k_u_pre=new SparseDoubleMatrix2D(n_features,n_nodes);
+        this.n_k_u_post=new SparseDoubleMatrix2D(n_features,n_nodes);
 		for (int k = 0; k < n_features; k++) {
 			this.N_k_u_v[k] = new SparseDoubleMatrix2D(n_nodes, n_nodes);
 			this.L_k_u_v[k] = new SparseDoubleMatrix2D(n_nodes, n_nodes);
@@ -128,6 +162,9 @@ public class GibbsSamplerState {
 		this.M_v = new int[n_nodes];
 	}//resetCounters
 
+	/*
+	 * Prints a summary of the status of hidden variables on a file
+	 */
 	public void printSummaryStatus(CascadeData data,String file) throws Exception{
 	    PrintWriter pw=new PrintWriter(new FileWriter(file));
 	    pw.println(" SUMMARY OF THE CURRENT STATE");
