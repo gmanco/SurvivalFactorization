@@ -150,7 +150,9 @@ public class GibbsSamplerState {
 	
 	protected void updateGamma(CascadeData data, double[][] F_curr,
 			Counters counters) {
-		// loop on cascade
+	    Gamma_k=new double[n_features];
+	    tilde_Gamma_k=new double[n_features];
+	    // loop on cascade
 		for (int c = 0; c < n_cascades; c++) {
 
 			// factor associated with cascade c

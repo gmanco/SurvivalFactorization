@@ -143,7 +143,16 @@ public class Counters {
 	 */
 	public void updateA(CascadeData data, Model model){
 		//reset counters
-	    init();
+        A_k=new double[n_features];        
+        A_c_k = new double[n_cascades][n_features];
+        tilde_A_c_k = new double[n_cascades][n_features];
+        A_c_u_k = new SparseDoubleMatrix2D[n_cascades];
+        tilde_A_c_u_k = new SparseDoubleMatrix2D[n_cascades];        
+        for (int c = 0; c < n_cascades; c++){
+            A_c_u_k[c] = new SparseDoubleMatrix2D(n_nodes,n_features);
+            tilde_A_c_u_k[c] = new SparseDoubleMatrix2D(n_nodes,n_features);            
+        }//for each cascade
+        
 		
 	    double A[][]=model.getA();
 	    
@@ -188,14 +197,21 @@ public class Counters {
 	    }//for each cascade
 	    
 	    
-	}//update
+	}//updateA
 	
 	/*
 	 * Update counters 
 	 */
 	public void updateS(CascadeData data, Model model){
-		//reset counters
-	    init();
+	    S_k=new double[n_features];
+        S_c_k = new double[n_cascades][n_features];        
+        tilde_S_c_k = new double[n_cascades][n_features];
+        S_c_u_k = new SparseDoubleMatrix2D[n_cascades];        
+        tilde_S_c_u_k = new SparseDoubleMatrix2D[n_cascades];
+        for (int c = 0; c < n_cascades; c++){
+            S_c_u_k[c] = new SparseDoubleMatrix2D(n_nodes,n_features);
+            tilde_S_c_u_k[c] = new SparseDoubleMatrix2D(n_nodes,n_features);
+        }//for each cascade
 		
 	    double S[][]=model.getS();
 	    
