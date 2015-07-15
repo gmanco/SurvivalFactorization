@@ -19,7 +19,7 @@ import data.WordOccurrence;
 
 public class GibbsSampler {
     static double DEFAULT_SHAPE=1.0;
-    static double DEFAULT_SCALE=1.0;
+    static double DEFAULT_SCALE=0.5;
 	double a;
 	double b;
 	double[] C; // n_words
@@ -269,8 +269,7 @@ public class GibbsSampler {
 		    double rate_u[]=new double[n_features];
 		    Arrays.fill(shape_u, model.hyperParams.a);
 		    Arrays.fill(rate_u, model.hyperParams.b);
-		    
-		    
+		        
 		    /*
 		     * Compute shape
 		     */
@@ -390,8 +389,8 @@ public class GibbsSampler {
 	       //	
 
         
-		return S_new;
-
+		//return S_new;
+	       return model.getS();
 	}//sampleS
 
     private double[][] samplePhi(Model model, CascadeData data,
@@ -463,7 +462,7 @@ public class GibbsSampler {
             
         //FIXME
         return model.getPhi();
-       // return Phi_new;
+       //r return Phi_new;
         
     }//samplePhi
 
@@ -485,7 +484,9 @@ public class GibbsSampler {
 	        
 	        //update m_k by removing the old assignment
 	        int k_old=z[c];
-	        m_k[k_old]=Math.max(m_k[k_old]-1,0);
+	        m_k[k_old]--;
+	        if(m_k[k_old]<0)
+	            throw new RuntimeException(""+c+" "+k_old);
 	        
 	        double logPrior[]=new double[n_features];
 	        for(int k=0;k<n_features;k++){

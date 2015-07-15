@@ -148,9 +148,13 @@ public class GibbsSamplerState {
 	
 
 	public void randomInitZ(double[] p) {
+	    M_k=new int[n_cascades];
 		Multinomial m = new Multinomial(p);
-		for (int c = 0; c < n_cascades; c++)
-			Z[c] = m.sample();
+		for (int c = 0; c < n_cascades; c++){
+		    int k_c=m.sample();
+		    Z[c] = k_c;
+		    M_k[k_c]++;
+		}
 	}//randomInitZ
 
 	/*

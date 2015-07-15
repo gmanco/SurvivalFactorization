@@ -131,7 +131,7 @@ public class Model implements Serializable{
 		    for(int k=0;k<n_features;k++){
 		        secondComponent[k]=-F_c[k]*secondComponent[k];
 		        if(F_c[k]>0){		        
-		            thirdComponent[k]+=counters.log_S_c_k[c][k]+(n_events_cascade-1)*Math.log(F_c[k]);
+		            thirdComponent[k]+=counters.log_S_c_k[c][k] + (n_events_cascade-1)*Math.log(F_c[k]);
 		        }
 		        else throw new RuntimeException();
 		    }
