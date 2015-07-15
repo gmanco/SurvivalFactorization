@@ -12,7 +12,7 @@ public class Main {
         String file_content=args[1]; //"/Users/barbieri/Dropbox/shared ICAR/SurvivalFactorization/exp/meme_tracker/debug/cleaned_debug_content";
     
         CascadeData data=new CascadeData(file_events, file_content);
-        data.getInfo();
+        data.getInfo(); 
         
         GibbsSampler sampler=new GibbsSampler(SamplerSettings.getDefaultSettings());
         sampler.runInference(data, 5);
