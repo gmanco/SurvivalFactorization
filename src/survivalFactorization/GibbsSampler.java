@@ -563,7 +563,10 @@ public class GibbsSampler {
         double F_c[]=counters.F_curr[c];
         
         for(int k=0;k<n_features;k++){
-            firstComponent[k]=(n_events_cascade-1)*Math.log(F_c[k]);
+            if(F_c[k]>0)
+                firstComponent[k]=(n_events_cascade-1)*Math.log(F_c[k]);
+            else throw new RuntimeException();
+            
             thirdComponent_A[k]=counters.tilde_S_c_k[c][k]*counters.A_c_k[c][k];
             thirdComponent_C[k]=counters.tilde_A_c_k[c][k]*counters.S_c_k[c][k];
             thirdComponent_E[k]=(counters.S_k[k]-counters.S_c_k[c][k])*
