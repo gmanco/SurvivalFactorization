@@ -285,13 +285,14 @@ public class GibbsSampler {
 		    for(int c:cascades_u){
 		        int k_c=curr_state.Z[c];
 		        double t_u=data.getActivationTimestamp(u, c);
+		       
+
 		        
 		        double contribute_cascade=0.0;
 		        contribute_cascade+=counters.F_curr[c][k_c]*(
-		                           2*counters.S_c_k[c][k_c]*t_u 
-		                           - counters.S_c_u_k[c].get(u,k_c)*t_u
-		                           - counters.tilde_S_c_k[c][k_c]
-		                           +counters.tilde_S_c_u_k[c].get(u,k_c)
+		        					counters.tilde_S_c_k[c][k_c]
+                                - counters.tilde_S_c_u_k[c].get(u,k_c)
+		                           + counters.S_c_u_k[c].get(u,k_c)*t_u
 		                           +counters.S_k[k_c]*data.t_max
 		                           -counters.S_c_k[c][k_c]*data.t_max
 		                           -counters.S_k[k_c]*t_u
