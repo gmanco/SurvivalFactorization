@@ -97,6 +97,8 @@ public class GibbsSampler {
 					curr_state,counters);
 			curr_state = next_state;
 			
+			counters.update(data, model,curr_state);
+			
 					
 			long tic=System.currentTimeMillis();
 	        System.out.print("Sampling A...");
@@ -214,7 +216,7 @@ public class GibbsSampler {
 	    /*
 	     * Update the state
 	     */
-	    next_state.update(data, Z_new, Y_new,counters);
+	    next_state.update(data, Z_new, Y_new);
 
 		return next_state;
 
@@ -554,13 +556,11 @@ public class GibbsSampler {
 
         
         
-        List<CascadeEvent> cascadeEvents=data.getCascadeEvents(c);
-        List<WordOccurrence> cascadeContent=data.getCascadeContent(c);
-       
+        List<CascadeEvent> cascadeEvents=data.getCascadeEvents(c);       
         
         int n_events_cascade=cascadeEvents.size();
     
-        double F_c[]=model.computeF(cascadeContent);
+        double F_c[]=counters.F_curr[c];
         
         for(int k=0;k<n_features;k++){
             firstComponent[k]=(n_events_cascade-1)*Math.log(F_c[k]);
@@ -578,6 +578,7 @@ public class GibbsSampler {
 
             for(int k=0;k<n_features;k++){
                if(e>0){
+                   //TODO  check
                    // id influencer
                    int v = (int) (Y.get(c, u));
                    if(A[v][k]*S[u][k]>0)
@@ -593,7 +594,11 @@ public class GibbsSampler {
         
         double thirdComponent[]=new double[n_features];
         for(int k=0;k<n_features;k++){
-            thirdComponent[k]=-F_c[k]*(thirdComponent_A[k]-thirdComponent_B[k]-thirdComponent_C[k]+thirdComponent_D[k]+thirdComponent_E[k]);
+            thirdComponent[k]=-F_c[k]*(thirdComponent_A[k]
+                                        -thirdComponent_B[k]
+                                        -thirdComponent_C[k]
+                                        +thirdComponent_D[k]
+                                        +thirdComponent_E[k]);
         }
         
       double logProbEvents[]=new double[n_features];

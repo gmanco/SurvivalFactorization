@@ -71,7 +71,7 @@ public class GibbsSamplerState {
 	 * this method updates the counters of the gibbs sampler state
 	 */
 	protected void update(CascadeData data, int[] z_new,
-	        SparseIntMatrix2D y_new,Counters counters) {
+	        SparseIntMatrix2D y_new) {
 		
 	    // first of all: reset counters
 	    resetCounters();
