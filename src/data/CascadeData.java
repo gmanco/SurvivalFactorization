@@ -199,6 +199,15 @@ public class CascadeData {
 		}//processContentFile
 
 
+		public int cascadeContentSize(int c){
+		    List<WordOccurrence> W_c=cascadeContent[c];
+		    int cnt=0;
+		    for(WordOccurrence wo: W_c)
+		        cnt+=wo.cnt;
+		    return cnt;
+		}
+		
+		
 		/*
 		 * Read event file
 		 */

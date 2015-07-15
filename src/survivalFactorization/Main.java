@@ -13,8 +13,7 @@ public class Main {
     
         CascadeData data=new CascadeData(file_events, file_content);
         data.getInfo(); 
-        System.out.println("aaa");
-        System.out.println("oooo");
+      
         GibbsSampler sampler=new GibbsSampler(SamplerSettings.getDefaultSettings());
         sampler.runInference(data, 5);
     }//main

@@ -96,7 +96,7 @@ public class Model implements Serializable{
 			List<WordOccurrence> cascadeContent=data.getCascadeContent(c);
 		    int n_events_cascade=cascadeEvents.size();
 		
-		    double F_c[]=computeF(cascadeContent);
+		    double F_c[]=counters.F_curr[c];
 		      
 		    
 		    double first_component[]=new double[n_features];
@@ -130,11 +130,10 @@ public class Model implements Serializable{
 		    
 		    for(int k=0;k<n_features;k++){
 		        secondComponent[k]=-F_c[k]*secondComponent[k];
-		        if(F_c[k]>0){
-		            thirdComponent[k]+=counters.S_c_k[c][k]+(n_events_cascade-1)*Math.log(F_c[k]);
+		        if(F_c[k]>0){		        
+		            thirdComponent[k]+=counters.log_S_c_k[c][k]+(n_events_cascade-1)*Math.log(F_c[k]);
 		        }
 		        else throw new RuntimeException();
-		       
 		    }
 		    
 	   
@@ -168,28 +167,29 @@ public class Model implements Serializable{
 		return llk;
 	}//computeLLk
 	
-
+	/*
+	 * Compute F given a list of word occurrences
+	 */
     public double[] computeF(List<WordOccurrence> W_c) {
-       
-        double[] F = new double[n_features];
-        Arrays.fill(F,1.0);
+        double[] F_c = new double[n_features];
+        Arrays.fill(F_c,1.0);
        
         for(WordOccurrence wo:W_c){
             int w=wo.word;
             for (int k = 0; k < n_features; k++)
-                F[k] *= Phi[w][k];
+                F_c[k] *= Phi[w][k];
         }
-        return F;
+        return F_c;
     }//computeF
 	
-
+    /*
+     * Compute F for all the cascades
+     */
 	public double[][] computeFAllCascades(CascadeData data) {
-	      int n_cascades=data.n_cascades;
-
+	    int n_cascades=data.n_cascades;
 	    double[][] F_curr = new double[n_cascades][n_features];
 		for (int c = 0; c < n_cascades; c++) {
-			List<WordOccurrence>W_c = data.getCascadeContent(c);
-			F_curr[c] = computeF(W_c);
+			F_curr[c] = computeF(data.getCascadeContent(c));
 		}
 		return F_curr;
 	}//computeFAllCascades
