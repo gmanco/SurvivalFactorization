@@ -94,15 +94,19 @@ public class GibbsSamplerState {
 			// number of events in this cascade
 			int n_events_cascade = cascadeEvents.size();
 
-			// loop on all the events, starting from the second
-			if(n_events_cascade>1)
-    			for (int e = 2; e < n_events_cascade; e++) {
-    				// current event
-    			    CascadeEvent curr=cascadeEvents.get(e);
-    			    
-    				int u = curr.node;
-    				double t_u = curr.timestamp;
-    				
+			//TODO CHECK e=0 and e>0
+			// loop on all the events
+			for (int e = 0; e < n_events_cascade; e++) {
+				// current event
+			    CascadeEvent curr=cascadeEvents.get(e);
+			    
+				int u = curr.node;
+				double t_u = curr.timestamp;
+			    
+				//update pre and post
+                n_k_u_pre[u][k_c]++;
+                
+				if( e>0){
     				// id influencer
     				int v = (int) (Y.get(c, u));
     
@@ -118,14 +122,12 @@ public class GibbsSamplerState {
     				// update counters
     				N_k_u_v[k_c].set(u, v, N_k_u_v[k_c].get(u, v) + 1);
     				L_k_u_v[k_c].set(u, v, L_k_u_v[k_c].get(u, v) + Math.log(delta_uv));
-    				
-    				//update pre and post
-    				n_k_u_pre[u][k_c]++;
+    			    
     				n_k_u_post[v][k_c]++;
-    				
-
     				M_v[v]++;
-    			}
+				}
+				
+    		}// for each event of the cascade
 			
 			// process the content of the cascade
 			List<WordOccurrence> cascadeContent = data.getCascadeContent(c);

@@ -23,7 +23,7 @@ public class Counters {
     public double[][] A_c_k;
     public double[][] tilde_S_c_k;
     public double[][] tilde_A_c_k;
-	//double[][] log_S_c_k;
+	double[][] log_S_c_k;
 	//double[][] log_A_c_k;
 
 	
@@ -59,7 +59,7 @@ public class Counters {
         tilde_S_c_k = new double[n_cascades][n_features];
         tilde_A_c_k = new double[n_cascades][n_features];
 
-       // log_S_c_k = new double[n_cascades][n_features];
+        log_S_c_k = new double[n_cascades][n_features];
        // log_A_c_k = new double[n_cascades][n_features];
 
         
@@ -122,6 +122,9 @@ public class Counters {
                 double t=ce.timestamp;
 				for (int k = 0; k < n_features; k++) {
 					S_c_k[c][k] += S[u][k];
+					if(S[u][k]>0)
+					    log_S_c_k[c][k]+=Math.log(S[u][k]);
+					else throw new RuntimeException();
 					tilde_S_c_k[c][k] += S[u][k] * t;
 					A_c_k[c][k] += A[u][k];
 					tilde_A_c_k[c][k] += A[u][k] * t;
@@ -138,6 +141,7 @@ public class Counters {
 
 				}// for each k
 			}//
+            
             int k_c=curr_state.Z[c];
             //update Gamma_k and tilde_Gamma_k
             Gamma_k[k_c]+=F_curr[c][k_c]*A_c_k[c][k_c];
@@ -148,10 +152,14 @@ public class Counters {
 	    
 	    
 	}//update
+	
+	
+	
+	//REMOVE 
 
 	/*
 	 * Update counters 
-	 */
+	 
 	public void updateA(CascadeData data, Model model){
 		//reset counters
         A_k=new double[n_features];        
@@ -210,9 +218,9 @@ public class Counters {
 	    
 	}//updateA
 	
-	/*
+	
 	 * Update counters 
-	 */
+	 
 	public void updateS(CascadeData data, Model model){
 	   
 	    //reset counters for S
@@ -264,4 +272,6 @@ public class Counters {
 	    
 	    
 	}//update
+	 */
+	
 }//Counters
