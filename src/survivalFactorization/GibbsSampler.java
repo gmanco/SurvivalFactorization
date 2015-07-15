@@ -19,7 +19,7 @@ import data.WordOccurrence;
 
 public class GibbsSampler {
     static double DEFAULT_SHAPE=1.0;
-    static double DEFAULT_SCALE=0.5;
+    static double DEFAULT_SCALE=Math.pow(10,-15);
 	double a;
 	double b;
 	double[] C; // n_words
@@ -316,8 +316,8 @@ public class GibbsSampler {
 	       pwA.println();
 	       pwA.println();
 	       //	
-	       //FIXME
-	       return A_new;
+	       
+	     return A_new;
 	}//sampleA
 
 	private double[][] sampleS(Model model, CascadeData data,
@@ -388,8 +388,8 @@ public class GibbsSampler {
 	       //	
 
         
-		//return S_new;
-	       return model.getS();
+		return S_new;
+	    
 	}//sampleS
 
     private double[][] samplePhi(Model model, CascadeData data,
@@ -459,9 +459,7 @@ public class GibbsSampler {
            
         }//for each word
             
-        //FIXME
-        return model.getPhi();
-       //r return Phi_new;
+         return Phi_new;
         
     }//samplePhi
 
