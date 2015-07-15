@@ -13,7 +13,11 @@ public class Counters {
     public double[] S_k;
     public double[] A_k;
     public double[] Phi_k;
+    public double [] Gamma_k;
+    public double [] tilde_Gamma_k;
 
+    public double[][]F_curr;
+    
 	// cascade based counter
     public double[][] S_c_k;
     public double[][] A_c_k;
@@ -45,7 +49,10 @@ public class Counters {
 	    S_k=new double[n_features];
 	    A_k=new double[n_features];
 	    Phi_k=new double[n_features];
-	    
+	    Gamma_k=new double[n_features];
+        tilde_Gamma_k=new double[n_features];
+        F_curr=new double[n_cascades][n_features];
+        
 	    S_c_k = new double[n_cascades][n_features];
         A_c_k = new double[n_cascades][n_features];
         
@@ -73,13 +80,14 @@ public class Counters {
 	/*
 	 * Update counters 
 	 */
-	public void update(CascadeData data, Model model){
+	public void update(CascadeData data, Model model,GibbsSamplerState curr_state){
 		//reset counters
 	    init();
 		
 	    double A[][]=model.getA();
 	    double S[][]=model.getS();
 	    double Phi[][]=model.getPhi();
+	    this.F_curr=model.computeFAllCascades(data);
 	    
 	    int n_nodes=model.n_nodes;
 	    int n_cascades=data.n_cascades;
@@ -130,6 +138,11 @@ public class Counters {
 
 				}// for each k
 			}//
+            int k_c=curr_state.Z[c];
+            //update Gamma_k and tilde_Gamma_k
+            Gamma_k[k_c]+=F_curr[c][k_c]*A_c_k[c][k_c];
+            tilde_Gamma_k[k_c]+=F_curr[c][k_c]*tilde_A_c_k[c][k_c];
+            
 	    
 	    }//for each cascade
 	    

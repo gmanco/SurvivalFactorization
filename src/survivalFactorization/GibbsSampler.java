@@ -64,7 +64,7 @@ public class GibbsSampler {
 		curr_state.randomInitZ(p);
 		
 		Counters counters=new Counters(n_cascades, n_nodes, n_features);
-		counters.update(data, model);
+		counters.update(data, model,curr_state);
 		
 		
 		// Gibbs sampling
@@ -75,21 +75,19 @@ public class GibbsSampler {
 		for (int epoch = 0; epoch < n_iterations; epoch++) {
 			long t = System.currentTimeMillis();
 			
-			double[][] F_curr = computeF(model, data);
 			
 			GibbsSamplerState next_state = sampleNextState(model, data,
-					curr_state,F_curr,counters);
+					curr_state,counters);
 			curr_state = next_state;
 			
 					
 			long tic=System.currentTimeMillis();
 	        System.out.print("Sampling A...");
-			double[][] A_new = sampleA(model, data, curr_state, F_curr,counters);
+			double[][] A_new = sampleA(model, data, curr_state,counters);
 			model.setA(A_new);
 			
-			counters.updateA(data, model);
-			curr_state.updateGamma(data, F_curr, counters);
-
+			counters.update(data, model,curr_state);
+			
 			
 	        long toc=(System.currentTimeMillis()-tic)/1000;
 	        System.out.println(" Done ("+toc+" secs)");
@@ -97,26 +95,25 @@ public class GibbsSampler {
 
 	        tic=System.currentTimeMillis();
             System.out.print("Sampling S...");
-			double[][] S_new = sampleS(model, data, curr_state, F_curr,counters);
+			double[][] S_new = sampleS(model, data, curr_state,counters);
 			model.setS(S_new);
 			
-			counters.updateS(data, model);
+			counters.update(data, model,curr_state);
 
 			toc=(System.currentTimeMillis()-tic)/1000;
             System.out.println(" Done ("+toc+" secs)");
 
             tic=System.currentTimeMillis();
             System.out.print("Sampling Phi...");
-			double[][] Phi_new = samplePhi(model, data, curr_state, F_curr,counters);
+			double[][] Phi_new = samplePhi(model, data, curr_state,counters);
 			model.setPhi(Phi_new);
 			toc=(System.currentTimeMillis()-tic)/1000;
             System.out.println(" Done ("+toc+" secs)");
 			
-            // FIXME: UPDATE ALL COUNTERS INVOLVING PHI
-
+          
             
-            //now it's time to update counters
-            counters.update(data, model);
+            // update counters
+            counters.update(data, model,curr_state);
             
 			if (epoch > burnin) {
 			    Model curr_model = new Model(model);
@@ -168,7 +165,7 @@ public class GibbsSampler {
 	}
 
 	private GibbsSamplerState sampleNextState(Model model, CascadeData data,
-			GibbsSamplerState curr_state,double[][]F_curr,Counters counters) {
+			GibbsSamplerState curr_state,Counters counters) {
 
 		GibbsSamplerState next_state = new GibbsSamplerState(data.n_nodes,
 				data.n_cascades, data.n_words, model.n_features);
@@ -200,7 +197,7 @@ public class GibbsSampler {
 	    /*
 	     * Update the state
 	     */
-	    next_state.update(data, Z_new, Y_new,F_curr,counters);
+	    next_state.update(data, Z_new, Y_new,counters);
 
 		return next_state;
 
@@ -239,7 +236,7 @@ public class GibbsSampler {
 	}
 
 	private double[][] sampleA(Model model, CascadeData data,
-			GibbsSamplerState curr_state, double[][] F_curr,Counters counters) {
+			GibbsSamplerState curr_state,Counters counters) {
 		double[][] A_new = new double[data.n_nodes][model.n_features];
 		
 		int n_nodes=data.n_nodes;
@@ -271,7 +268,7 @@ public class GibbsSampler {
 		        double t_u=data.getActivationTimestamp(u, c);
 		        
 		        double contribute_cascade=0.0;
-		        contribute_cascade+=F_curr[c][k_c]*(
+		        contribute_cascade+=counters.F_curr[c][k_c]*(
 		                           2*counters.S_c_k[c][k_c]*t_u 
 		                           - counters.S_c_u_k[c].get(u,k_c)*t_u
 		                           - counters.tilde_S_c_k[c][k_c]
@@ -298,7 +295,7 @@ public class GibbsSampler {
 	}//sampleA
 
 	private double[][] sampleS(Model model, CascadeData data,
-			GibbsSamplerState curr_state, double[][] F_curr,Counters counters) {
+			GibbsSamplerState curr_state,Counters counters) {
 		
 	    double[][] S_new = new double[data.n_nodes][model.n_features];
 
@@ -321,7 +318,7 @@ public class GibbsSampler {
              */
             for(int k=0;k<n_features;k++){
                 shape_u[k]=curr_state.n_k_u_pre[u][k]+model.hyperParams.a;
-                rate_u[k]=curr_state.Gamma_k[k]*data.t_max-curr_state.tilde_Gamma_k[k] + model.hyperParams.b;
+                rate_u[k]=counters.Gamma_k[k]*data.t_max-counters.tilde_Gamma_k[k] + model.hyperParams.b;
             }
             
           
@@ -336,7 +333,7 @@ public class GibbsSampler {
                 
                 double contribute_cascade=0.0;
             
-                contribute_cascade=F_curr[c][k_c]*(
+                contribute_cascade=counters.F_curr[c][k_c]*(
                                     t_u*counters.A_c_u_k[c].get(u, k_c)
                                     - counters.tilde_A_c_u_k[c].get(u, k_c)
                                     - data.t_max*counters.A_c_k[c][k_c]
@@ -361,7 +358,7 @@ public class GibbsSampler {
 	}//sampleS
 
 	private double[][] samplePhi(Model model, CascadeData data,
-			GibbsSamplerState curr_state, double[][] F_curr,Counters counters) {
+			GibbsSamplerState curr_state,Counters counters) {
 //		double[][] Phi_new = new double[data.n_words][model.n_features];
 //		return Phi_new;
 	    return model.getPhi();
