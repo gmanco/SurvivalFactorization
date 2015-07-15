@@ -318,8 +318,7 @@ public class GibbsSampler {
 	       pwA.println();
 	       //	
 	       //FIXME
-		//return A_new;
-	   return model.getA();
+	       return A_new;
 	}//sampleA
 
 	private double[][] sampleS(Model model, CascadeData data,

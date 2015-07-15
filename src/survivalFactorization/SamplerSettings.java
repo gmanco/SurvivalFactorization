@@ -3,7 +3,7 @@ package survivalFactorization;
 public class SamplerSettings {
 
 	public int seed=13;
-	public int n_iterations=100;
+	public int n_iterations=1000;
 	public int burnin=10;
 	public int llk_interval=1;
 	public boolean compute_llk=true;
