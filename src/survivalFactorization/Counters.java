@@ -33,6 +33,10 @@ public class Counters {
     public SparseDoubleMatrix2D[] tilde_S_c_u_k;
     public SparseDoubleMatrix2D[] tilde_A_c_u_k;
 	
+    public double A_prod_tilde_S_c_k[][];
+    public double tilde_A_prod_S_c_k[][];
+
+    
 	//properties of the data
 	int n_cascades;
 	int n_nodes;
@@ -62,6 +66,8 @@ public class Counters {
         log_S_c_k = new double[n_cascades][n_features];
        // log_A_c_k = new double[n_cascades][n_features];
 
+        A_prod_tilde_S_c_k=new double[n_cascades][n_features];
+        tilde_A_prod_S_c_k=new double[n_cascades][n_features];
         
         S_c_u_k = new SparseDoubleMatrix2D[n_cascades];
         A_c_u_k = new SparseDoubleMatrix2D[n_cascades];
@@ -140,6 +146,8 @@ public class Counters {
 					A_c_u_k[c].set(u, k, cumulative_A_v_k[k]);
 					tilde_A_c_u_k[c].set(u, k, cumulative_tilde_A_v_k[k]);
 
+					A_prod_tilde_S_c_k[c][k]+=A[u][k]*tilde_S_c_u_k[c].get(u,k);
+					tilde_A_prod_S_c_k[c][k]+=A[u][k]*t*S_c_u_k[c].get(u,k);
 				}// for each k
 			}//
             

@@ -97,6 +97,8 @@ public class GibbsSampler {
 					curr_state,counters);
 			curr_state = next_state;
 			
+			counters.update(data, model,curr_state);
+			
 					
 			long tic=System.currentTimeMillis();
 	        System.out.print("Sampling A...");
@@ -214,7 +216,7 @@ public class GibbsSampler {
 	    /*
 	     * Update the state
 	     */
-	    next_state.update(data, Z_new, Y_new,counters);
+	    next_state.update(data, Z_new, Y_new);
 
 		return next_state;
 
@@ -392,13 +394,78 @@ public class GibbsSampler {
 
 	}//sampleS
 
-	private double[][] samplePhi(Model model, CascadeData data,
-			GibbsSamplerState curr_state,Counters counters) {
-//		double[][] Phi_new = new double[data.n_words][model.n_features];
-//		return Phi_new;
-	    return model.getPhi();
+    private double[][] samplePhi(Model model, CascadeData data,
+            GibbsSamplerState curr_state,Counters counters) {
+        
+        
+        double[][] Phi_new = new double[data.n_words][model.n_features];
 
-	}//samplePhi
+        int n_features=model.n_features;
+        
+        
+        Set<Integer> cascades_w;
+        
+        double F_curr[][]=counters.F_curr;
+        double Phi[][]=model.getPhi();
+        
+        for(int w=0;w<data.n_words;w++){
+            
+            
+            double shape_w[]=new double[n_features];
+            double rate_w[]=new double[n_features];
+            Arrays.fill(rate_w, model.hyperParams.D[w]);
+            
+            /*
+             * Compute rate
+             */
+            for(int k=0;k<n_features;k++){
+                shape_w[k]=curr_state.N_w_k[w][k]+curr_state.C_w_k[w][k]+model.hyperParams.C[w];
+            }
+            
+            cascades_w=data.getCascadeIdsForWord(w);
+            
+            for(int c:cascades_w){
+                
+                int k_c=curr_state.Z[c];
+                
+                //update F_curr[c]
+               F_curr[c][k_c]=F_curr[c][k_c]/Phi[w][k_c]; 
+              
+               int lenghtContent_c=data.getLenghtOfCascadeContent(c);
+               
+                  
+               double contributeA= F_curr[c][k_c]*( counters.A_c_k[c][k_c]*counters.tilde_S_c_k[c][k_c] 
+                                                 -counters.A_prod_tilde_S_c_k[c][k_c]
+                                                 - counters.tilde_A_c_k[c][k_c]*counters.S_c_k[c][k_c]
+                                                 + counters.tilde_A_prod_S_c_k[c][k_c]
+                                               ) ;
+              double countributeB= F_curr[c][k_c]*(counters.S_k[k_c]-counters.S_c_k[c][k_c])*
+                                                       (data.t_max*counters.A_c_k[c][k_c]-counters.tilde_A_c_k[c][k_c]);
+                   
+                   
+              rate_w[k_c]+=contributeA+countributeB+lenghtContent_c; 
+                   
+                
+            }
+            
+            // sample from gamma
+           for(int k=0;k<n_features;k++){
+               Phi_new[w][k]=randomGenerator.nextGamma(shape_w[k],1.0/rate_w[k]);
+           }
+           
+           //now update F_curr
+           for(int c:cascades_w){      
+               int k_c=curr_state.Z[c];
+               F_curr[c][k_c]=F_curr[c][k_c]*Phi_new[w][k_c]; 
+           }
+           
+        }//for each word
+            
+        
+        return Phi_new;
+        
+    }//samplePhi
+
 
 	private int[] sampleZ(Model model, CascadeData data,
 	        SparseIntMatrix2D Y, int[] z, int[] m_k,Counters counters) {
@@ -490,13 +557,11 @@ public class GibbsSampler {
 
         
         
-        List<CascadeEvent> cascadeEvents=data.getCascadeEvents(c);
-        List<WordOccurrence> cascadeContent=data.getCascadeContent(c);
-       
+        List<CascadeEvent> cascadeEvents=data.getCascadeEvents(c);       
         
         int n_events_cascade=cascadeEvents.size();
     
-        double F_c[]=model.computeF(cascadeContent);
+        double F_c[]=counters.F_curr[c];
         
         for(int k=0;k<n_features;k++){
             firstComponent[k]=(n_events_cascade-1)*Math.log(F_c[k]);
@@ -514,6 +579,7 @@ public class GibbsSampler {
 
             for(int k=0;k<n_features;k++){
                if(e>0){
+                   //TODO  check
                    // id influencer
                    int v = (int) (Y.get(c, u));
                    if(A[v][k]*S[u][k]>0)
@@ -529,7 +595,11 @@ public class GibbsSampler {
         
         double thirdComponent[]=new double[n_features];
         for(int k=0;k<n_features;k++){
-            thirdComponent[k]=-F_c[k]*(thirdComponent_A[k]-thirdComponent_B[k]-thirdComponent_C[k]+thirdComponent_D[k]+thirdComponent_E[k]);
+            thirdComponent[k]=-F_c[k]*(thirdComponent_A[k]
+                                        -thirdComponent_B[k]
+                                        -thirdComponent_C[k]
+                                        +thirdComponent_D[k]
+                                        +thirdComponent_E[k]);
         }
         
       double logProbEvents[]=new double[n_features];
