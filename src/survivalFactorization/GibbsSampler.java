@@ -19,7 +19,8 @@ import data.WordOccurrence;
 
 public class GibbsSampler {
     static double DEFAULT_SHAPE=1.0;
-    static double DEFAULT_SCALE=Math.pow(10,-15);
+    static double DEFAULT_RATE=Math.pow(10,15);
+    static double DEFAULT_RATE_PHI=10;
 	double a;
 	double b;
 	double[] C; // n_words
@@ -244,14 +245,14 @@ public class GibbsSampler {
 
 	private void inferPriorWords(CascadeData data) {
 		this.C=new double[data.n_words];
-		Arrays.fill(C,DEFAULT_SCALE);
+		Arrays.fill(C,DEFAULT_SHAPE);
 		this.D=new double[data.n_words];
-        Arrays.fill(D,DEFAULT_SCALE);
+        Arrays.fill(D,DEFAULT_RATE_PHI);
 	}
 
 	private void inferPriorRates(CascadeData data) {
 	    this.a=DEFAULT_SHAPE;
-        this.b=DEFAULT_SCALE;
+        this.b=DEFAULT_RATE;
 	}
 
 	private double[][] sampleA(Model model, CascadeData data,

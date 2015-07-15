@@ -77,11 +77,11 @@ public class Model implements Serializable{
 
 		for (int k = 0; k < K; k++) {
 			for (int n = 0; n < N; n++) {
-				A[n][k] = rng.nextGamma(a, b);
-				S[n][k] = rng.nextGamma(a, b);
+				A[n][k] = rng.nextGamma(a, 1/b);
+				S[n][k] = rng.nextGamma(a, 1/b);
 			}
 			for (int w = 0; w < W; w++)
-				Phi[w][k] = rng.nextGamma(C[w], D[w]);
+				Phi[w][k] = rng.nextGamma(C[w], 1/D[w]);
 		}
 
 	}//init
@@ -178,6 +178,10 @@ public class Model implements Serializable{
             int w=wo.word;
             for (int k = 0; k < n_features; k++)
                 F_c[k] *= Phi[w][k];
+            for (int k = 0; k < n_features; k++)
+                if (F_c[k] == 0)
+                	F_c[k] = GibbsSampler.DEFAULT_SHAPE/GibbsSampler.DEFAULT_RATE_PHI;
+            	
         }
         return F_c;
     }//computeF
