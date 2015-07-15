@@ -75,7 +75,6 @@ public class GibbsSampler {
 		for (int epoch = 0; epoch < n_iterations; epoch++) {
 			long t = System.currentTimeMillis();
 			
-			
 			GibbsSamplerState next_state = sampleNextState(model, data,
 					curr_state,counters);
 			curr_state = next_state;
@@ -533,15 +532,14 @@ public class GibbsSampler {
                 CascadeEvent ce=cascadeEvents.get(e);
                 int u=ce.node;
                 double t_u=ce.timestamp;
-                
-                /*
-                 * Remove the old influencer from counters
-                 */
-                int old_influencer=Y.get(c,u);
-                m_v[old_influencer]=Math.max(m_v[old_influencer]-1,0);
  
-            
                 if(e>0){ // skip first activation
+                   
+                    /*
+                     * Remove the old influencer from counters
+                     */
+                    int old_influencer=Y.get(c,u);
+                    m_v[old_influencer]=Math.max(m_v[old_influencer]-1,0);
                     
                     //the number of previous events is (e-1) and they go from 0 to e
                     double probInfluencers[]= new double[e];

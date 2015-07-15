@@ -87,6 +87,7 @@ public class Counters {
 	    double A[][]=model.getA();
 	    double S[][]=model.getS();
 	    double Phi[][]=model.getPhi();
+	    
 	    this.F_curr=model.computeFAllCascades(data);
 	    
 	    int n_nodes=model.n_nodes;
