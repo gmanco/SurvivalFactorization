@@ -44,8 +44,8 @@ public class GibbsSamplerState {
 	double [][] n_k_u_post; //  n_users x n_features 
 	
 	SparseDoubleMatrix2D[] L_k_u_v; // n_features x n_users x n_users
-	int[][] N_k_w; // n_words x n_features
-	int[][] C_k_w; // n_words x n_features
+	int[][] N_w_k; // n_words x n_features
+	int[][] C_w_k; // n_words x n_features
 
 	public GibbsSamplerState(int n_users, int n_cascades, int n_words,
 			int n_features) {
@@ -135,8 +135,8 @@ public class GibbsSamplerState {
 			for(WordOccurrence wo:cascadeContent){
 			    int w=wo.word;
 			    int n_w=wo.cnt;
-			    N_k_w[w][k_c] += n_events_cascade - 1;
-                C_k_w[w][k_c] += n_w;
+			    N_w_k[w][k_c] += n_events_cascade - 1;
+                C_w_k[w][k_c] += n_w;
 			}//for each word in the cascade
 
 			
@@ -165,8 +165,8 @@ public class GibbsSamplerState {
 			this.N_k_u_v[k] = new SparseDoubleMatrix2D(n_nodes, n_nodes);
 			this.L_k_u_v[k] = new SparseDoubleMatrix2D(n_nodes, n_nodes);
 		}
-		this.N_k_w = new int[n_words][n_features];
-		this.C_k_w = new int[n_words][n_features];
+		this.N_w_k = new int[n_words][n_features];
+		this.C_w_k = new int[n_words][n_features];
 		this.M_k = new int[n_features];
 		this.M_v = new int[n_nodes];
 	}//resetCounters

@@ -28,7 +28,8 @@ public class CascadeData {
         
         
         protected List<WordOccurrence>[] cascadeContent;
-         
+        protected Set<Integer>[]cascadesForWord;
+
         /*
          * Set of nodes ids
          */
@@ -71,8 +72,16 @@ public class CascadeData {
             return ris;
         }//getCascadeIdsForNode
         
+        
+        public Set<Integer> getCascadeIdsForWord(int word){
+            Set<Integer> ris=cascadesForWord[word];
+            if(ris==null)
+                ris=new HashSet<Integer>();
+            return ris;
+        }//getCascadeIdsForWord
+        
         public List<WordOccurrence> getCascadeContent(int c) {
-            List l= cascadeContent[c];
+            List<WordOccurrence> l= cascadeContent[c];
             if(l==null)
                 l=new ArrayList<WordOccurrence>();
             return l;
@@ -151,7 +160,7 @@ public class CascadeData {
 		    long tic=System.currentTimeMillis();
 		    try{
 			    wordSet=new TreeSet<Integer>();
-			    
+			   
 			    //read dimensions    
                 BufferedReader br=new BufferedReader(new FileReader(file_content));
                 String line=br.readLine();
@@ -169,7 +178,7 @@ public class CascadeData {
                 this.n_words=wordSet.size();
                 
                 this.cascadeContent=new ArrayList[n_cascades];
-               
+                this.cascadesForWord=new HashSet[n_words];
                 br=new BufferedReader(new FileReader(file_content));
                 line=br.readLine();
                 line=br.readLine();//skip header
@@ -185,6 +194,11 @@ public class CascadeData {
                     }
                     cascadeContent[cascadeId].add(new WordOccurrence(word, cnt));
                     
+                    if(cascadesForWord[word]==null){
+                        cascadesForWord[word]=new HashSet<Integer>();
+                    }
+                    cascadesForWord[word].add(cascadeId);   
+                    
                    
                     line=br.readLine();
                 }
@@ -199,7 +213,7 @@ public class CascadeData {
 		}//processContentFile
 
 
-		public int cascadeContentSize(int c){
+		public int getLenghtOfCascadeContent(int c){
 		    List<WordOccurrence> W_c=cascadeContent[c];
 		    int cnt=0;
 		    for(WordOccurrence wo: W_c)
