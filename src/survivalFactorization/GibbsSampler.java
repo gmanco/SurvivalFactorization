@@ -1,5 +1,8 @@
 package survivalFactorization;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -8,15 +11,13 @@ import utils.Dirichlet;
 import utils.Multinomial;
 import utils.Randoms;
 import utils.Weka_Utils;
-
 import cern.colt.matrix.tint.impl.SparseIntMatrix2D;
 import data.CascadeData;
 import data.CascadeEvent;
 import data.WordOccurrence;
 
-public class GibbsSampler {
 
-    
+public class GibbsSampler {
     static double DEFAULT_SHAPE=1.0;
     static double DEFAULT_SCALE=1.0;
 	double a;
@@ -28,9 +29,26 @@ public class GibbsSampler {
 	SamplerSettings settings;
 	Randoms randomGenerator;
 	
+	// FIXME: for debug only, remove after checking		
+	PrintWriter pwA;
+	PrintWriter pwS;
+	//
+	
 	public GibbsSampler(SamplerSettings settings) {
 		this.settings = settings;
 		this.randomGenerator= new Randoms(settings.seed);
+		
+		// FIXME: for debug only, remove after checking		
+		try {
+			pwA=new PrintWriter(new FileWriter("current_info_A.txt"));
+			pwS=new PrintWriter(new FileWriter("current_info_S.txt"));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//
+
 	}
 
 	public Model[] runInference(CascadeData data, int n_features) {
@@ -285,10 +303,18 @@ public class GibbsSampler {
 		   // sample from gamma
 		   for(int k=0;k<n_features;k++){
 		       A_new[u][k]=randomGenerator.nextGamma(shape_u[k],1.0/rate_u[k]);
+		       
+				// FIXME: for debug only, remove after checking		
+		       pwA.println("("+u+","+k+")\t"+shape_u[k]+"\t\t"+rate_u[k]+"\t\t"+(shape_u[k]/rate_u[k])+"\t\t"+A_new[u][k]);
+		       //
 		   }
 		}// for each node
 		
-		
+		// FIXME: for debug only, remove after checking		
+	       pwA.println();
+	       pwA.println();
+	       //	
+
 		return A_new;
 	   
 	}//sampleA
@@ -347,10 +373,19 @@ public class GibbsSampler {
            // sample from gamma
            for(int k=0;k<n_features;k++){
                S_new[u][k]=randomGenerator.nextGamma(shape_u[k],1.0/rate_u[k]);
+				// FIXME: for debug only, remove after checking		
+		       pwS.println("("+u+","+k+")\t"+shape_u[k]+"\t\t"+rate_u[k]+"\t\t"+(shape_u[k]/rate_u[k])+"\t\t"+S_new[u][k]);
+		       //
+
            }
            
         }// for each node
-		
+
+			// FIXME: for debug only, remove after checking		
+	       pwS.println();
+	       pwS.println();
+	       //	
+
         
 		return S_new;
 
