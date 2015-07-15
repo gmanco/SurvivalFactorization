@@ -461,8 +461,9 @@ public class GibbsSampler {
            
         }//for each word
             
-        
-        return Phi_new;
+        //FIXME
+        return model.getPhi();
+       // return Phi_new;
         
     }//samplePhi
 
