@@ -31,25 +31,14 @@ public class GibbsSampler {
 	Randoms randomGenerator;
 	
 	// FIXME: for debug only, remove after checking		
-	PrintWriter pwA;
-	PrintWriter pwS;
+	String fileA = "resources/current_info_A";
+	String fileS = "resources/current_info_S";
+	String filePhi = "resources/current_info_Phi";
 	//
 	
 	public GibbsSampler(SamplerSettings settings) {
 		this.settings = settings;
 		this.randomGenerator= new Randoms(settings.seed);
-		
-		// FIXME: for debug only, remove after checking		
-		try {
-			pwA=new PrintWriter(new FileWriter("current_info_A.txt"));
-			pwS=new PrintWriter(new FileWriter("current_info_S.txt"));
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//
-
 	}
 
 	public Model[] runInference(CascadeData data, int n_features) {
@@ -262,6 +251,14 @@ public class GibbsSampler {
 		int n_nodes=data.n_nodes;
 		int n_features=model.n_features;
 		
+		//FIXME: DEBUG, remove after check
+		PrintWriter pwA = null;
+		try {
+			pwA = new PrintWriter(new FileWriter(fileA));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// loop on the nodes
 		for(int u=0;u<n_nodes;u++){
@@ -314,8 +311,7 @@ public class GibbsSampler {
 		}// for each node
 		
 		// FIXME: for debug only, remove after checking		
-	       pwA.println();
-	       pwA.println();
+	       pwA.flush();
 	       //	
 	       
 	     return A_new;
@@ -326,6 +322,16 @@ public class GibbsSampler {
 		
 	    double[][] S_new = new double[data.n_nodes][model.n_features];
 
+		//FIXME: DEBUG, remove after check
+		PrintWriter pwS = null;
+		try {
+			pwS = new PrintWriter(new FileWriter(fileS));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	    
 		int n_nodes=data.n_nodes;
         int n_features=model.n_features;
         
@@ -384,8 +390,7 @@ public class GibbsSampler {
         }// for each node
 
 			// FIXME: for debug only, remove after checking		
-	       pwS.println();
-	       pwS.println();
+	       pwS.flush();
 	       //	
 
         
@@ -398,6 +403,16 @@ public class GibbsSampler {
         
         
         double[][] Phi_new = new double[data.n_words][model.n_features];
+        
+		//FIXME: DEBUG, remove after check
+		PrintWriter pwPhi = null;
+		try {
+			pwPhi = new PrintWriter(new FileWriter(filePhi));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 
         int n_features=model.n_features;
         
@@ -443,13 +458,17 @@ public class GibbsSampler {
                    
                    
               rate_w[k_c]+=contributeA+countributeB+lenghtContent_c; 
-                   
+                 
                 
             }
             
             // sample from gamma
            for(int k=0;k<n_features;k++){
                Phi_new[w][k]=randomGenerator.nextGamma(shape_w[k],1.0/rate_w[k]);
+				// FIXME: for debug only, remove after checking		
+ 		       pwPhi.println("("+w+","+k+")\t"+shape_w[k]+"\t\t"+rate_w[k]+"\t\t"+(shape_w[k]/rate_w[k])+"\t\t"+Phi_new[w][k]);
+ 		       //
+
            }
            
            //now update F_curr
@@ -460,6 +479,10 @@ public class GibbsSampler {
            
         }//for each word
             
+		// FIXME: for debug only, remove after checking		
+	       pwPhi.flush();
+	       //	
+
          return Phi_new;
         
     }//samplePhi
