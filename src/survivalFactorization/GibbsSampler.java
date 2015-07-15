@@ -101,7 +101,7 @@ public class GibbsSampler {
 			
 					
 			long tic=System.currentTimeMillis();
-	        System.out.print("Sampling A...");
+	     //   System.out.print("Sampling A...");
 			double[][] A_new = sampleA(model, data, curr_state,counters);
 			model.setA(A_new);
 			
@@ -109,25 +109,25 @@ public class GibbsSampler {
 			
 			
 	        long toc=(System.currentTimeMillis()-tic)/1000;
-	        System.out.println(" Done ("+toc+" secs)");
+	    //    System.out.println(" Done ("+toc+" secs)");
 
 
 	        tic=System.currentTimeMillis();
-            System.out.print("Sampling S...");
+        //    System.out.print("Sampling S...");
 			double[][] S_new = sampleS(model, data, curr_state,counters);
 			model.setS(S_new);
 			
 			counters.update(data, model,curr_state);
 
 			toc=(System.currentTimeMillis()-tic)/1000;
-            System.out.println(" Done ("+toc+" secs)");
+        //    System.out.println(" Done ("+toc+" secs)");
 
             tic=System.currentTimeMillis();
-            System.out.print("Sampling Phi...");
+        //    System.out.print("Sampling Phi...");
 			double[][] Phi_new = samplePhi(model, data, curr_state,counters);
 			model.setPhi(Phi_new);
 			toc=(System.currentTimeMillis()-tic)/1000;
-            System.out.println(" Done ("+toc+" secs)");
+        //    System.out.println(" Done ("+toc+" secs)");
 			
           
             
@@ -199,19 +199,19 @@ public class GibbsSampler {
 		 * SAMPLE Y
 		 */
 		long tic=System.currentTimeMillis();
-		System.out.print("Sampling Y...");
+	//	System.out.print("Sampling Y...");
 		SparseIntMatrix2D Y_new = sampleY(model, data, Y, Z, M_v);
 		long toc=(System.currentTimeMillis()-tic)/1000;
-		System.out.println(" Done ("+toc+" secs)");
+	//	System.out.println(" Done ("+toc+" secs)");
 		
 		/*
 		 * SAMPLE Z
 		 */
 		tic=System.currentTimeMillis();
-		System.out.print("Sampling Z...");
+	//	System.out.print("Sampling Z...");
 		int[] Z_new = sampleZ(model, data, Y_new, Z, M_k,counters);
 		toc=(System.currentTimeMillis()-tic)/1000;
-	    System.out.println(" Done ("+toc+" secs)");
+	//    System.out.println(" Done ("+toc+" secs)");
 		
 	    /*
 	     * Update the state

@@ -5,7 +5,7 @@ public class SamplerSettings {
 	public int seed=13;
 	public int n_iterations=100;
 	public int burnin=10;
-	public int llk_interval=5;
+	public int llk_interval=1;
 	public boolean compute_llk=true;
     public String curr_state_log="resources/curr_state_info";
 	
