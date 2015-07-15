@@ -1,6 +1,7 @@
 package survivalFactorization;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import utils.MatrixUtilities;
@@ -139,9 +140,11 @@ public class Model implements Serializable{
 	   
 		    //compute llk on the content
 		    double content_llk[]=new double[n_features];
+		    int cascadeContentSize=0;
 		    for(WordOccurrence wo:cascadeContent){
 		        int w=wo.word;
 		        int n_w_c=wo.cnt;
+		        cascadeContentSize+=n_w_c;
 		        for(int k=0;k<n_features;k++){
 		            if(Phi[w][k]>0)
 		                content_llk[k]+=n_w_c*Math.log(Phi[w][k]);
@@ -151,7 +154,7 @@ public class Model implements Serializable{
 		    }// for each word
 		    
 		    for(int k=0;k<n_features;k++){
-		        content_llk[k]-=(cascadeContent.size())*counters.Phi_k[k];
+		        content_llk[k]-=(cascadeContentSize)*counters.Phi_k[k];
 		    }//for each k
 		    
 		    //finally.. 
@@ -169,8 +172,7 @@ public class Model implements Serializable{
     public double[] computeF(List<WordOccurrence> W_c) {
        
         double[] F = new double[n_features];
-        for (int k = 0; k < n_features; k++)
-            F[k] = 1.0;
+        Arrays.fill(F,1.0);
        
         for(WordOccurrence wo:W_c){
             int w=wo.word;
@@ -211,7 +213,7 @@ public class Model implements Serializable{
     }
 
     public void setA(double[][] a) {
-        A = a;
+        this.A = a;
     }
     
 
@@ -229,11 +231,11 @@ public class Model implements Serializable{
 
    
     public void setS(double[][] s) {
-        S = s;
+        this.S = s;
     }
 
     public void setPhi(double[][] phi) {
-        Phi = phi;
+        this.Phi = phi;
     }
 
 
