@@ -270,8 +270,9 @@ public class SurvivalFactorizationEM_Learner {
             for (CascadeEvent prevEvent : prevEvents) {
                 double delta = currentEvent.timestamp - prevEvent.timestamp;
                 for (int k = 0; k < model.nFactors; k++) {
-                    logLikelihoodEvents[k] -=
-                            	delta * model.S[currentEvent.node][k]
+                    logLikelihoodEvents[k] += Math
+                            .log(model.S[currentEvent.node][k] * sumA[k])
+                            - delta * model.S[currentEvent.node][k]
                                     * model.A[prevEvent.node][k];
                 }
             }
@@ -279,8 +280,6 @@ public class SurvivalFactorizationEM_Learner {
             prevEvents.add(currentEvent);
             inactiveNodes.remove(currentEvent.node);
             for (int k = 0; k < model.nFactors; k++) {
-                logLikelihoodEvents[k] += Math
-                        .log(model.S[currentEvent.node][k] * sumA[k]);
                 sumA[k] += model.A[currentEvent.node][k];
             }
         }
