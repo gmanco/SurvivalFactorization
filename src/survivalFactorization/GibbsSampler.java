@@ -510,8 +510,7 @@ public class GibbsSampler {
 	        
 	        double logPrior[]=new double[n_features];
 	        for(int k=0;k<n_features;k++){
-//	            logPrior[k]=Math.log(m_k[k]+Alpha[k]);
-	            logPrior[k]=Math.log(Alpha[k]);
+	            logPrior[k]=Math.log(m_k[k]+Alpha[k]);
 	        }
 	        
 	        double logProbCascade[]=new double[n_features];
