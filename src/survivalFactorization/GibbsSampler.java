@@ -19,7 +19,7 @@ import data.WordOccurrence;
 
 public class GibbsSampler {
     static double DEFAULT_SHAPE=1.0;
-    static double DEFAULT_RATE=Math.pow(10,3);
+    static double DEFAULT_RATE=Math.pow(10,15);
     static double DEFAULT_RATE_PHI=10;
 	double a;
 	double b;
@@ -225,7 +225,7 @@ public class GibbsSampler {
 		Alpha = new double[n_features];
 		Beta = new double[data.n_nodes];
 		for (int k = 0; k < n_features; k++)
-			Alpha[k] = (double)50 / n_features;
+			Alpha[k] = 2.0;
 		
 		for (int u = 0; u < data.n_nodes; u++)
 			Beta[u] = (double)200 / data.n_nodes;
@@ -256,7 +256,6 @@ public class GibbsSampler {
 		try {
 			pwA = new PrintWriter(new FileWriter(fileA));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
