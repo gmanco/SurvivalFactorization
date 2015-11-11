@@ -19,7 +19,7 @@ import data.WordOccurrence;
 
 public class GibbsSampler {
     static double DEFAULT_SHAPE=1.0;
-    static double DEFAULT_RATE=Math.pow(10,15);
+    static double DEFAULT_RATE=Math.pow(10,3);
     static double DEFAULT_RATE_PHI=10;
 	double a;
 	double b;
@@ -511,7 +511,8 @@ public class GibbsSampler {
 	        
 	        double logPrior[]=new double[n_features];
 	        for(int k=0;k<n_features;k++){
-	            logPrior[k]=Math.log(m_k[k]+Alpha[k]);
+//	            logPrior[k]=Math.log(m_k[k]+Alpha[k]);
+	            logPrior[k]=Math.log(Alpha[k]);
 	        }
 	        
 	        double logProbCascade[]=new double[n_features];
