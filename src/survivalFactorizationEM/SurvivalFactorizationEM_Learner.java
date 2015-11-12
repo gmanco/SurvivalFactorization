@@ -327,6 +327,8 @@ public class SurvivalFactorizationEM_Learner {
         double Phi_new_num[][]=new double[cascadeData.n_words][model.nFactors];
         double Phi_new[][]=new double[cascadeData.n_words][model.nFactors];
         
+        double pi_new[] = new double[model.nFactors];
+        
         
         List<CascadeEvent> eventsCurrCascade;
         List<CascadeEvent> prevEventsCurrCascade = new ArrayList<CascadeEvent>();
@@ -397,12 +399,21 @@ public class SurvivalFactorizationEM_Learner {
                     Phi_new_num[wo.word][k]+=gamma[c][k]*wo.cnt;
                 }
             }
+            
+            // update pi_new
+            for (int k = 0; k < model.nFactors; k++) {
+            		pi_new[k] += gamma[c][k]; 
+            }
+            
         }// for each cascade
         
         
         // now compute the new model parameters        
         double k_squared_plus_one=model.nFactors*model.nFactors+1;
         for (int k = 0; k < model.nFactors; k++) {
+        	
+        		pi_new[k] = pi_new[k]*(1.0/cascadeData.getNCascades());
+        		
             for(int u=0;u<cascadeData.n_nodes;u++){
                 //update S
                 S_new[u][k]=S_new_num[u][k]/(S_new_den[u][k]+cascadeData.n_nodes);
