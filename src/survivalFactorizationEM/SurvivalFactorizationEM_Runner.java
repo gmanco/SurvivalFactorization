@@ -59,7 +59,9 @@ public class SurvivalFactorizationEM_Runner {
         SurvivalFactorizationEM_Learner inf = new SurvivalFactorizationEM_Learner();
 
         SurvivalFactorizationEM_Model model=inf.build(cascadeData, nFactors, nMaxIterations);
+        System.out.println("Saving the model");
         model.store(outputFile);
+        System.out.println("DONE");
     }
 
 

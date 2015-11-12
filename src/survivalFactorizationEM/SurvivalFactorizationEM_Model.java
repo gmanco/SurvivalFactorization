@@ -1,7 +1,14 @@
 package survivalFactorizationEM;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import utils.Weka_Utils;
 
@@ -111,8 +118,45 @@ public class SurvivalFactorizationEM_Model implements Serializable {
     }// init
 
     
-    public boolean store(String fileName){
-        throw new UnsupportedOperationException();
+    public void store(String fileName)throws Exception{
+        ObjectOutputStream out = null;
+        try {
+            GZIPOutputStream gz = new GZIPOutputStream(new FileOutputStream(new File(fileName)));
+            out = new ObjectOutputStream(gz);
+            out.writeObject(this);
+            out.flush();
+            gz.flush();
+            gz.finish();
+            out.close();
+        } catch(Exception ex) {
+            try {
+                ex.printStackTrace();
+                out.close();
+            } catch(Exception ex2) {
+                ex2.printStackTrace();
+            }
+            throw ex;
+        }
+    }
+    
+    
+    public static SurvivalFactorizationEM_Model readFromFile(String filename) throws Exception{
+        ObjectInputStream in = null;
+        SurvivalFactorizationEM_Model o=null;
+        try {
+            in = new ObjectInputStream(new GZIPInputStream(new FileInputStream(new File(filename))));
+            o= (SurvivalFactorizationEM_Model)in.readObject();
+            in.close();
+            return o;
+        } catch(Exception ex) {
+            try {
+                ex.printStackTrace();
+                in.close();
+            } catch(Exception ex2) {
+                ex2.printStackTrace();
+            }
+            throw ex;
+        }
     }
     
     

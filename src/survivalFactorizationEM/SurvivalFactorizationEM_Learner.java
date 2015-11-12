@@ -42,8 +42,7 @@ public class SurvivalFactorizationEM_Learner {
     private SurvivalFactorizationEM_Model iterateEM(CascadeData cascadeData,
             SurvivalFactorizationEM_Model model, int nMaxIterations) {
 
-        System.out.println("Learning phase:\tstarting");
-        System.out.println("#Iteration\tChanges\tTime");
+        System.out.println("Learning phase: starting at "+new Date());
 
         int saveIteration = 0;
         long initTime = System.currentTimeMillis();
@@ -71,8 +70,7 @@ public class SurvivalFactorizationEM_Learner {
 
             model = M_Step(cascadeData, model, gamma);
 
-            System.out.println(iterationsDone + "\t"
-                    + (System.currentTimeMillis() - initTime));
+            System.out.println("Iteration"+ iterationsDone + "\t" + (System.currentTimeMillis() - initTime)+" milliseconds");
 
             saveIteration++;
             if (saveIteration == save_step) {
@@ -80,14 +78,17 @@ public class SurvivalFactorizationEM_Learner {
                 logLikelihood = computeLogLikelihood(cascadeData, model, gamma);
                 System.out.println("Iteration:" + iterationsDone
                         + "\t Likelihood \t" + logLikelihood);
-                model.store("tmp_" + iterationsDone + ".model");
+                try {
+                    model.store("tmp_" + iterationsDone + ".model");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
         } // for each iteration
 
         long learningTime = System.currentTimeMillis() - initTime;
-        System.out.println("Learning Phase: DONE  ("
-                + ((double) learningTime / 1000) + " secs)\n");
+        System.out.println("Learning Phase: DONE  ("+ ((double) learningTime / 1000) + " secs)");
 
         return model;
 
@@ -109,19 +110,20 @@ public class SurvivalFactorizationEM_Learner {
 
         double log_pi[] = new double[nFactors];
 
-        for (int k = 0; k < nFactors; k++)
-            if (model.pi[k] != 0.0)
+        for (int k = 0; k < nFactors; k++){
+            if (model.pi[k] > 0.0)
                 log_pi[k] = Math.log(model.pi[k]);
             else
-                throw new RuntimeException("Prior is zero");
-
+                throw new RuntimeException("Prior is \t"+model.pi[k]);
+        }
+        
         List<CascadeEvent> eventsCurrCascade;
         List<CascadeEvent> prevEventsCurrCascade = new ArrayList<CascadeEvent>();
         Set<Integer> inactiveVertices = new HashSet<Integer>();
 
         List<WordOccurrence> contentCurrCascade;
 
-        for (int c = 0; c < cascadeData.getNCascades(); c++) {
+        for (int c = 0; c < cascadeData.n_cascades; c++) {
 
             // compute first term
             for (int k = 0; k < nFactors; k++) {
@@ -195,7 +197,7 @@ public class SurvivalFactorizationEM_Learner {
             for (WordOccurrence wo : contentCurrCascade) {
                 for (int k = 0; k < nFactors; k++) {
                     if (model.Phi[wo.word][k] <= 0)
-                        throw new RuntimeException();
+                        throw new RuntimeException("Error in the value of Phi\t"+model.Phi[wo.word][k]);
 
                     fifth_term += gamma[c][k] * wo.cnt
                             * Math.log(model.Phi[wo.word][k])
@@ -328,7 +330,7 @@ public class SurvivalFactorizationEM_Learner {
         double Phi_new[][]=new double[cascadeData.n_words][model.nFactors];
         
         double pi_new[]=new double[model.nFactors]; 
-
+        Arrays.fill(pi_new, SurvivalFactorizationEM_Configuration.eps);
         
         List<CascadeEvent> eventsCurrCascade;
         List<CascadeEvent> prevEventsCurrCascade = new ArrayList<CascadeEvent>();
