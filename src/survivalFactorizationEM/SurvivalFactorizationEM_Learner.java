@@ -351,10 +351,17 @@ public class SurvivalFactorizationEM_Learner {
                     for (int k = 0; k < model.nFactors; k++) {
 
                         double etaCurr_k = model.A[prevEvent.node][k]/ cumulativeAprev[k];
-                       //update S_num
+                       
+                        //update S_num
                         S_new_num[currentEvent.node][k]+=etaCurr_k*gamma[c][k];
                         //update S_den considering activations
                         S_new_den[currentEvent.node][k]+=gamma[c][k]*delta_c_uv* model.A[prevEvent.node][k];
+                        
+                        //update A
+                        A_new_num[prevEvent.node][k]+=etaCurr_k*gamma[c][k];
+                        A_new_den[prevEvent.node][k]+=gamma[c][k]*delta_c_uv* model.S[currentEvent.node][k];
+
+                        
                     } // for each k
 
                 } // for each previous event
@@ -375,6 +382,8 @@ public class SurvivalFactorizationEM_Learner {
                     for (int k = 0; k < model.nFactors; k++) {
                         //update S_den considering non-activations
                         S_new_den[inactiveNode][k]+=gamma[c][k]*delta_c_uv* model.A[currentEvent.node][k];
+                        //update A_den considering non-activation
+                        A_new_den[currentEvent.node][k]+=gamma[c][k]*delta_c_uv* model.S[inactiveNode][k];
                     }
                 }
 
