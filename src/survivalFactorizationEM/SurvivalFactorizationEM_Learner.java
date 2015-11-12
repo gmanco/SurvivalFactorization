@@ -16,6 +16,7 @@ import java.util.Set;
 import data.CascadeData;
 import data.CascadeEvent;
 import data.WordOccurrence;
+import utils.ArrayUtilities;
 import utils.Weka_Utils;
 
 public class SurvivalFactorizationEM_Learner {
@@ -194,6 +195,10 @@ public class SurvivalFactorizationEM_Learner {
             // compute likelihood content
             contentCurrCascade = cascadeData.getCascadeContent(c);
             int n_c = cascadeData.getLenghtOfCascadeContent(c);
+            // check if cascade has content
+            if(n_c==0){
+                continue;
+            }
             for (WordOccurrence wo : contentCurrCascade) {
                 for (int k = 0; k < nFactors; k++) {
                     if (model.Phi[wo.word][k] <= 0)
@@ -239,11 +244,20 @@ public class SurvivalFactorizationEM_Learner {
         double gammaNew[][] = new double[cascadeData.n_cascades][model.nFactors];
         double[] llkEvents;
         double[] llkContent;
+        double log_pi[]=new double[model.nFactors];
+        for (int k = 0; k < model.nFactors; k++){
+            if(model.pi[k]<=0){
+                ArrayUtilities.print(model.pi);
+                throw new RuntimeException();
+            }
+            log_pi[k]=Math.log(model.pi[k]);
+        }
         for (int c = 0; c < cascadeData.getNCascades(); c++) {
             llkEvents = computeLogLikelihoodEvents(cascadeData, c, model);
             llkContent = computeLogLikelihoodContent(cascadeData, c, model);
-            for (int k = 0; k < model.nFactors; k++)
-                gammaNew[c][k] = llkEvents[k] + llkContent[k] + Math.log(model.pi[k]);
+            for (int k = 0; k < model.nFactors; k++){
+                gammaNew[c][k] = llkEvents[k] + llkContent[k] + log_pi[k];
+            }
             gammaNew[c] = Weka_Utils.logs2probs(gammaNew[c]);
         }
         return gammaNew;
@@ -269,9 +283,13 @@ public class SurvivalFactorizationEM_Learner {
                                     * model.A[prevEvent.node][k];
                 }
             }
-
-            for (int k = 0; k < model.nFactors; k++) {
+            
+            if(prevEvents.size()>0){
+                for (int k = 0; k < model.nFactors; k++) {
+                    if(model.S[currentEvent.node][k]<0)
+                        throw new RuntimeException();
             		logLikelihoodEvents[k] += Math.log(model.S[currentEvent.node][k] * sumA[k]);
+                }
             }
             
             prevEvents.add(currentEvent);
@@ -299,15 +317,20 @@ public class SurvivalFactorizationEM_Learner {
             int cascadeIndex, SurvivalFactorizationEM_Model model) {
 
         double logLikelihoodContent[] = new double[model.nFactors];
-
+        
         int n_c = cascadeData.getLenghtOfCascadeContent(cascadeIndex);
-        for (WordOccurrence wo : cascadeData.getCascadeContent(cascadeIndex)) {
-            for (int k = 0; k < model.nFactors; k++) {
-                logLikelihoodContent[k] += wo.cnt
-                        * Math.log(model.Phi[wo.word][k])
-                        - n_c * model.Phi[wo.word][k];
+        if(n_c!=0)
+            for (WordOccurrence wo : cascadeData.getCascadeContent(cascadeIndex)) {
+                for (int k = 0; k < model.nFactors; k++) {
+                    if(model.Phi[wo.word][k]<=0){
+                        ArrayUtilities.print(model.Phi[wo.word]);
+                        throw new RuntimeException();
+                    }
+                    logLikelihoodContent[k] += wo.cnt
+                            * Math.log(model.Phi[wo.word][k])
+                            - n_c * model.Phi[wo.word][k];
+                }
             }
-        }
 
         return logLikelihoodContent;
     }// computeLogLikelihoodContent
@@ -405,26 +428,17 @@ public class SurvivalFactorizationEM_Learner {
                 }
             }
             
-            // update pi_new
-            for (int k = 0; k < model.nFactors; k++) {
-            		pi_new[k] += gamma[c][k]; 
-            }
-            
         }// for each cascade
         
         
         // now compute the new model parameters        
         double k_squared_plus_one=model.nFactors*model.nFactors+1;
         for (int k = 0; k < model.nFactors; k++) {
-        	
-        		pi_new[k] = pi_new[k]*(1.0/cascadeData.getNCascades());
-        		
+        	     		
             for(int u=0;u<cascadeData.n_nodes;u++){
                 //update S
                 S_new[u][k]=S_new_num[u][k]/(S_new_den[u][k]+cascadeData.n_nodes);
-                
-                if(A_new_den[u][k]==0.0)
-                    throw new RuntimeException();
+                                
                 //update A
                 A_new[u][k]=A_new_num[u][k]/(A_new_den[u][k]+cascadeData.n_nodes);
             }

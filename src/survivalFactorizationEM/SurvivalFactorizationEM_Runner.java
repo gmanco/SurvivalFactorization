@@ -6,6 +6,12 @@ import data.CascadeData;
 public class SurvivalFactorizationEM_Runner {
 
     public static void main(String[] args) throws Exception {
+       
+        args=new String[]{"-e","resources/datasets/memeTracker/cleaned_debug_activations",
+                           "-c","resources/datasets/memeTracker/cleaned_debug_content",
+                           "-k","3",
+                           "-o","resources/model"
+                            };
         System.out.println("*** Survival Factorization EM ***");
 
         String file_events = null;
@@ -52,13 +58,18 @@ public class SurvivalFactorizationEM_Runner {
    
 
         } // for each arg
-
+        
+        if(outputFile==null){
+            System.out.println("Please specify output file");
+            return;
+        }
         CascadeData cascadeData=new CascadeData(file_events, file_content);
         cascadeData.getInfo();
 
         SurvivalFactorizationEM_Learner inf = new SurvivalFactorizationEM_Learner();
 
         SurvivalFactorizationEM_Model model=inf.build(cascadeData, nFactors, nMaxIterations);
+       
         System.out.println("Saving the model");
         model.store(outputFile);
         System.out.println("DONE");

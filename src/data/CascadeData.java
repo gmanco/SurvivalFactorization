@@ -29,6 +29,7 @@ public class CascadeData {
         
         protected List<WordOccurrence>[] cascadeContent;
         protected Set<Integer>[]cascadesForWord;
+        protected int[]lengthCascade;
 
         /*
          * Set of nodes ids
@@ -179,6 +180,7 @@ public class CascadeData {
                 
                 this.cascadeContent=new ArrayList[n_cascades];
                 this.cascadesForWord=new HashSet[n_words];
+                this.lengthCascade=new int[n_cascades];
                 br=new BufferedReader(new FileReader(file_content));
                 line=br.readLine();
                 line=br.readLine();//skip header
@@ -198,7 +200,7 @@ public class CascadeData {
                         cascadesForWord[word]=new HashSet<Integer>();
                     }
                     cascadesForWord[word].add(cascadeId);   
-                    
+                    lengthCascade[cascadeId]+=cnt;
                    
                     line=br.readLine();
                 }
@@ -214,11 +216,7 @@ public class CascadeData {
 
 
 		public int getLenghtOfCascadeContent(int c){
-		    List<WordOccurrence> W_c=cascadeContent[c];
-		    int cnt=0;
-		    for(WordOccurrence wo: W_c)
-		        cnt+=wo.cnt;
-		    return cnt;
+		    return lengthCascade[c];
 		}
 		
 		
