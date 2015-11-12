@@ -93,15 +93,7 @@ public class SurvivalFactorizationEM_Learner {
 
     }// iterate
 
-    /*
-     * M-Step updates the model
-     */
-    private SurvivalFactorizationEM_Model M_Step(CascadeData cascadeData,
-            SurvivalFactorizationEM_Model model, double[][] gamma) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
+    
     private double computeLogLikelihood(CascadeData cascadeData,
             SurvivalFactorizationEM_Model model, double gamma[][]) {
         double logLikelihood = 0;
@@ -318,6 +310,113 @@ public class SurvivalFactorizationEM_Learner {
         return logLikelihoodContent;
     }// computeLogLikelihoodContent
 
+    /*
+     * M-Step updates the model
+     */
+    private SurvivalFactorizationEM_Model M_Step(CascadeData cascadeData,
+            SurvivalFactorizationEM_Model model, double[][] gamma) {
+       
+        double A_new_num[][]=new double[cascadeData.n_nodes][model.nFactors];
+        double A_new_den[][]=new double[cascadeData.n_nodes][model.nFactors];
+        double A_new[][]=new double[cascadeData.n_nodes][model.nFactors];
+        
+        double S_new_num[][]=new double[cascadeData.n_nodes][model.nFactors];
+        double S_new_den[][]=new double[cascadeData.n_nodes][model.nFactors];
+        double S_new[][]=new double[cascadeData.n_nodes][model.nFactors];
+        
+        double Phi_new_num[][]=new double[cascadeData.n_words][model.nFactors];
+        double Phi_new[][]=new double[cascadeData.n_words][model.nFactors];
+        
+        
+        List<CascadeEvent> eventsCurrCascade;
+        List<CascadeEvent> prevEventsCurrCascade = new ArrayList<CascadeEvent>();
+        Set<Integer> inactiveVertices = new HashSet<Integer>();
+
+        List<WordOccurrence> contentCurrCascade;
+        int length_all_traces=0;
+        for (int c = 0; c < cascadeData.getNCascades(); c++) {
+
+            eventsCurrCascade = cascadeData.getCascadeEvents(c);
+            prevEventsCurrCascade.clear();
+            inactiveVertices.clear();
+            inactiveVertices.addAll(cascadeData.getNodeIds());
+            double cumulativeAprev[] = new double[model.nFactors];
+            for (CascadeEvent currentEvent : eventsCurrCascade) {
+
+                for (CascadeEvent prevEvent : prevEventsCurrCascade) {
+
+                    double delta_c_uv = currentEvent.timestamp
+                            - prevEvent.timestamp;
+
+                    for (int k = 0; k < model.nFactors; k++) {
+
+                        double etaCurr_k = model.A[prevEvent.node][k]/ cumulativeAprev[k];
+                       //update S_num
+                        S_new_num[currentEvent.node][k]+=etaCurr_k*gamma[c][k];
+                        //update S_den considering activations
+                        S_new_den[currentEvent.node][k]+=gamma[c][k]*delta_c_uv* model.A[prevEvent.node][k];
+                    } // for each k
+
+                } // for each previous event
+
+                // add current Event to previous
+                prevEventsCurrCascade.add(currentEvent);
+                inactiveVertices.remove(currentEvent.node);
+                // update cumulative for computing eta
+                for (int k = 0; k < model.nFactors; k++) {
+                    cumulativeAprev[k] += model.A[currentEvent.node][k];
+                }
+            } // for each cascade event
+
+            // for each inactive node (update S_den)
+            for (int inactiveNode : inactiveVertices) {
+                for (CascadeEvent currentEvent : eventsCurrCascade) {
+                    double delta_c_uv=cascadeData.t_max-currentEvent.timestamp;
+                    for (int k = 0; k < model.nFactors; k++) {
+                        //update S_den considering non-activations
+                        S_new_den[inactiveNode][k]+=gamma[c][k]*delta_c_uv* model.A[currentEvent.node][k];
+                    }
+                }
+
+            }// for each inactive node
+            
+            // update Phi_new & normalization factor for Phi
+            contentCurrCascade = cascadeData.getCascadeContent(c);
+            length_all_traces+= cascadeData.getLenghtOfCascadeContent(c);
+            for (WordOccurrence wo : contentCurrCascade) {
+                for (int k = 0; k < model.nFactors; k++) {
+                    Phi_new_num[wo.word][k]+=gamma[c][k]*wo.cnt;
+                }
+            }
+        }// for each cascade
+        
+        
+        // now compute the new model parameters        
+        double k_squared_plus_one=model.nFactors*model.nFactors+1;
+        for (int k = 0; k < model.nFactors; k++) {
+            for(int u=0;u<cascadeData.n_nodes;u++){
+                //update S
+                S_new[u][k]=S_new_num[u][k]/(S_new_den[u][k]+cascadeData.n_nodes);
+                
+                if(A_new_den[u][k]==0.0)
+                    throw new RuntimeException();
+                //update A
+                A_new[u][k]=(S_new_num[u][k]+cascadeData.n_nodes)/(A_new_den[u][k]);
+            }
+            for(int w=0;w<cascadeData.n_words;w++){
+                Phi_new[w][k]=Phi_new_num[w][k]/(length_all_traces+k_squared_plus_one);
+            }       
+        }
+        
+        
+        //build the new model
+        SurvivalFactorizationEM_Model updatedModel=new SurvivalFactorizationEM_Model(cascadeData.n_nodes,cascadeData.n_words,model.nFactors);
+        updatedModel.setA(A_new);
+        updatedModel.setS(S_new);
+        updatedModel.setPhi(Phi_new);
+        return updatedModel;
+        
+    }//M-step
 
 
 }
