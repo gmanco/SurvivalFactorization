@@ -410,7 +410,7 @@ public class SurvivalFactorizationEM_Learner {
                 if(A_new_den[u][k]==0.0)
                     throw new RuntimeException();
                 //update A
-                A_new[u][k]=(S_new_num[u][k]+cascadeData.n_nodes)/(A_new_den[u][k]);
+                A_new[u][k]=A_new_num[u][k]/(A_new_den[u][k]+cascadeData.n_nodes);
             }
             for(int w=0;w<cascadeData.n_words;w++){
                 Phi_new[w][k]=Phi_new_num[w][k]/(length_all_traces+k_squared_plus_one);
