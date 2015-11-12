@@ -327,6 +327,7 @@ public class SurvivalFactorizationEM_Learner {
         double Phi_new_num[][]=new double[cascadeData.n_words][model.nFactors];
         double Phi_new[][]=new double[cascadeData.n_words][model.nFactors];
         
+        double pi_new[]=new double[model.nFactors]; 
         
         List<CascadeEvent> eventsCurrCascade;
         List<CascadeEvent> prevEventsCurrCascade = new ArrayList<CascadeEvent>();
@@ -336,6 +337,9 @@ public class SurvivalFactorizationEM_Learner {
         int length_all_traces=0;
         for (int c = 0; c < cascadeData.getNCascades(); c++) {
 
+            for(int k=0;k<model.nFactors;k++)
+                pi_new[k]+=gamma[c][k];
+            
             eventsCurrCascade = cascadeData.getCascadeEvents(c);
             prevEventsCurrCascade.clear();
             inactiveVertices.clear();
@@ -417,12 +421,15 @@ public class SurvivalFactorizationEM_Learner {
             }       
         }
         
+        Weka_Utils.normalize(pi_new);
+        
         
         //build the new model
         SurvivalFactorizationEM_Model updatedModel=new SurvivalFactorizationEM_Model(cascadeData.n_nodes,cascadeData.n_words,model.nFactors);
         updatedModel.setA(A_new);
         updatedModel.setS(S_new);
         updatedModel.setPhi(Phi_new);
+        updatedModel.setPi(pi_new);
         return updatedModel;
         
     }//M-step
