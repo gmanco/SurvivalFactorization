@@ -241,7 +241,7 @@ public class SurvivalFactorizationEM_Learner {
             llkEvents = computeLogLikelihoodEvents(cascadeData, c, model);
             llkContent = computeLogLikelihoodContent(cascadeData, c, model);
             for (int k = 0; k < model.nFactors; k++)
-                gammaNew[c][k] = llkEvents[k] + llkContent[k];
+                gammaNew[c][k] = llkEvents[k] + llkContent[k] + Math.log(model.pi[k]);
             gammaNew[c] = Weka_Utils.logs2probs(gammaNew[c]);
         }
         return gammaNew;
