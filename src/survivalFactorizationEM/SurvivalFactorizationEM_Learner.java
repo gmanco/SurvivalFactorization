@@ -432,7 +432,7 @@ public class SurvivalFactorizationEM_Learner {
         
         
         // now compute the new model parameters        
-        double k_squared_plus_one=model.nFactors*model.nFactors+1;
+        double two_k_squared_plus_2=2*model.nFactors*model.nFactors+2;
         for (int k = 0; k < model.nFactors; k++) {
         	     		
             for(int u=0;u<cascadeData.n_nodes;u++){
@@ -443,7 +443,7 @@ public class SurvivalFactorizationEM_Learner {
                 A_new[u][k]=A_new_num[u][k]/(A_new_den[u][k]+cascadeData.n_nodes);
             }
             for(int w=0;w<cascadeData.n_words;w++){
-                Phi_new[w][k]=Phi_new_num[w][k]/(length_all_traces+k_squared_plus_one);
+                Phi_new[w][k]=(Phi_new_num[w][k]+1.0)/(length_all_traces+two_k_squared_plus_2);
             }       
         }
         
