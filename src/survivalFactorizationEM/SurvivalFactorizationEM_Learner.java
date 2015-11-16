@@ -204,6 +204,7 @@ public class SurvivalFactorizationEM_Learner {
                     if (model.Phi[wo.word][k] <= 0)
                         throw new RuntimeException("Error in the value of Phi\t"+model.Phi[wo.word][k]);
 
+                    //FIXME
                     fifth_term += gamma[c][k] * wo.cnt
                             * Math.log(model.Phi[wo.word][k])
                             - n_c * model.Phi[wo.word][k];
@@ -326,6 +327,7 @@ public class SurvivalFactorizationEM_Learner {
                         ArrayUtilities.print(model.Phi[wo.word]);
                         throw new RuntimeException();
                     }
+                    //FIXME
                     logLikelihoodContent[k] += wo.cnt
                             * Math.log(model.Phi[wo.word][k])
                             - n_c * model.Phi[wo.word][k];
