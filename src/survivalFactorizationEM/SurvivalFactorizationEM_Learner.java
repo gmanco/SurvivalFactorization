@@ -108,6 +108,7 @@ public class SurvivalFactorizationEM_Learner {
         double sixth_term = 0.0;
 
         int nFactors = model.nFactors;
+        double constant_sixth_term = 2*model.nFactors * model.nFactors + 2.0;
 
         double log_pi[] = new double[nFactors];
 
@@ -203,30 +204,31 @@ public class SurvivalFactorizationEM_Learner {
                 for (int k = 0; k < nFactors; k++) {
                     if (model.Phi[wo.word][k] <= 0)
                         throw new RuntimeException("Error in the value of Phi\t"+model.Phi[wo.word][k]);
-
-                    //FIXME
                     fifth_term += gamma[c][k] * wo.cnt
-                            * Math.log(model.Phi[wo.word][k])
-                            - n_c * model.Phi[wo.word][k];
-
+                            * Math.log(model.Phi[wo.word][k]);           
                 }
-
+            }
+            //TODO @manco:check
+            for(int w=0;w<cascadeData.n_words;w++){
+                for (int k = 0; k < nFactors; k++) {
+                    fifth_term-=gamma[c][k]*n_c*model.Phi[w][k];
+                }
             }
 
         } // for each cascade
 
-        // compute fifth term
+        // compute sixth_term term
         int N = cascadeData.getNNodes();
         for (int u = 0; u < cascadeData.getNNodes(); u++) {
             for (int k = 0; k < nFactors; k++) {
                 sixth_term += N * (model.S[u][k] + model.A[u][k]);
             }
         }
-
-        double K_squared_plus_one = model.nFactors * model.nFactors + 1.0;
+        
+        //TODO @manco:check
         for (int w = 0; w < cascadeData.getNWords(); w++) {
             for (int k = 0; k < nFactors; k++) {
-                fifth_term += K_squared_plus_one * (model.Phi[w][k]);
+                sixth_term += constant_sixth_term * (model.Phi[w][k]) + Math.log(model.Phi[w][k]) ;
             }
         }
 
@@ -320,19 +322,25 @@ public class SurvivalFactorizationEM_Learner {
         double logLikelihoodContent[] = new double[model.nFactors];
         
         int n_c = cascadeData.getLenghtOfCascadeContent(cascadeIndex);
-        if(n_c!=0)
+        if(n_c!=0){
             for (WordOccurrence wo : cascadeData.getCascadeContent(cascadeIndex)) {
                 for (int k = 0; k < model.nFactors; k++) {
                     if(model.Phi[wo.word][k]<=0){
                         ArrayUtilities.print(model.Phi[wo.word]);
                         throw new RuntimeException();
                     }
-                    //FIXME
+                 
                     logLikelihoodContent[k] += wo.cnt
-                            * Math.log(model.Phi[wo.word][k])
-                            - n_c * model.Phi[wo.word][k];
+                            * Math.log(model.Phi[wo.word][k]);                         
                 }
             }
+        //TODO @manco:check
+            for (int w = 0; w < cascadeData.getNWords(); w++) {
+                for (int k = 0; k < model.nFactors; k++) {
+                    logLikelihoodContent[k] -= n_c* model.Phi[w][k];
+                }
+            }
+        }
 
         return logLikelihoodContent;
     }// computeLogLikelihoodContent
