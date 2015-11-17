@@ -269,8 +269,10 @@ public class SurvivalFactorizationEM_Learner {
         for (CascadeEvent currentEvent : cascadeData.getCascadeEvents(cascadeIndex)) {
 
             for (int k = 0; k < model.nFactors; k++) {
-                if(model.S[currentEvent.node][k]<=0)
+                if(model.S[currentEvent.node][k]<=0){
+                    ArrayUtilities.print(model.S[currentEvent.node]);
                     throw new RuntimeException();
+                }
                 logLikelihoodEvents[k]+=Math.log(model.S[currentEvent.node][k]);
             }
             
