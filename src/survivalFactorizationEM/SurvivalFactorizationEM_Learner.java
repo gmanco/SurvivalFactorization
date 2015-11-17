@@ -273,28 +273,31 @@ public class SurvivalFactorizationEM_Learner {
         List<CascadeEvent> prevEvents = new ArrayList<CascadeEvent>();
 
         double sumA[] = new double[model.nFactors];
-        HashSet<Integer> inactiveNodes = new HashSet<Integer>(
-                cascadeData.getNodeIds());
-        for (CascadeEvent currentEvent : cascadeData
-                .getCascadeEvents(cascadeIndex)) {
+        HashSet<Integer> inactiveNodes = new HashSet<Integer>(cascadeData.getNodeIds());
+        
+        for (CascadeEvent currentEvent : cascadeData.getCascadeEvents(cascadeIndex)) {
 
-            for (CascadeEvent prevEvent : prevEvents) {
-                double delta = currentEvent.timestamp - prevEvent.timestamp;
-                for (int k = 0; k < model.nFactors; k++) {
-                    logLikelihoodEvents[k] -= 
-                            delta * model.S[currentEvent.node][k]
-                                    * model.A[prevEvent.node][k];
-                }
+            for (int k = 0; k < model.nFactors; k++) {
+                if(model.S[currentEvent.node][k]<=0)
+                    throw new RuntimeException();
+                logLikelihoodEvents[k]+=Math.log(model.S[currentEvent.node][k]);
             }
             
             if(prevEvents.size()>0){
                 for (int k = 0; k < model.nFactors; k++) {
-                    if(model.S[currentEvent.node][k]<0)
-                        throw new RuntimeException();
-            		logLikelihoodEvents[k] += Math.log(model.S[currentEvent.node][k] * sumA[k]);
+                    if(sumA[k]==0)
+                        throw new RuntimeException(""+sumA[k]);
+                    logLikelihoodEvents[k] += Math.log(sumA[k]);
                 }
             }
-            
+              
+            for (CascadeEvent prevEvent : prevEvents) {
+                double delta = currentEvent.timestamp - prevEvent.timestamp;
+                for (int k = 0; k < model.nFactors; k++) {
+                    logLikelihoodEvents[k] -= model.S[currentEvent.node][k] *delta *  model.A[prevEvent.node][k];
+                }
+            }
+                   
             prevEvents.add(currentEvent);
             inactiveNodes.remove(currentEvent.node);
             for (int k = 0; k < model.nFactors; k++) {
@@ -303,13 +306,10 @@ public class SurvivalFactorizationEM_Learner {
         }
 
         for (int inactiveNode : inactiveNodes) {
-            for (CascadeEvent currentEvent : cascadeData
-                    .getCascadeEvents(cascadeIndex)) {
+            for (CascadeEvent currentEvent : cascadeData.getCascadeEvents(cascadeIndex)) {
                 for (int k = 0; k < model.nFactors; k++) {
-                    logLikelihoodEvents[k] -= (cascadeData.t_max
-                            - currentEvent.timestamp)
-                            * model.S[currentEvent.node][k]
-                                    * model.A[inactiveNode][k];
+                    logLikelihoodEvents[k] -= (cascadeData.t_max- currentEvent.timestamp)
+                                                * model.S[inactiveNode][k]* model.A[currentEvent.node][k];
                 }
             }
         }
