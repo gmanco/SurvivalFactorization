@@ -437,10 +437,10 @@ public class SurvivalFactorizationEM_Learner {
         	     		
             for(int u=0;u<cascadeData.n_nodes;u++){
                 //update S
-                S_new[u][k]=S_new_num[u][k]/(S_new_den[u][k]+cascadeData.n_nodes);
+                S_new[u][k]=(S_new_num[u][k]+1)/(S_new_den[u][k]+cascadeData.n_nodes);
                                 
                 //update A
-                A_new[u][k]=A_new_num[u][k]/(A_new_den[u][k]+cascadeData.n_nodes);
+                A_new[u][k]=(A_new_num[u][k]+1)/(A_new_den[u][k]+cascadeData.n_nodes);
             }
             for(int w=0;w<cascadeData.n_words;w++){
                 Phi_new[w][k]=(Phi_new_num[w][k]+1.0)/(length_all_traces+two_k_squared_plus_2);
