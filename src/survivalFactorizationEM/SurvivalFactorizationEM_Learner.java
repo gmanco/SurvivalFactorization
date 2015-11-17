@@ -50,8 +50,7 @@ public class SurvivalFactorizationEM_Learner {
             for (int k = 0; k < nFactors; k++) {
                 gamma[c][k] = Math.max(
                         SurvivalFactorizationEM_Configuration.eps,
-                        SurvivalFactorizationEM_Configuration.randomGen
-                        .nextDouble());
+                        SurvivalFactorizationEM_Configuration.randomGen.nextDouble());
             }
             Weka_Utils.normalize(gamma[c]);
         }
@@ -321,9 +320,7 @@ public class SurvivalFactorizationEM_Learner {
                         ArrayUtilities.print(model.Phi[wo.word]);
                         throw new RuntimeException();
                     }
-                 
-                    logLikelihoodContent[k] += wo.cnt
-                            * Math.log(model.Phi[wo.word][k]);                         
+                    logLikelihoodContent[k] += wo.cnt * Math.log(model.Phi[wo.word][k]);                         
                 }
             }
         //TODO @manco:check
@@ -377,14 +374,13 @@ public class SurvivalFactorizationEM_Learner {
 
                 for (CascadeEvent prevEvent : prevEventsCurrCascade) {
 
-                    double delta_c_uv = currentEvent.timestamp
-                            - prevEvent.timestamp;
+                    double delta_c_uv = currentEvent.timestamp - prevEvent.timestamp;
 
                     for (int k = 0; k < model.nFactors; k++) {
 
                         double etaCurr_k = model.A[prevEvent.node][k]/ cumulativeAprev[k];
                        
-                        //update S_num
+                        //update S_num first part
                         S_new_num[currentEvent.node][k]+=etaCurr_k*gamma[c][k];
                         //update S_den considering activations
                         S_new_den[currentEvent.node][k]+=gamma[c][k]*delta_c_uv* model.A[prevEvent.node][k];
