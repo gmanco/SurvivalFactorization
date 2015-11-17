@@ -1,14 +1,8 @@
 package survivalFactorizationEM;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -155,10 +149,8 @@ public class SurvivalFactorizationEM_Learner {
                             throw new RuntimeException();
 
                         // update second term
-                        double etaCurr_k = model.A[prevEvent.node][k]
-                                / cumulativeAprev[k];
-                        double logSA_k = Math.log(model.A[prevEvent.node][k])
-                                + Math.log(model.S[currentEvent.node][k]);
+                        double etaCurr_k = model.A[prevEvent.node][k]/ cumulativeAprev[k];
+                        double logSA_k = Math.log(model.A[prevEvent.node][k]) + Math.log(model.S[currentEvent.node][k]);
                         second_term += gamma[c][k] * etaCurr_k * logSA_k;
 
                         // update third term
@@ -228,7 +220,7 @@ public class SurvivalFactorizationEM_Learner {
         //TODO @manco:check
         for (int w = 0; w < cascadeData.getNWords(); w++) {
             for (int k = 0; k < nFactors; k++) {
-                sixth_term += constant_sixth_term * (model.Phi[w][k]) + Math.log(model.Phi[w][k]) ;
+                sixth_term -= constant_sixth_term * (model.Phi[w][k]) + Math.log(model.Phi[w][k]) ;
             }
         }
 
