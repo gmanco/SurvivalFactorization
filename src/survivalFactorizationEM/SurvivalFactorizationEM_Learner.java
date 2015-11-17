@@ -59,7 +59,7 @@ public class SurvivalFactorizationEM_Learner {
         System.out.println("Init loglikelihood\t" + logLikelihood);
 
         for (int iterationsDone = 1; iterationsDone <= nMaxIterations; iterationsDone++) {
-
+            
             gamma = E_Step(cascadeData, model);
 
             model = M_Step(cascadeData, model, gamma);
