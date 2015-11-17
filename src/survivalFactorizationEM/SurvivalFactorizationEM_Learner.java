@@ -56,30 +56,42 @@ public class SurvivalFactorizationEM_Learner {
         }
 
         double logLikelihood = computeLogLikelihood(cascadeData, model, gamma);
-        System.out.println("Init loglikelihood\t" + logLikelihood);
 
-        for (int iterationsDone = 1; iterationsDone <= nMaxIterations; iterationsDone++) {
-            
+        System.out.println("Init loglikelihood\t" + logLikelihood);            
+
+        System.out.format("Init loglikelihood\t %.5f\n",logLikelihood);
+        double prevlogLikelihood = logLikelihood;
+        double improvement = 1;
+        int iterationsDone = 1;
+        do  {// for each iteration
             gamma = E_Step(cascadeData, model);
 
             model = M_Step(cascadeData, model, gamma);
-
-            System.out.println("Iteration"+ iterationsDone + "\t" + (System.currentTimeMillis() - initTime)+" milliseconds");
 
             saveIteration++;
             if (saveIteration == save_step) {
                 saveIteration = 0;
                 logLikelihood = computeLogLikelihood(cascadeData, model, gamma);
-                System.out.println("Iteration:" + iterationsDone
-                        + "\t Likelihood \t" + logLikelihood);
+                improvement = (prevlogLikelihood-logLikelihood)/prevlogLikelihood;
+                if (improvement < 0){
+                		throw new RuntimeException(
+                				String.format("Likelihood increasing\n\tCurrent Likelihood:\t %.5f\n\tPrevious Likelihood:\t %.5f\n\tImprovement:\t %.5f",
+                						logLikelihood,prevlogLikelihood,improvement));
+                }
+                prevlogLikelihood = logLikelihood;
+                
+                System.out.format("Iteration: %d\tLikelihood\t%.5f (Improvement: %.4f)\n"
+                		,iterationsDone,logLikelihood,improvement);
+                
                 try {
                     model.store("tmp_" + iterationsDone + ".model");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
-        } // for each iteration
+            iterationsDone++;
+        } while ( iterationsDone <= nMaxIterations 
+        		&& improvement > SurvivalFactorizationEM_Configuration.eps);
 
         long learningTime = System.currentTimeMillis() - initTime;
         System.out.println("Learning Phase: DONE  ("+ ((double) learningTime / 1000) + " secs)");
@@ -437,10 +449,10 @@ public class SurvivalFactorizationEM_Learner {
         	     		
             for(int u=0;u<cascadeData.n_nodes;u++){
                 //update S
-                S_new[u][k]=S_new_num[u][k]/(S_new_den[u][k]+cascadeData.n_nodes);
+                S_new[u][k]=(S_new_num[u][k]+1)/(S_new_den[u][k]+cascadeData.n_nodes);
                                 
                 //update A
-                A_new[u][k]=A_new_num[u][k]/(A_new_den[u][k]+cascadeData.n_nodes);
+                A_new[u][k]=(A_new_num[u][k]+1)/(A_new_den[u][k]+cascadeData.n_nodes);
             }
             for(int w=0;w<cascadeData.n_words;w++){
                 Phi_new[w][k]=(Phi_new_num[w][k]+1.0)/(length_all_traces+two_k_squared_plus_2);
