@@ -56,30 +56,42 @@ public class SurvivalFactorizationEM_Learner {
         }
 
         double logLikelihood = computeLogLikelihood(cascadeData, model, gamma);
-        System.out.println("Init loglikelihood\t" + logLikelihood);
-
-        for (int iterationsDone = 1; iterationsDone <= nMaxIterations; iterationsDone++) {
-
+        System.out.format("Init loglikelihood\t %.5f\n",logLikelihood);
+        double prevlogLikelihood = logLikelihood;
+        double improvement = 1;
+        int iterationsDone = 1;
+        do  {// for each iteration
             gamma = E_Step(cascadeData, model);
 
             model = M_Step(cascadeData, model, gamma);
 
-            System.out.println("Iteration"+ iterationsDone + "\t" + (System.currentTimeMillis() - initTime)+" milliseconds");
+//            System.out.println("Iteration"+ iterationsDone + "\t" + (System.currentTimeMillis() - initTime)+" milliseconds");
 
             saveIteration++;
             if (saveIteration == save_step) {
                 saveIteration = 0;
                 logLikelihood = computeLogLikelihood(cascadeData, model, gamma);
-                System.out.println("Iteration:" + iterationsDone
-                        + "\t Likelihood \t" + logLikelihood);
+                improvement = (prevlogLikelihood-logLikelihood)/prevlogLikelihood;
+                if (improvement < 0){
+                	
+                		throw new RuntimeException(
+                				String.format("Likelihood increasing\n\tCurrent Likelihood:\t %.5f\n\tPrevious Likelihood:\t %.5f\n\tImprovement:\t %.5f",
+                						logLikelihood,prevlogLikelihood,improvement));
+                }
+                prevlogLikelihood = logLikelihood;
+                
+                System.out.format("Iteration: %d\tLikelihood\t%.5f (Improvement: %.4f)\n"
+                		,iterationsDone,logLikelihood,improvement);
+                
                 try {
                     model.store("tmp_" + iterationsDone + ".model");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
-        } // for each iteration
+            iterationsDone++;
+        } while ( iterationsDone <= nMaxIterations 
+        		&& improvement > SurvivalFactorizationEM_Configuration.eps);
 
         long learningTime = System.currentTimeMillis() - initTime;
         System.out.println("Learning Phase: DONE  ("+ ((double) learningTime / 1000) + " secs)");
