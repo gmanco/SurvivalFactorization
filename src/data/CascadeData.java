@@ -25,8 +25,7 @@ public class CascadeData {
         protected List<CascadeEvent>[] cascadeEventsSrt; 
         
         protected Set<Integer>[]cascadesForNode;
-        
-        
+         
         protected List<WordOccurrence>[] cascadeContent;
         protected Set<Integer>[]cascadesForWord;
         protected int[]lengthCascade;
@@ -34,17 +33,17 @@ public class CascadeData {
         /*
          * Set of nodes ids
          */
-        protected Set<Integer> nodeSet;
+        protected Set<Integer> nodeSet=new TreeSet<Integer>();
         
         /*
          * Set of cascadesIds
          */
-        protected Set<Integer> cascadeSet;
+        protected Set<Integer> cascadeSet=new TreeSet<Integer>();
         
         /*
          * Set of word ids
          */
-        protected Set<Integer> wordSet;
+        protected Set<Integer> wordSet=new TreeSet<Integer>();
         
         // properties
         public int n_nodes;
@@ -75,17 +74,16 @@ public class CascadeData {
         
         
         public Set<Integer> getCascadeIdsForWord(int word){
-            Set<Integer> ris=cascadesForWord[word];
-            if(ris==null)
-                ris=new HashSet<Integer>();
-            return ris;
+            if(cascadesForWord==null||cascadesForWord[word]==null)
+                return new HashSet<Integer>();
+            
+            return cascadesForWord[word];
         }//getCascadeIdsForWord
         
         public List<WordOccurrence> getCascadeContent(int c) {
-            List<WordOccurrence> l= cascadeContent[c];
-            if(l==null)
-                l=new ArrayList<WordOccurrence>();
-            return l;
+            if(cascadeContent==null||cascadeContent[c]==null)
+                return new ArrayList<WordOccurrence>();
+            return cascadeContent[c];
          }//WordOccurrence
         
         
@@ -216,6 +214,8 @@ public class CascadeData {
 
 
 		public int getLenghtOfCascadeContent(int c){
+		    if(lengthCascade==null)
+		        return 0;
 		    return lengthCascade[c];
 		}
 		

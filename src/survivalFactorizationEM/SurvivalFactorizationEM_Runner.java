@@ -6,12 +6,19 @@ import data.CascadeData;
 public class SurvivalFactorizationEM_Runner {
 
     public static void main(String[] args) throws Exception {
-       
+     /*  MemeTracker
         args=new String[]{"-e","resources/datasets/memeTracker/cleaned_debug_activations",
                            "-c","resources/datasets/memeTracker/cleaned_debug_content",
                            "-k","3",
                            "-o","resources/model"
                             };
+                            */
+        
+        args=new String[]{"-e","resources/datasets/twitter/activations",
+                "-k","3",
+                "-o","resources/model3Twitter"
+                 };
+        
         System.out.println("*** Survival Factorization EM ***");
 
         String file_events = null;

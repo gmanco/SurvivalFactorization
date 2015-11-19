@@ -59,7 +59,7 @@ public class SurvivalFactorizationEM_Learner {
 
         System.out.println("Init loglikelihood\t" + logLikelihood);            
 
-        System.out.format("Init loglikelihood\t %.5f\n",logLikelihood);
+        System.out.format("Init loglikelihood\t %.8f\n",logLikelihood);
         double prevlogLikelihood = logLikelihood;
         double improvement = 1;
         int iterationsDone = 1;
