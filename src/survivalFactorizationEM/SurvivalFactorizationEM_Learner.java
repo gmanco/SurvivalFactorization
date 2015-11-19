@@ -57,8 +57,6 @@ public class SurvivalFactorizationEM_Learner {
 
         double logLikelihood = computeLogLikelihood(cascadeData, model, gamma);
 
-        System.out.println("Init loglikelihood\t" + logLikelihood);            
-
         System.out.format("Init loglikelihood\t %.8f\n",logLikelihood);
         double prevlogLikelihood = logLikelihood;
         double improvement = 1;
@@ -94,7 +92,7 @@ public class SurvivalFactorizationEM_Learner {
         		&& improvement > SurvivalFactorizationEM_Configuration.eps);
 
         long learningTime = System.currentTimeMillis() - initTime;
-        System.out.println("Learning Phase: DONE  ("+ ((double) learningTime / 1000) + " secs)");
+        System.out.format("Learning Phase: DONE  (%d iterations, %.0f secs)\n",iterationsDone,((double) learningTime / 1000));
 
         return model;
 
