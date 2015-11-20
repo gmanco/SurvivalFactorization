@@ -10,29 +10,6 @@ import data.CascadeData;
 public class SurvivalFactorizationEM_Runner {
 
     public static void main(String[] args) throws Exception {
-     /*  MemeTracker
-        args=new String[]{"-e","resources/datasets/memeTracker/cleaned_debug_activations",
-                           "-c","resources/datasets/memeTracker/cleaned_debug_content",
-                           "-k","3",
-                           "-o","resources/model"
-                            };
-                            */
-        
-        args=new String[]{"-e","resources/datasets/twitter/activations",
-                "-k","4",
-                "-o","resources/model4Twitter",
-                "-maxIt","500"
-                 };
-
- /*       args=new String[]{"-e","resources/datasets/twitter/activations",
-                "-k","16",
-                "-o","resources/model16Twitter"
-                 };*/
-        
-/*        args=new String[]{"-e","resources/datasets/weibo/weibo_dpu_activations.txt",
-                "-k","16",
-                "-o","resources/model16Weibo"
-                 };*/
         
         System.out.println("*** Survival Factorization EM ***");
 
@@ -46,45 +23,7 @@ public class SurvivalFactorizationEM_Runner {
             printUsage();
             return;
         }
-        
-        /*
-
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equalsIgnoreCase("--help")) {
-                printUsage();
-                return;
-            }
-
-            if (args[i].equals("-e")) {
-                file_events = args[i + 1];
-                i++;
-            }
             
-            if (args[i].equals("-c")) {
-                file_content = args[i + 1];
-                i++;
-            }
-
-            if (args[i].equals("-k")) {
-                nFactors = Integer.parseInt(args[i + 1]);
-                i++;
-            }
-
-            if (args[i].equals("-o")) {
-                outputFile = args[i + 1];
-                i++;
-            }
-
-            if (args[i].equals("-maxIt")) {
-                nMaxIterations = Integer.parseInt(args[i + 1]);
-                i++;
-            }
-   
-
-        } // for each arg
-   */
-        
-        
     	System.out.println("Reading parameters...");
 
     	final String conf = args[0];
