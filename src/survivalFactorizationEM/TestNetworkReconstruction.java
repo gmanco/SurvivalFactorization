@@ -22,6 +22,8 @@ public class TestNetworkReconstruction {
         BufferedReader br=new BufferedReader(new FileReader(testFile));
         String line=br.readLine();
         
+        pw.println("Prediction\tClass");
+        
         String tokens[];
         while(line!=null){
             tokens=line.split("\t");
