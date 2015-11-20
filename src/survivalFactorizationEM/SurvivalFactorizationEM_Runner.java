@@ -1,6 +1,10 @@
 package survivalFactorizationEM;
 
 
+import java.io.FileInputStream;
+
+import java.util.Properties;
+
 import data.CascadeData;
 
 public class SurvivalFactorizationEM_Runner {
@@ -19,19 +23,31 @@ public class SurvivalFactorizationEM_Runner {
                 "-o","resources/model4Twitter",
                 "-maxIt","500"
                  };
+
+ /*       args=new String[]{"-e","resources/datasets/twitter/activations",
+                "-k","16",
+                "-o","resources/model16Twitter"
+                 };*/
+        
+/*        args=new String[]{"-e","resources/datasets/weibo/weibo_dpu_activations.txt",
+                "-k","16",
+                "-o","resources/model16Weibo"
+                 };*/
         
         System.out.println("*** Survival Factorization EM ***");
 
         String file_events = null;
         String file_content=null;
-        int nFactors=-1;
+        int nFactors=SurvivalFactorizationEM_Configuration.DEFAULT_N_FACTORS;
         int nMaxIterations = SurvivalFactorizationEM_Configuration.DEFAULT_N_ITERATIONS;
-        String outputFile = null;
+        String outputFile =  SurvivalFactorizationEM_Configuration.DEFAULT_OUTPUT;
 
         if (args.length == 0) {
             printUsage();
             return;
         }
+        
+        /*
 
         for (int i = 0; i < args.length; i++) {
             if (args[i].equalsIgnoreCase("--help")) {
@@ -66,11 +82,38 @@ public class SurvivalFactorizationEM_Runner {
    
 
         } // for each arg
+   */
         
-        if(outputFile==null){
-            System.out.println("Please specify output file");
+        
+    	System.out.println("Reading parameters...");
+
+    	final String conf = args[0];
+
+    	Properties prop = new Properties();
+    	prop.load(new FileInputStream(conf));
+    	
+    	if (!prop.containsKey("event_file") && !prop.containsKey("content_file")){
+    		System.out.println("Cascade Data must be specified. Please specify either events or contents");
             return;
-        }
+    	}
+    	file_events = prop.getProperty("event_file");
+	
+    	file_content= prop.getProperty("content_file");
+
+    	
+		if (prop.containsKey("n_factors"))
+			nFactors = Integer.parseInt(prop.getProperty("n_factors"));
+
+		if (prop.containsKey("output") )
+			outputFile = prop.getProperty("output"); 
+		else
+			outputFile = SurvivalFactorizationEM_Configuration.DEFAULT_OUTPUT;
+
+		if (prop.containsKey("max_iterations") )
+			Integer.parseInt(prop.getProperty("max_iterations"));
+
+        
+        
         CascadeData cascadeData=new CascadeData(file_events, file_content);
         cascadeData.getInfo();
 
