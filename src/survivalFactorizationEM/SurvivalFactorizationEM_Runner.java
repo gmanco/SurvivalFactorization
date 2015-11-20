@@ -98,14 +98,14 @@ public class SurvivalFactorizationEM_Runner {
 		if (prop.containsKey("n_factors"))
 			nFactors = Integer.parseInt(prop.getProperty("n_factors"));
 
-		if (prop.containsKey("output") )
-			outputFile = prop.getProperty("output"); 
-		else
-			outputFile = SurvivalFactorizationEM_Configuration.DEFAULT_OUTPUT;
 
 		if (prop.containsKey("max_iterations") )
 			Integer.parseInt(prop.getProperty("max_iterations"));
 
+		if (prop.containsKey("output") )
+			outputFile = prop.getProperty("output");
+		else
+			outputFile = file_events + "_" + file_content + "_" + nFactors + ".model";
         
         
         CascadeData cascadeData=new CascadeData(file_events, file_content);
