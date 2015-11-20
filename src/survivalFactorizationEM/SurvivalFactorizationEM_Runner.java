@@ -15,8 +15,8 @@ public class SurvivalFactorizationEM_Runner {
                             */
         
         args=new String[]{"-e","resources/datasets/twitter/activations",
-                "-k","3",
-                "-o","resources/model3Twitter"
+                "-k","16",
+                "-o","resources/model16Twitter"
                  };
         
         System.out.println("*** Survival Factorization EM ***");

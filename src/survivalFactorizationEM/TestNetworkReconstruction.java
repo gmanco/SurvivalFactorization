@@ -30,7 +30,7 @@ public class TestNetworkReconstruction {
             int source=Integer.parseInt(tokens[0])-1;
             int destination=Integer.parseInt(tokens[1])-1;
             String label=tokens[2];
-            double score=computeLinkPrediction(model,source,destination);
+            double score=computeLinkPrediction(model,destination,source);
             
             pw.println(""+score+"\t"+label);
             
