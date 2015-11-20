@@ -30,7 +30,7 @@ public class TestNetworkReconstruction {
             int source=Integer.parseInt(tokens[0])-1;
             int destination=Integer.parseInt(tokens[1])-1;
             String label=tokens[2];
-            double score=computeLinkPrediction(model,destination,source);
+            double score=computeLinkPrediction(model,source,destination);
             
             pw.println(""+score+"\t"+label);
             
@@ -48,7 +48,7 @@ public class TestNetworkReconstruction {
             SurvivalFactorizationEM_Model model, int source, int destination) {
         double score=0.0;
         for(int k=0;k<model.nFactors;k++){
-            score+=model.pi[k]*model.A[source][k]*model.S[destination][k];
+            score+=model.pi[k]*model.S[source][k]*model.A[destination][k];
         }
         return score;
     }

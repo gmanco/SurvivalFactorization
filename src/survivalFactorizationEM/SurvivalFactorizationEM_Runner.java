@@ -18,6 +18,12 @@ public class SurvivalFactorizationEM_Runner {
                             };
                             */
         
+        args=new String[]{"-e","resources/datasets/twitter/activations",
+                "-k","4",
+                "-o","resources/model4Twitter",
+                "-maxIt","500"
+                 };
+
  /*       args=new String[]{"-e","resources/datasets/twitter/activations",
                 "-k","16",
                 "-o","resources/model16Twitter"
