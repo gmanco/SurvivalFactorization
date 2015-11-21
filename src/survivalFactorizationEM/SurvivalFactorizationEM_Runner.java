@@ -24,7 +24,7 @@ public class SurvivalFactorizationEM_Runner {
             return;
         }
             
-    	System.out.println("Reading parameters...");
+    	System.out.print("Reading parameters...");
 
     	final String conf = args[0];
 
@@ -45,13 +45,15 @@ public class SurvivalFactorizationEM_Runner {
 
 
 		if (prop.containsKey("max_iterations") )
-			Integer.parseInt(prop.getProperty("max_iterations"));
+			nMaxIterations = Integer.parseInt(prop.getProperty("max_iterations"));
 
 		if (prop.containsKey("output") )
 			outputFile = prop.getProperty("output");
 		else
 			outputFile = file_events + "_" + file_content + "_" + nFactors + ".model";
         
+    	System.out.println("Done.");
+
         
         CascadeData cascadeData=new CascadeData(file_events, file_content);
         cascadeData.getInfo();
