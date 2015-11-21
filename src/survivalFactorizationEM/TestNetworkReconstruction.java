@@ -7,8 +7,15 @@ import java.io.PrintWriter;
 
 public class TestNetworkReconstruction {
 
-    
+	   private static void printUsage() {
+	        System.out.println("<model> <Network> <output>");
+	    }
+	
     public static void main(String[] args) throws Exception{
+    		if (args == null || args.length != 3){
+    			printUsage();
+    			return;
+    		}
         String modelPath=args[0];
         String testFile=args[1];
         String outputFile=args[2];
