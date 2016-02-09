@@ -115,6 +115,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
     private double computeLogLikelihood(CascadeData cascadeData,
             SurvivalFactorizationEM_Model model, SurvivalFactorizationEM_ModelCounters counters, double gamma[][]) {
 
+    	// FIXME: This LogLikelihood uses the logsumexp trick. IT DOES NOT IMPLEMENT THE EXPECTED LIKELIHOOD
     	double logLikelihood = 0;
     	double llkEvents[];
     	double llkContent[];
