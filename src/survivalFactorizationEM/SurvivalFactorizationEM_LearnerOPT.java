@@ -375,7 +375,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
                         A_new_num[currentEvent.node][k]+=gamma[c][k]
                         		*model.A[currentEvent.node][k]*counters.R_c_u_k[c][currentEvent.node][k];
                         A_new_den[currentEvent.node][k]+=gamma[c][k]
-                        		*(counters.tilde_S_c_k[c][k] - currentEvent.timestamp*counters.S_c_k[c][k]);
+                        		*(counters.tilde_S_c_k[c][k] - currentEvent.timestamp*counters.S_k[k]);
 
                         
                     } // for each k
