@@ -13,7 +13,7 @@ import data.WordOccurrence;
 import utils.ArrayUtilities;
 import utils.Weka_Utils;
 
-public class SurvivalFactorizationEM_Learner {
+public class SurvivalFactorizationEM_LearnerOPT {
 
     private int save_step = SurvivalFactorizationEM_Configuration.DEFAULT_SAVE_STEP;
 
