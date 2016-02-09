@@ -1106,6 +1106,32 @@ public class Weka_Utils {
 		 return result;
 		 
 	  } 
+	  
+	  
+	  public static double logSumOfExponentials(double [] exponentialTerms){
+			
+			if(exponentialTerms.length == 0){
+				return Double.NEGATIVE_INFINITY;
+			}
+			
+			double maxTerm = Double.NEGATIVE_INFINITY;
+			for(double d : exponentialTerms){
+				if(d > maxTerm){
+					maxTerm = d;
+				}
+			}
+			
+			if(maxTerm == Double.NEGATIVE_INFINITY){
+				return Double.NEGATIVE_INFINITY;
+			}
+			
+			double sum = 0.;
+			for(double d : exponentialTerms){
+				sum += Math.exp(d - maxTerm);
+			}
+			
+			return maxTerm + Math.log(sum);
+		}
 	
 
 	  /**

@@ -1,6 +1,5 @@
 package survivalFactorizationEM;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -48,7 +47,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
         int nCascades = cascadeData.getNCascades();
         int nFactors = model.getNFactors();
         double[][] gamma = new double[nCascades][nFactors];
-
+        SurvivalFactorizationEM_Model newmodel;
         
         SurvivalFactorizationEM_ModelCounters counters = 
         		new SurvivalFactorizationEM_ModelCounters(nVertices, nFactors,nCascades);
@@ -72,19 +71,25 @@ public class SurvivalFactorizationEM_LearnerOPT {
         do  {// for each iteration
             gamma = E_Step(cascadeData, model, counters);
 
-            model = M_Step(cascadeData, model, gamma, counters);
+            newmodel = M_Step(cascadeData, model, gamma, counters);
 
             saveIteration++;
             if (saveIteration == save_step) {
                 saveIteration = 0;
-                logLikelihood = computeLogLikelihood(cascadeData, model, counters, gamma);
+                logLikelihood = computeLogLikelihood(cascadeData, newmodel, counters, gamma);
                 improvement = (prevlogLikelihood-logLikelihood)/prevlogLikelihood;
                 if (improvement < 0){
+                	 try {
+                         model.store("tmp_" + iterationsDone + ".model");
+                     } catch (Exception e) {
+                         e.printStackTrace();
+                     }            	
                 		throw new RuntimeException(
                 				String.format("Likelihood increasing\n\tCurrent Likelihood:\t %.5f\n\tPrevious Likelihood:\t %.5f\n\tImprovement:\t %.5f",
                 						logLikelihood,prevlogLikelihood,improvement));
                 }
                 prevlogLikelihood = logLikelihood;
+                model = newmodel;
                 
                 System.out.format("Iteration: %d\tLikelihood\t%.5f (Improvement: %.4f)\n"
                 		,iterationsDone,logLikelihood,improvement);
@@ -109,18 +114,17 @@ public class SurvivalFactorizationEM_LearnerOPT {
     
     private double computeLogLikelihood(CascadeData cascadeData,
             SurvivalFactorizationEM_Model model, SurvivalFactorizationEM_ModelCounters counters, double gamma[][]) {
-        double logLikelihood = 0;
 
-        double first_term = 0.0;
-        double second_term = 0.0;
-        double third_term = 0.0;
-        double fourth_term = 0.0;
-        double fifth_term = 0.0;
-        double sixth_term = 0.0;
-
+    	double logLikelihood = 0;
+    	double llkEvents[];
+    	double llkContent[];
+    	
+    double logpriors = 0;
+    	
         int nFactors = model.nFactors;
         double constant_sixth_term = 2*model.nFactors * model.nFactors + 2.0;
-
+        
+        double exponentialTerms[] = new double[nFactors];
         double log_pi[] = new double[nFactors];
 
         for (int k = 0; k < nFactors; k++){
@@ -129,122 +133,37 @@ public class SurvivalFactorizationEM_LearnerOPT {
             else
                 throw new RuntimeException("Prior is \t"+model.pi[k]);
         }
-        
-        List<CascadeEvent> eventsCurrCascade;
-        List<CascadeEvent> prevEventsCurrCascade = new ArrayList<CascadeEvent>();
-        Set<Integer> inactiveVertices = new HashSet<Integer>();
 
-        List<WordOccurrence> contentCurrCascade;
-
-        for (int c = 0; c < cascadeData.n_cascades; c++) {
-
-            // compute first term
-            for (int k = 0; k < nFactors; k++) {
-                first_term += gamma[c][k] * log_pi[k];
+        for (int c = 0; c < cascadeData.getNCascades(); c++) {
+            llkEvents = computeLogLikelihoodEvents(cascadeData, c, model, counters);
+            llkContent = computeLogLikelihoodContent(cascadeData, c, model);
+            for (int k = 0; k < model.nFactors; k++){
+            		exponentialTerms[k] = llkEvents[k] + llkContent[k] + log_pi[k];
             }
+            logLikelihood += Weka_Utils.logSumOfExponentials(exponentialTerms);
 
-            eventsCurrCascade = cascadeData.getCascadeEvents(c);
-            prevEventsCurrCascade.clear();
-            inactiveVertices.clear();
-            inactiveVertices.addAll(cascadeData.getNodeIds());
-            double cumulativeAprev[] = new double[nFactors];
-            for (CascadeEvent currentEvent : eventsCurrCascade) {
-
-                for (CascadeEvent prevEvent : prevEventsCurrCascade) {
-
-                    double delta_c_uv = currentEvent.timestamp
-                            - prevEvent.timestamp;
-
-                    for (int k = 0; k < nFactors; k++) {
-
-                        // all checks
-                        if (cumulativeAprev[k] <= 0)
-                            throw new RuntimeException();
-                        if (model.A[prevEvent.node][k] <= 0)
-                            throw new RuntimeException();
-                        if (model.S[currentEvent.node][k] <= 0)
-                            throw new RuntimeException();
-
-                        // update second term
-                        double etaCurr_k = model.A[prevEvent.node][k]/ cumulativeAprev[k];
-                        double logSA_k = Math.log(model.A[prevEvent.node][k]) + Math.log(model.S[currentEvent.node][k]);
-                        second_term += gamma[c][k] * etaCurr_k * logSA_k;
-
-                        // update third term
-                        third_term += gamma[c][k] * delta_c_uv
-                                * model.S[currentEvent.node][k]
-                                        * model.A[prevEvent.node][k];
-
-                    } // for each k
-
-                } // for each previous event
-
-                // add current Event to previous
-                prevEventsCurrCascade.add(currentEvent);
-                inactiveVertices.remove(currentEvent.node);
-                // update cumulative for computing eta
-                for (int k = 0; k < nFactors; k++) {
-                    cumulativeAprev[k] += model.A[currentEvent.node][k];
-                }
-            } // for each cascade event
-
-            // compute fourth term (inactive nodes)
-            for (int inactiveNode : inactiveVertices) {
-
-                for (CascadeEvent currentEvent : eventsCurrCascade) {
-                    for (int k = 0; k < nFactors; k++) {
-                        fourth_term += gamma[c][k]
-                                * (cascadeData.t_max - currentEvent.timestamp)
-                                * model.S[inactiveNode][k]
-                                        * model.A[currentEvent.node][k];
-                    }
-                }
-
-            }
-
-            // compute likelihood content
-            contentCurrCascade = cascadeData.getCascadeContent(c);
-            int n_c = cascadeData.getLenghtOfCascadeContent(c);
-            // check if cascade has content
-            if(n_c==0){
-                continue;
-            }
-            for (WordOccurrence wo : contentCurrCascade) {
-                for (int k = 0; k < nFactors; k++) {
-                    if (model.Phi[wo.word][k] <= 0)
-                        throw new RuntimeException("Error in the value of Phi\t"+model.Phi[wo.word][k]);
-                    fifth_term += gamma[c][k] * wo.cnt
-                            * Math.log(model.Phi[wo.word][k]);           
-                }
-            }
-            //TODO @manco:check
-            for(int w=0;w<cascadeData.n_words;w++){
-                for (int k = 0; k < nFactors; k++) {
-                    fifth_term-=gamma[c][k]*n_c*model.Phi[w][k];
-                }
-            }
-
-        } // for each cascade
+        }
+       
 
         // compute sixth_term term
         int N = cascadeData.getNNodes();
         for (int u = 0; u < cascadeData.getNNodes(); u++) {
             for (int k = 0; k < nFactors; k++) {
-                sixth_term += N * (model.S[u][k] + model.A[u][k]);
+            	logpriors += N * (model.S[u][k] + model.A[u][k]);
             }
         }
         
         //TODO @manco:check
         for (int w = 0; w < cascadeData.getNWords(); w++) {
             for (int k = 0; k < nFactors; k++) {
-                sixth_term -= constant_sixth_term * (model.Phi[w][k]) + Math.log(model.Phi[w][k]) ;
+            	logpriors -= constant_sixth_term * (model.Phi[w][k]) + Math.log(model.Phi[w][k]) ;
             }
         }
 
-        logLikelihood = first_term + second_term - third_term - fourth_term
-                + fifth_term - sixth_term;
+        logLikelihood += logLikelihood - logpriors;
 
         return logLikelihood;
+        
     }// computeLogLikelihood
 
     /*
