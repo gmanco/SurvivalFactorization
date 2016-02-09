@@ -1,6 +1,9 @@
 package survivalFactorizationEM;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
 
 import data.CascadeData;
 import data.CascadeEvent;
@@ -34,18 +37,56 @@ public class SurvivalFactorizationEM_ModelCounters {
 	public void update(CascadeData cascadeData, SurvivalFactorizationEM_Model model) {
 		resetCounters();
         List<CascadeEvent> eventsCurrCascade;
+        Set<Integer> inactiveVertices = new HashSet<Integer>();
+
 		
+        for(int k=0;k<nFactors;k++){
+        	for (int n = 0; n <nVertices; n++)
+        		S_k[k] = model.S[n][k];            		
+        }
+        
 	       for (int c = 0; c < cascadeData.getNCascades(); c++) {
 	            
 	    	   eventsCurrCascade = cascadeData.getCascadeEvents(c);
+	            inactiveVertices.clear();
+	            inactiveVertices.addAll(cascadeData.getNodeIds());
+
 	            for (CascadeEvent currentEvent : eventsCurrCascade) {
-		            for(int k=0;k<nFactors;k++){
+	                for(int k=0;k<nFactors;k++){
+		            		int n = currentEvent.node; 
+		            		double time = currentEvent.timestamp;
 		            		
-		            
+		            		A_c_u_k[c][n][k] += model.A[n][k];
+		            		tilde_A_c_u_k[c][n][k] += time*model.A[n][k];
+		            		A_c_k[c][k] += model.A[n][k];
+		            		tilde_A_c_k[c][k] += time*model.A[n][k];
+		            		
+		            		S_c_k[c][k] += model.S[n][k];	
+		            		tilde_S_c_k[c][k] += time*model.S[n][k];
+		            		L_c_k[c][k] += Math.log(model.S[n][k]);
+		            			
+		                inactiveVertices.remove(currentEvent.node);
+		            }
+	            }
+	            // for each inactive node (update S_den)
+	                for (int inactiveNode : inactiveVertices) {
+	                        for (int k = 0; k < model.nFactors; k++) {
+			            		tilde_S_c_k[c][k] += cascadeData.t_max*model.S[inactiveNode][k];
+	                        }
+	                }
+	       }
+	       
+	       for (int c = 0; c < cascadeData.getNCascades(); c++) {
+	            
+	    	   eventsCurrCascade = cascadeData.getCascadeEvents(c);
+	    	   ListIterator<CascadeEvent> li = eventsCurrCascade.listIterator(eventsCurrCascade.size());
+	    	   while(li.hasPrevious()) {
+	    		   CascadeEvent currentEvent = li.previous();
+	    		   for(int k=0;k<nFactors;k++){
+		            		R_c_u_k[c][currentEvent.node][k] += 1/(A_c_u_k[c][currentEvent.node][k]); 
 		            }
 	            }
 	       }
-		
 	}
 
 	private void resetCounters() {

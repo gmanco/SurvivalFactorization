@@ -379,17 +379,15 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
                         
                     } // for each k
-
+                    inactiveVertices.remove(currentEvent.node);
             } // for each cascade event
 
             // for each inactive node (update S_den)
             for (int inactiveNode : inactiveVertices) {
-                for (CascadeEvent currentEvent : eventsCurrCascade) {
                     for (int k = 0; k < model.nFactors; k++) {
                         //update S_den considering non-activations
                         S_new_den[inactiveNode][k]+=	gamma[c][k]
-                                		*(cascadeData.t_max*counters.A_c_u_k[c][currentEvent.node][k] - counters.tilde_A_c_u_k[c][currentEvent.node][k]);
-                    }
+                                		*(cascadeData.t_max*counters.A_c_u_k[c][inactiveNode][k] - counters.tilde_A_c_u_k[c][inactiveNode][k]);
                 }
 
             }// for each inactive node
