@@ -47,8 +47,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 		double[][] gamma = new double[nCascades][nFactors];
 		SurvivalFactorizationEM_Model newmodel;
 
-		SurvivalFactorizationEM_ModelCounters counters = new SurvivalFactorizationEM_ModelCounters(nVertices, nFactors,
-				nCascades);
+		SurvivalFactorizationEM_ModelCounters counters = new SurvivalFactorizationEM_ModelCounters(nVertices, nFactors);
 
 		for (int c = 0; c < nCascades; c++) {
 			for (int k = 0; k < nFactors; k++) {

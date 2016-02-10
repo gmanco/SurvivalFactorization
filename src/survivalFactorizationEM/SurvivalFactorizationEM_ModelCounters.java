@@ -26,10 +26,8 @@ public class SurvivalFactorizationEM_ModelCounters {
 	
     public int nVertices;
     public int nFactors;
-    public int nCascades;
 
-	public SurvivalFactorizationEM_ModelCounters(int n, int k, int c){
-		this.nCascades = c; 
+	public SurvivalFactorizationEM_ModelCounters(int n, int k){
 		this.nFactors = k; 
 		this.nVertices = n; 
 		
