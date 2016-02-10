@@ -21,7 +21,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 		System.out.println("Survival Factorization EM  with " + nFactors + " latent factors");
 
-		System.out.println("Max N Iterations\t" + nMaxIterations);
+		System.out.println("Max number of  Iterations: " + nMaxIterations);
 
 		int nWords = cascadeData.getNWords();
 		int nVertices = cascadeData.getNNodes();
