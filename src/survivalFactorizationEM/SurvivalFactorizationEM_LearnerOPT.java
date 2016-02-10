@@ -120,7 +120,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
     	double llkEvents[];
     	double llkContent[];
     	
-    double logpriors = 0;
+    	double logpriors = 0;
     	
         int nFactors = model.nFactors;
         double constant_sixth_term = 2*model.nFactors * model.nFactors + 2.0;

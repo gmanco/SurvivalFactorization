@@ -28,8 +28,8 @@ public class SurvivalFactorizationEM_ModelCounters {
 
 	public SurvivalFactorizationEM_ModelCounters(int n, int k, int c){
 		this.nCascades = c; 
-		this.nCascades = k; 
-		this.nCascades = n; 
+		this.nFactors = k; 
+		this.nVertices = n; 
 		
 		resetCounters();	 
 	}
@@ -64,6 +64,8 @@ public class SurvivalFactorizationEM_ModelCounters {
 
 					tilde_A_c_k[c][k] += time * model.A[n][k];
 					A_c_k[c][k] += model.A[n][k];
+					
+					//FIXME: skip first active node
 					S_c_k[c][k] += model.S[n][k];
 					tilde_S_c_k[c][k] += time * model.S[n][k];
 					L_c_k[c][k] += Math.log(model.S[n][k]);
@@ -90,6 +92,8 @@ public class SurvivalFactorizationEM_ModelCounters {
 				CascadeEvent currentEvent = li.previous();
 				if (prevEvent != null)
 					for (int k = 0; k < nFactors; k++) {
+					    if(A_c_u_k[c][prevEvent.node][k]==0.0)
+					        throw new RuntimeException();
 						R_c_u_k[c][currentEvent.node][k] += 1 / (A_c_u_k[c][prevEvent.node][k])
 								+ R_c_u_k[c][prevEvent.node][k];
 					}
@@ -99,16 +103,16 @@ public class SurvivalFactorizationEM_ModelCounters {
 	}
 
 	private void resetCounters() {
-		A_c_u_k = new double[nCascades][nCascades][nCascades];
-		tilde_A_c_u_k = new double[nCascades][nCascades][nCascades];
-		A_c_k = new double[nCascades][nCascades];
-		tilde_A_c_k = new double[nCascades][nCascades];
+		A_c_u_k = new double[nCascades][nVertices][nFactors];
+		tilde_A_c_u_k = new double[nCascades][nVertices][nFactors];
+		A_c_k = new double[nCascades][nFactors];
+		tilde_A_c_k = new double[nCascades][nFactors];
 		
-		R_c_u_k = new double[nCascades][nCascades][nCascades];
+		R_c_u_k = new double[nCascades][nVertices][nFactors];
 		
-		S_k = new double[nCascades];
-		S_c_k = new double[nCascades][nCascades];		
-		tilde_S_c_k = new double[nCascades][nCascades];
-		L_c_k = new double[nCascades][nCascades];		 
+		S_k = new double[nFactors];
+		S_c_k = new double[nCascades][nFactors];		
+		tilde_S_c_k = new double[nCascades][nFactors];
+		L_c_k = new double[nCascades][nFactors];		 
 	}
 }
