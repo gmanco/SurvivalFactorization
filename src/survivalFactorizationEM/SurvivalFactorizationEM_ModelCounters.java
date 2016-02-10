@@ -110,10 +110,6 @@ public class SurvivalFactorizationEM_ModelCounters {
 		resetCounters();
 		List<CascadeEvent> eventsCurrCascade;
 
-		for (int k = 0; k < nFactors; k++) {
-			for (int n = 0; n < nVertices; n++)
-				S_k[k] = model.S[n][k];
-		}
 
 			eventsCurrCascade = cascadeData.getCascadeEvents(cascadeIndex);
 			//FIXME: mi sembra estremamente inefficiente. 
@@ -131,6 +127,7 @@ public class SurvivalFactorizationEM_ModelCounters {
 						S_c_u_k[n][k] += S_c_u_k[prevEvent.node][k];
 						tilde_S_c_u_k[n][k] += tilde_S_c_u_k[prevEvent.node][k];
 
+						L_c_k[k] += Math.log(model.S[n][k]);
 					}
 
 					S_c_u_k[n][k] += model.S[n][k];
@@ -141,7 +138,6 @@ public class SurvivalFactorizationEM_ModelCounters {
 					
 					S_c_k[k] += model.S[n][k];
 					tilde_S_c_k[k] += time * model.S[n][k];
-					L_c_k[k] += Math.log(model.S[n][k]);
 
 					prevEvent = currentEvent;
 				}
@@ -176,9 +172,19 @@ public class SurvivalFactorizationEM_ModelCounters {
 		
 		S_c_u_k = new double[nVertices][nFactors];
 		tilde_S_c_u_k = new double[nVertices][nFactors];
-		S_k = new double[nFactors];
 		S_c_k = new double[nFactors];		
 		tilde_S_c_k = new double[nFactors];
 		L_c_k = new double[nFactors];		 
+	}
+	
+	
+	public void cumulateS(SurvivalFactorizationEM_Model model){
+		S_k = new double[nFactors];
+		
+		for (int k = 0; k < nFactors; k++) {
+			for (int n = 0; n < nVertices; n++)
+				S_k[k] = model.S[n][k];
+		}
+
 	}
 }

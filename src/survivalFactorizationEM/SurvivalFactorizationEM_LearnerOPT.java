@@ -179,6 +179,8 @@ public class SurvivalFactorizationEM_LearnerOPT {
 			}
 			log_pi[k] = Math.log(model.pi[k]);
 		}
+		
+		counters.cumulateS(model);
 		for (int c = 0; c < cascadeData.getNCascades(); c++) {
 			llkEvents = computeLogLikelihoodEvents(cascadeData, c, model, counters);
 			llkContent = computeLogLikelihoodContent(cascadeData, c, model);
