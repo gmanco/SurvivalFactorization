@@ -153,7 +153,7 @@ public class SurvivalFactorizationEM_ModelCounters {
 					for (int k = 0; k < nFactors; k++) {
 					    if(A_c_u_k[prevEvent.node][k]==0.0)
 					        throw new RuntimeException();
-						R_c_u_k[currentEvent.node][k] += 1 / (A_c_u_k[prevEvent.node][k])
+						R_c_u_k[currentEvent.node][k] += 1.0 / (A_c_u_k[prevEvent.node][k])
 								+ R_c_u_k[prevEvent.node][k];
 					}
 				prevEvent = currentEvent;

@@ -296,10 +296,10 @@ public class SurvivalFactorizationEM_LearnerOPT {
 					S_new_den[currentEvent.node][k] += gamma[c][k]
 							* (currentEvent.timestamp * counters.A_c_u_k[currentEvent.node][k]
 									- counters.tilde_A_c_u_k[currentEvent.node][k]);
-					
-					if (S_new_den[currentEvent.node][k] < 0){
-						throw new RuntimeException("Negative value for S on node " + currentEvent.node + " of cascade "+ c);
-					}
+    					
+    					if (S_new_den[currentEvent.node][k] < 0){
+    						throw new RuntimeException("Negative value for S on node " + currentEvent.node + " of cascade "+ c);
+    					}
 					}
 
 					// FIXME: the optimization should be alternated and the
@@ -314,8 +314,8 @@ public class SurvivalFactorizationEM_LearnerOPT {
 							- currentEvent.timestamp*(counters.S_k[k] - counters.S_c_k[k])
 							);
 					
-					if (A_new_den[currentEvent.node][k] < 0){
-						throw new RuntimeException("Negative value for A on node " + currentEvent.node + " of cascade "+ c);
+					if (A_new_den[currentEvent.node][k] < 0 ){
+						throw new RuntimeException("Negative value for A on node " + currentEvent.node + " of cascade "+ c+" Value is "+A_new_den[currentEvent.node][k]);
 					}
 
 
