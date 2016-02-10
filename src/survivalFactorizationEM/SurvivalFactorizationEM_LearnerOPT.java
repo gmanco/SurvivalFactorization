@@ -178,7 +178,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 			}
 			log_pi[k] = Math.log(model.pi[k]);
 		}
-		
+
 		counters.cumulateS(model);
 		for (int c = 0; c < cascadeData.getNCascades(); c++) {
 			llkEvents = computeLogLikelihoodEvents(cascadeData, c, model, counters);
@@ -194,21 +194,29 @@ public class SurvivalFactorizationEM_LearnerOPT {
 	private double[] computeLogLikelihoodEvents(CascadeData cascadeData, int cascadeIndex,
 			SurvivalFactorizationEM_Model model, SurvivalFactorizationEM_ModelCounters counters) {
 		double logLikelihoodEvents[] = new double[model.nFactors];
-
+		
 		// INFO: counters are updated and used on a local (cascade) basis
 		counters.updateCountersOnCascade(cascadeData, cascadeIndex, model);
+
 
 		for (int k = 0; k < model.nFactors; k++) {
 			logLikelihoodEvents[k] = counters.L_c_k[k] - (counters.S_k[k] - counters.S_c_k[k])
 					* (cascadeData.t_max * counters.A_c_k[k] - counters.tilde_A_c_k[k]);
 
+			CascadeEvent prevEvent = null;
 			for (CascadeEvent currentEvent : cascadeData.getCascadeEvents(cascadeIndex)) {
 
-				logLikelihoodEvents[k] += Math.log(counters.A_c_u_k[currentEvent.node][k])
-						- model.S[currentEvent.node][k]
-								* (currentEvent.timestamp * counters.A_c_u_k[currentEvent.node][k]
-										- counters.tilde_A_c_u_k[currentEvent.node][k]);
+				if (prevEvent != null) {
+					if (counters.A_c_u_k[currentEvent.node][k] <= 0) {
+						throw new RuntimeException("A_c_u_k contains a negative value");
+					}
+					logLikelihoodEvents[k] += Math.log(counters.A_c_u_k[currentEvent.node][k])
+							- model.S[currentEvent.node][k]
+									* (currentEvent.timestamp * counters.A_c_u_k[currentEvent.node][k]
+											- counters.tilde_A_c_u_k[currentEvent.node][k]);
+				}
 
+				prevEvent = currentEvent;
 			}
 		}
 
@@ -265,7 +273,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 		List<CascadeEvent> eventsCurrCascade;
 		Set<Integer> inactiveVertices = new HashSet<Integer>();
-		
+
 		counters.cumulateS(model);
 
 		List<WordOccurrence> contentCurrCascade;
@@ -283,23 +291,24 @@ public class SurvivalFactorizationEM_LearnerOPT {
 			inactiveVertices.addAll(cascadeData.getNodeIds());
 
 			CascadeEvent prevEvent = null;
-			
+
 			for (CascadeEvent currentEvent : eventsCurrCascade) {
 
 				for (int k = 0; k < model.nFactors; k++) {
 
-					// Skip the first event in a cascade
-					if (prevEvent != null){
-					// update S_num first part
-					S_new_num[currentEvent.node][k] += gamma[c][k];
-					// update S_den considering activations
-					S_new_den[currentEvent.node][k] += gamma[c][k]
-							* (currentEvent.timestamp * counters.A_c_u_k[currentEvent.node][k]
-									- counters.tilde_A_c_u_k[currentEvent.node][k]);
-    					
-    					if (S_new_den[currentEvent.node][k] < 0){
-    						throw new RuntimeException("Negative value for S on node " + currentEvent.node + " of cascade "+ c);
-    					}
+
+					if (prevEvent != null) {
+						// update S_num first part
+						S_new_num[currentEvent.node][k] += gamma[c][k];
+						// update S_den considering activations
+						S_new_den[currentEvent.node][k] += gamma[c][k]
+								* (currentEvent.timestamp * counters.A_c_u_k[currentEvent.node][k]
+										- counters.tilde_A_c_u_k[currentEvent.node][k]);
+
+						if (S_new_den[currentEvent.node][k] < 0) {
+							throw new RuntimeException(
+									"Negative value for S on node " + currentEvent.node + " of cascade " + c);
+						}
 					}
 
 					// FIXME: the optimization should be alternated and the
@@ -307,17 +316,18 @@ public class SurvivalFactorizationEM_LearnerOPT {
 					// update A
 					A_new_num[currentEvent.node][k] += gamma[c][k] * model.A[currentEvent.node][k]
 							* counters.R_c_u_k[currentEvent.node][k];
-					A_new_den[currentEvent.node][k] += gamma[c][k]*(
-							 (counters.tilde_S_c_k[k] - counters.tilde_S_c_u_k[currentEvent.node][k])
-							 - currentEvent.timestamp*(counters.S_c_k[k] - counters.S_c_u_k[currentEvent.node][k])
-							+ cascadeData.t_max*(counters.S_k[k] - counters.S_c_k[k])
-							- currentEvent.timestamp*(counters.S_k[k] - counters.S_c_k[k])
-							);
-					
-					if (A_new_den[currentEvent.node][k] < 0 ){
-						throw new RuntimeException("Negative value for A on node " + currentEvent.node + " of cascade "+ c+" Value is "+A_new_den[currentEvent.node][k]);
-					}
 
+					A_new_den[currentEvent.node][k] += gamma[c][k]
+							* ((counters.tilde_S_c_k[k] - counters.tilde_S_c_u_k[currentEvent.node][k])
+									- currentEvent.timestamp
+											* (counters.S_c_k[k] - counters.S_c_u_k[currentEvent.node][k])
+									+ cascadeData.t_max * (counters.S_k[k] - counters.S_c_k[k])
+									- currentEvent.timestamp * (counters.S_k[k] - counters.S_c_k[k]));
+
+					if (A_new_den[currentEvent.node][k] < 0) {
+						throw new RuntimeException(
+								"Negative value for A on node " + currentEvent.node + " of cascade " + c);
+					}
 
 				} // for each k
 				inactiveVertices.remove(currentEvent.node);
