@@ -89,10 +89,10 @@ public class SurvivalFactorizationEM_ModelCounters {
 		eventsCurrCascade = cascadeData.getCascadeEvents(cascadeIndex);
 		CascadeEvent prevEvent = null;
 		for (CascadeEvent currentEvent : eventsCurrCascade) {
-			for (int k = 0; k < nFactors; k++) {
-				int n = currentEvent.node;
-				double time = currentEvent.timestamp;
+			int n = currentEvent.node;
+			double time = currentEvent.timestamp;
 
+			for (int k = 0; k < nFactors; k++) {
 				if (prevEvent != null) {
 
 					A_c_u_k[n][k] = model.A[prevEvent.node][k] + A_c_u_k[prevEvent.node][k];
@@ -116,8 +116,8 @@ public class SurvivalFactorizationEM_ModelCounters {
 				S_c_k[k] += model.S[n][k];
 				tilde_S_c_k[k] += time * model.S[n][k];
 
-				prevEvent = currentEvent;
 			}
+			prevEvent = currentEvent;
 		}
 
 		ListIterator<CascadeEvent> li = eventsCurrCascade.listIterator(eventsCurrCascade.size());
