@@ -32,6 +32,7 @@ public class SurvivalFactorizationEM_ModelCounters {
 		this.nVertices = n; 
 		
 		resetCounters();	 
+		S_k = new double[nFactors];
 	}
 
 	/*
@@ -167,7 +168,6 @@ public class SurvivalFactorizationEM_ModelCounters {
 		tilde_A_c_k = new double[nFactors];
 		
 		R_c_u_k = new double[nVertices][nFactors];
-		S_k=new double[nFactors];
 		S_c_u_k = new double[nVertices][nFactors];
 		tilde_S_c_u_k = new double[nVertices][nFactors];
 		S_c_k = new double[nFactors];		

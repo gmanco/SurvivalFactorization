@@ -195,7 +195,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 			SurvivalFactorizationEM_Model model, SurvivalFactorizationEM_ModelCounters counters) {
 		double logLikelihoodEvents[] = new double[model.nFactors];
 
-		// FIXME: counters are updated and used on a local (cascade) basis
+		// INFO: counters are updated and used on a local (cascade) basis
 		counters.updateCountersOnCascade(cascadeData, cascadeIndex, model);
 
 		for (int k = 0; k < model.nFactors; k++) {
@@ -265,6 +265,8 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 		List<CascadeEvent> eventsCurrCascade;
 		Set<Integer> inactiveVertices = new HashSet<Integer>();
+		
+		counters.cumulateS(model);
 
 		List<WordOccurrence> contentCurrCascade;
 		int length_all_traces = 0;
