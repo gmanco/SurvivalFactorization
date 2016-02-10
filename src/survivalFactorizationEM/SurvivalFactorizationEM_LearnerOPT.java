@@ -304,7 +304,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 						S_new_den[currentEvent.node][k] += gamma[c][k]
 								* (currentEvent.timestamp * counters.A_c_u_k[currentEvent.node][k]
 										- counters.tilde_A_c_u_k[currentEvent.node][k]);
-
+						
 						if (S_new_den[currentEvent.node][k] <= 0) {
 							throw new RuntimeException(
 									"Negative value for S on node " + currentEvent.node + " of cascade " + c);
