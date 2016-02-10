@@ -116,7 +116,7 @@ public class SurvivalFactorizationEM_ModelCounters {
 				S_c_k[k] += model.S[n][k];
 				tilde_S_c_k[k] += time * model.S[n][k];
 				
-				if (cascadeData.t_max*A_c_u_k[n][k] < tilde_A_c_u_k[n][k])
+			if (cascadeData.t_max*A_c_u_k[n][k] < tilde_A_c_u_k[n][k])
 					throw new RuntimeException("Inconsistent value");
 				if (time*A_c_u_k[n][k] < tilde_A_c_u_k[n][k])
 					throw new RuntimeException("Inconsistent value");
