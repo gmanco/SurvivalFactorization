@@ -34,7 +34,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 	}// build
 
 	private SurvivalFactorizationEM_Model iterateEM(CascadeData cascadeData, SurvivalFactorizationEM_Model model,
-			int nMaxIterations) {
+			int nMaxIterations) throws Exception {
 
 		System.out.println("Learning phase: starting at " + new Date());
 
@@ -247,7 +247,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 	 * M-Step updates the model
 	 */
 	private SurvivalFactorizationEM_Model M_Step(CascadeData cascadeData, SurvivalFactorizationEM_Model model,
-			double[][] gamma, SurvivalFactorizationEM_ModelCounters counters) {
+			double[][] gamma, SurvivalFactorizationEM_ModelCounters counters) throws Exception {
 
 		double A_new_num[][] = new double[cascadeData.n_nodes][model.nFactors];
 		double A_new_den[][] = new double[cascadeData.n_nodes][model.nFactors];
@@ -294,6 +294,10 @@ public class SurvivalFactorizationEM_LearnerOPT {
 					S_new_den[currentEvent.node][k] += gamma[c][k]
 							* (currentEvent.timestamp * counters.A_c_u_k[currentEvent.node][k]
 									- counters.tilde_A_c_u_k[currentEvent.node][k]);
+					
+					if (S_new_den[currentEvent.node][k] < 0){
+						throw new RuntimeException("Negative value for S on node " + currentEvent.node + " of cascade "+ c);
+					}
 					}
 
 					// FIXME: the optimization should be alternated and the
@@ -303,9 +307,15 @@ public class SurvivalFactorizationEM_LearnerOPT {
 							* counters.R_c_u_k[currentEvent.node][k];
 					A_new_den[currentEvent.node][k] += gamma[c][k]*(
 							 (counters.tilde_S_c_k[k] - counters.tilde_S_c_u_k[currentEvent.node][k])
+							 - currentEvent.timestamp*(counters.S_c_k[k] - counters.S_c_u_k[currentEvent.node][k])
 							+ cascadeData.t_max*(counters.S_k[k] - counters.S_c_k[k])
-							- currentEvent.timestamp*(counters.S_k[k] - counters.S_c_u_k[currentEvent.node][k])
+							- currentEvent.timestamp*(counters.S_k[k] - counters.S_c_k[k])
 							);
+					
+					if (A_new_den[currentEvent.node][k] < 0){
+						throw new RuntimeException("Negative value for A on node " + currentEvent.node + " of cascade "+ c);
+					}
+
 
 				} // for each k
 				inactiveVertices.remove(currentEvent.node);
