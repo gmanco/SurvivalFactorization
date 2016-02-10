@@ -96,7 +96,7 @@ public class SurvivalFactorizationEM_ModelCounters {
 				if (prevEvent != null) {
 
 					A_c_u_k[n][k] = model.A[prevEvent.node][k] + A_c_u_k[prevEvent.node][k];
-					tilde_A_c_u_k[n][k] = time * model.A[prevEvent.node][k] + tilde_A_c_u_k[prevEvent.node][k];
+					tilde_A_c_u_k[n][k] = prevEvent.timestamp * model.A[prevEvent.node][k] + tilde_A_c_u_k[prevEvent.node][k];
 
 					S_c_u_k[n][k] = S_c_u_k[prevEvent.node][k];
 					tilde_S_c_u_k[n][k] = tilde_S_c_u_k[prevEvent.node][k];
