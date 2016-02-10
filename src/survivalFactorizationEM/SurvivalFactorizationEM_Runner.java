@@ -10,9 +10,7 @@ import data.CascadeData;
 public class SurvivalFactorizationEM_Runner {
 
     public static void main(String[] args) throws Exception {
-        
-        args =new String[]{"resources/weibo_run.properties"};
-        
+                
         System.out.println("*** Survival Factorization EM ***");
 
         String file_events = null;
