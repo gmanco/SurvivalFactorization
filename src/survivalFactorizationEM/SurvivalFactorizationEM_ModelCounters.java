@@ -9,18 +9,20 @@ import data.CascadeData;
 import data.CascadeEvent;
 
 public class SurvivalFactorizationEM_ModelCounters {
-	double [][][] A_c_u_k;
-	double [][][] tilde_A_c_u_k;
-	double [][] A_c_k;
-	double [][] tilde_A_c_k;
+	double [][] A_c_u_k;
+	double [][] tilde_A_c_u_k;
+	double [] A_c_k;
+	double [] tilde_A_c_k;
 	
-	double [][][] R_c_u_k;
+	double [][] R_c_u_k;
 	
 	double [] S_k;
-	double [][] S_c_k;
-	double [][] tilde_S_c_k;
+	double [] S_c_k;
+	double [] tilde_S_c_k;
+	double [][] S_c_u_k;
+	double [][] tilde_S_c_u_k;
 	
-	double [][] L_c_k;
+	double [] L_c_k;
 	
     public int nVertices;
     public int nFactors;
@@ -34,6 +36,7 @@ public class SurvivalFactorizationEM_ModelCounters {
 		resetCounters();	 
 	}
 
+	/*
 	public void update(CascadeData cascadeData, SurvivalFactorizationEM_Model model) {
 		resetCounters();
 		List<CascadeEvent> eventsCurrCascade;
@@ -101,18 +104,82 @@ public class SurvivalFactorizationEM_ModelCounters {
 			}
 		}
 	}
+	*/
+	
+	public void updateCountersOnCascade(CascadeData cascadeData,  int cascadeIndex, SurvivalFactorizationEM_Model model){
+		resetCounters();
+		List<CascadeEvent> eventsCurrCascade;
+
+		for (int k = 0; k < nFactors; k++) {
+			for (int n = 0; n < nVertices; n++)
+				S_k[k] = model.S[n][k];
+		}
+
+			eventsCurrCascade = cascadeData.getCascadeEvents(cascadeIndex);
+			//FIXME: mi sembra estremamente inefficiente. 
+			CascadeEvent prevEvent = null;
+			for (CascadeEvent currentEvent : eventsCurrCascade) {
+				for (int k = 0; k < nFactors; k++) {
+					int n = currentEvent.node;
+					double time = currentEvent.timestamp;
+
+					if (prevEvent != null) {
+						A_c_u_k[n][k] += model.A[prevEvent.node][k] + A_c_u_k[prevEvent.node][k];
+						tilde_A_c_u_k[n][k] += time * model.A[prevEvent.node][k]
+								+ tilde_A_c_u_k[prevEvent.node][k];
+						
+						S_c_u_k[n][k] += S_c_u_k[prevEvent.node][k];
+						tilde_S_c_u_k[n][k] += tilde_S_c_u_k[prevEvent.node][k];
+
+					}
+
+					S_c_u_k[n][k] += model.S[n][k];
+					tilde_S_c_u_k[n][k] += time * model.S[n][k];
+
+					tilde_A_c_k[k] += time * model.A[n][k];
+					A_c_k[k] += model.A[n][k];
+					
+					//FIXME: skip first active node
+					S_c_k[k] += model.S[n][k];
+					tilde_S_c_k[k] += time * model.S[n][k];
+					L_c_k[k] += Math.log(model.S[n][k]);
+
+					prevEvent = currentEvent;
+				}
+			}
+	
+
+
+			ListIterator<CascadeEvent> li = eventsCurrCascade.listIterator(eventsCurrCascade.size());
+			prevEvent = null;
+
+			while (li.hasPrevious()) {
+				CascadeEvent currentEvent = li.previous();
+				if (prevEvent != null)
+					for (int k = 0; k < nFactors; k++) {
+					    if(A_c_u_k[prevEvent.node][k]==0.0)
+					        throw new RuntimeException();
+						R_c_u_k[currentEvent.node][k] += 1 / (A_c_u_k[prevEvent.node][k])
+								+ R_c_u_k[prevEvent.node][k];
+					}
+				prevEvent = currentEvent;
+			}
+		}
+
 
 	private void resetCounters() {
-		A_c_u_k = new double[nCascades][nVertices][nFactors];
-		tilde_A_c_u_k = new double[nCascades][nVertices][nFactors];
-		A_c_k = new double[nCascades][nFactors];
-		tilde_A_c_k = new double[nCascades][nFactors];
+		A_c_u_k = new double[nVertices][nFactors];
+		tilde_A_c_u_k = new double[nVertices][nFactors];
+		A_c_k = new double[nFactors];
+		tilde_A_c_k = new double[nFactors];
 		
-		R_c_u_k = new double[nCascades][nVertices][nFactors];
+		R_c_u_k = new double[nVertices][nFactors];
 		
+		S_c_u_k = new double[nVertices][nFactors];
+		tilde_S_c_u_k = new double[nVertices][nFactors];
 		S_k = new double[nFactors];
-		S_c_k = new double[nCascades][nFactors];		
-		tilde_S_c_k = new double[nCascades][nFactors];
-		L_c_k = new double[nCascades][nFactors];		 
+		S_c_k = new double[nFactors];		
+		tilde_S_c_k = new double[nFactors];
+		L_c_k = new double[nFactors];		 
 	}
 }
