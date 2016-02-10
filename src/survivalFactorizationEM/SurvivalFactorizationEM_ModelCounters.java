@@ -139,7 +139,6 @@ public class SurvivalFactorizationEM_ModelCounters {
 					tilde_A_c_k[k] += time * model.A[n][k];
 					A_c_k[k] += model.A[n][k];
 					
-					//FIXME: skip first active node
 					S_c_k[k] += model.S[n][k];
 					tilde_S_c_k[k] += time * model.S[n][k];
 					L_c_k[k] += Math.log(model.S[n][k]);
