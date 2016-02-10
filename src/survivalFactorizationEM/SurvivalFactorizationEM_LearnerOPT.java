@@ -298,7 +298,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 
 					if (prevEvent != null) {
-						// update S_num first part
+						// update S_num 
 						S_new_num[currentEvent.node][k] += gamma[c][k];
 						// update S_den considering activations
 						S_new_den[currentEvent.node][k] += gamma[c][k]
@@ -313,10 +313,10 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 					// FIXME: the optimization should be alternated and the
 					// counters should be updated in the meantime
-					// update A
+					// update A_num
 					A_new_num[currentEvent.node][k] += gamma[c][k] * model.A[currentEvent.node][k]
 							* counters.R_c_u_k[currentEvent.node][k];
-
+					// update A_den
 					A_new_den[currentEvent.node][k] += gamma[c][k]
 							* ((counters.tilde_S_c_k[k] - counters.tilde_S_c_u_k[currentEvent.node][k])
 									- currentEvent.timestamp
