@@ -1,9 +1,7 @@
 package survivalFactorizationEM;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Set;
 
 import data.CascadeData;
 import data.CascadeEvent;
@@ -28,9 +26,8 @@ public class SurvivalFactorizationEM_ModelCounters {
 	public int nFactors;
 
 	public SurvivalFactorizationEM_ModelCounters(int n, int k) {
-		this.nFactors = k;
-		this.nVertices = n;
-
+	    this.nVertices = n;
+	    this.nFactors = k;
 		resetCounters();
 		S_k = new double[nFactors];
 	}
@@ -122,7 +119,6 @@ public class SurvivalFactorizationEM_ModelCounters {
 					throw new RuntimeException("Inconsistent value");
 				if (cascadeData.t_max*S_c_u_k[n][k] < tilde_S_c_u_k[n][k])
 					throw new RuntimeException("Inconsistent value");
-
 			}
 			prevEvent = currentEvent;
 		}
