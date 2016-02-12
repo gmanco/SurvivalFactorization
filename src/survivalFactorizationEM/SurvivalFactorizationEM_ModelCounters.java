@@ -1,9 +1,7 @@
 package survivalFactorizationEM;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Set;
 
 import data.CascadeData;
 import data.CascadeEvent;

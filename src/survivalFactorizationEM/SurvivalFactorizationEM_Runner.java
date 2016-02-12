@@ -11,7 +11,7 @@ public class SurvivalFactorizationEM_Runner {
 
     public static void main(String[] args) throws Exception {
     	
-    	args =new String[]{"resources/twitter_run.properties"};
+ //   	args =new String[]{"resources/twitter_run.properties"};
         
         System.out.println("*** Survival Factorization EM ***");
 

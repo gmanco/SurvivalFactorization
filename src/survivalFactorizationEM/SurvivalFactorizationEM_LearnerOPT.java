@@ -305,7 +305,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 								* (currentEvent.timestamp * counters.A_c_u_k[currentEvent.node][k]
 										- counters.tilde_A_c_u_k[currentEvent.node][k]);
 						
-						if (S_new_den[currentEvent.node][k] <= 0) {
+						if (S_new_den[currentEvent.node][k] < 0) {
 							throw new RuntimeException(
 									"Negative value for S on node " + currentEvent.node + " of cascade " + c);
 						}
@@ -361,10 +361,10 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 			for (int u = 0; u < cascadeData.n_nodes; u++) {
 				// update S
-				S_new[u][k] = (S_new_num[u][k]) / (S_new_den[u][k] + cascadeData.n_nodes);
+				S_new[u][k] = (S_new_num[u][k] + 1e-5) / (S_new_den[u][k] + cascadeData.n_nodes);
 
 				// update A
-				A_new[u][k] = (A_new_num[u][k]) / (A_new_den[u][k] + cascadeData.n_nodes);
+				A_new[u][k] = (A_new_num[u][k] + 1e-5) / (A_new_den[u][k] + cascadeData.n_nodes);
 			}
 			for (int w = 0; w < cascadeData.n_words; w++) {
 				Phi_new[w][k] = (Phi_new_num[w][k] + 1.0) / (length_all_traces + two_k_squared_plus_2);
