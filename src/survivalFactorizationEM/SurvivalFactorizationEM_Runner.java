@@ -59,7 +59,8 @@ public class SurvivalFactorizationEM_Runner {
         
         CascadeData cascadeData=new CascadeData(file_events, file_content);
         cascadeData.getInfo();
-
+        
+        
 //        SurvivalFactorizationEM_Learner inf = new SurvivalFactorizationEM_Learner();
         SurvivalFactorizationEM_LearnerOPT inf = new SurvivalFactorizationEM_LearnerOPT();
 

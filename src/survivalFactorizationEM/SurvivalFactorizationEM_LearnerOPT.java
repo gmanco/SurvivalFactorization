@@ -365,9 +365,14 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 				// update A
 				A_new[u][k] = (A_new_num[u][k] + 1e-5) / (A_new_den[u][k] + cascadeData.n_nodes);
+			//	A_new[u][k] = (A_new_num[u][k] + 1) / (A_new_den[u][k] + cascadeData.n_nodes);
+			    if(A_new_den[u][k]!=0.0)
+			        A_new[u][k] = A_new_num[u][k] / A_new_den[u][k];
+			    else throw new RuntimeException();
 			}
 			for (int w = 0; w < cascadeData.n_words; w++) {
-				Phi_new[w][k] = (Phi_new_num[w][k] + 1.0) / (length_all_traces + two_k_squared_plus_2);
+				//Phi_new[w][k] = (Phi_new_num[w][k] + 1.0) / (length_all_traces + two_k_squared_plus_2);
+			    Phi_new[w][k] = Phi_new_num[w][k] / (length_all_traces + two_k_squared_plus_2);
 			}
 		}
 
