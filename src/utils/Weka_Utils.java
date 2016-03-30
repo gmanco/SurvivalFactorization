@@ -22,7 +22,7 @@ public class Weka_Utils {
 	 * Returns the given Array in a string representation. Even though the
 	 * parameter is of type "Object" one can hand over primitve arrays, e.g.
 	 * int[3] or double[2][4].
-	 * 
+	 *
 	 * @param array
 	 *            the array to return in a string representation
 	 * @return the array as string
@@ -59,7 +59,7 @@ public class Weka_Utils {
 	/**
 	 * Converts carriage returns and new lines in a string into \r and \n.
 	 * Backquotes the following characters: ` " \ \t and %
-	 * 
+	 *
 	 * @param string
 	 *            the string
 	 * @return the converted string
@@ -163,7 +163,7 @@ public class Weka_Utils {
 	 * Converts a File's absolute path to a path relative to the user (ie start)
 	 * directory. Includes an additional workaround for Cygwin, which doesn't
 	 * like upper case drive letters.
-	 * 
+	 *
 	 * @param absolute
 	 *            the File to convert to relative path
 	 * @return a File with a path that is relative to the user's directory
@@ -234,7 +234,7 @@ public class Weka_Utils {
 	/**
 	 * Converts a File's absolute path to a path relative to the user (ie start)
 	 * directory.
-	 * 
+	 *
 	 * @param absolute
 	 *            the File to convert to relative path
 	 * @return a File with a path that is relative to the user's directory
@@ -451,12 +451,12 @@ public class Weka_Utils {
 	/**
 	 * Returns the basic class of an array class (handles multi-dimensional
 	 * arrays).
-	 * 
+	 *
 	 * @param c
 	 *            the array to inspect
 	 * @return the class of the innermost elements
 	 */
-	public static Class getArrayClass(Class c) {
+	public static Class<?> getArrayClass(Class<?> c) {
 		if (c.getComponentType().isArray())
 			return getArrayClass(c.getComponentType());
 		else
@@ -472,7 +472,7 @@ public class Weka_Utils {
 	 *            the array to determine the dimensions for
 	 * @return the dimensions of the array
 	 */
-	public static int getArrayDimensions(Class array) {
+	public static int getArrayDimensions(Class<?> array) {
 		if (array.getComponentType().isArray())
 			return 1 + getArrayDimensions(array.getComponentType());
 		else
@@ -629,7 +629,7 @@ public class Weka_Utils {
 					// did we reach "--"?
 					if (options[i].charAt(1) == '-')
 						return -1;
-		}
+				}
 
 		return -1;
 	}
@@ -664,10 +664,12 @@ public class Weka_Utils {
 	 * @param data
 	 * @param wgt
 	 */
-	private static void heapsort(Vector data) {
+	public static <T extends Comparable<T>> void heapsort(Vector<T> data) {
 		final int length = data.size();
+
 		for (int i = length / 2 - 1; i >= 0; --i)
 			moveDown(data, i, length - 1);
+
 		for (int i = length - 1; i >= 1; --i) {
 			swap(data, 0, i);
 			moveDown(data, 0, i - 1);
@@ -889,18 +891,24 @@ public class Weka_Utils {
 	 * @param vector2
 	 * @return
 	 */
-	public static Vector merge(Vector data1, Vector data2) {
-		final Vector result = new Vector(data1.size() + data2.size());
+	public static <T extends Comparable<T>> Vector<T> merge(Vector<T> data1,
+			Vector<T> data2) {
+
+		final Vector<T> result = new Vector<T>(data1.size() + data2.size());
 		int i = 0, j = 0;
+
 		while (i < data1.size() && j < data2.size())
-			if (((Comparable) data1.get(i)).compareTo(data2.get(j)) < 0)
+			if (data1.get(i).compareTo(data2.get(j)) < 0)
 				result.add(data1.get(i++));
 			else
 				result.add(data2.get(j++));
+
 		for (; i < data1.size(); i++)
 			result.add(data1.get(i));
+
 		for (; j < data2.size(); j++)
 			result.add(data2.get(j));
+
 		return result;
 	}
 
@@ -953,14 +961,17 @@ public class Weka_Utils {
 	 * @param i
 	 * @param j
 	 */
-	private static void moveDown(Vector data, int first, int last) {
+	private static <T extends Comparable<T>> void moveDown(Vector<T> data,
+			int first, int last) {
+
 		int largest = 2 * first + 1;
+
 		while (largest <= last) {
 			if (largest < last
-					&& ((Comparable) data.get(largest)).compareTo(data
-							.get(largest + 1)) < 0)
+					&& data.get(largest).compareTo(data.get(largest + 1)) < 0)
 				largest++;
-			if (((Comparable) data.get(first)).compareTo(data.get(largest)) < 0) {
+
+			if (data.get(first).compareTo(data.get(largest)) < 0) {
 				swap(data, first, largest);
 				first = largest;
 				largest = 2 * first + 1;
@@ -1196,13 +1207,16 @@ public class Weka_Utils {
 	 * @param data
 	 * @param wgt
 	 */
-	private static void quicksort(Vector data) {
+	private static <T extends Comparable<T>> void quicksort(Vector<T> data) {
 		if (data.size() < 2)
 			return;
+
 		int max = 0;
+
 		for (int i = 1; i < data.size(); i++)
-			if (((Comparable) data.get(max)).compareTo(data.get(i)) < 0)
+			if (data.get(max).compareTo(data.get(i)) < 0)
 				max = i;
+
 		swap(data, data.size() - 1, max);
 		quicksort(data, 0, data.size() - 2);
 	}
@@ -1212,23 +1226,32 @@ public class Weka_Utils {
 	 * @param i
 	 * @param j
 	 */
-	private static void quicksort(Vector data, int first, int last) {
+	private static <T extends Comparable<T>> void quicksort(Vector<T> data,
+			int first, int last) {
+
 		int lower = first + 1, upper = last;
 		swap(data, first, (first + last) / 2);
-		final Comparable bound = (Comparable) data.get(first);
+
+		final T bound = data.get(first);
+
 		while (lower <= upper) {
-			while (((Comparable) data.get(lower)).compareTo(bound) < 0)
+			while (data.get(lower).compareTo(bound) < 0)
 				lower++;
+
 			while (bound.compareTo(data.get(upper)) < 0)
 				upper--;
+
 			if (lower < upper)
 				swap(data, lower++, upper--);
 			else
 				lower++;
 		}
+
 		swap(data, upper, first);
+
 		if (first < upper - 1)
 			quicksort(data, first, upper - 1);
+
 		if (upper + 1 < last)
 			quicksort(data, upper + 1, last);
 	}
@@ -1289,7 +1312,7 @@ public class Weka_Utils {
 
 	/**
 	 * Quotes a string if it contains special characters.
-	 * 
+	 *
 	 * The following rules are applied:
 	 *
 	 * A character is backquoted version of it is one of
@@ -1379,7 +1402,7 @@ public class Weka_Utils {
 
 	/**
 	 * Reverts \r and \n in a string into carriage returns and new lines.
-	 * 
+	 *
 	 * @param string
 	 *            the string
 	 * @return the converted string
@@ -1616,7 +1639,7 @@ public class Weka_Utils {
 	 * @param i
 	 * @param length
 	 */
-	public static void sort(Vector data) {
+	public static <T extends Comparable<T>> void sort(Vector<T> data) {
 		quicksort(data);
 	}
 
@@ -1707,8 +1730,8 @@ public class Weka_Utils {
 	 * @param i
 	 * @param i2
 	 */
-	private static void swap(Vector data, int i, int j) {
-		final Object o = data.get(i);
+	private static <T> void swap(Vector<T> data, int i, int j) {
+		final T o = data.get(i);
 		data.set(i, data.get(j));
 		data.set(j, o);
 	}
@@ -1766,7 +1789,7 @@ public class Weka_Utils {
 	/**
 	 * unquotes are previously quoted string (but only if necessary), i.e., it
 	 * removes the single quotes around it. Inverse to quote(String).
-	 * 
+	 *
 	 * @param string
 	 *            the string to process
 	 * @return the unquoted string
