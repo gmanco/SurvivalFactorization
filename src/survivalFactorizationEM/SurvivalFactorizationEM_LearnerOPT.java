@@ -42,7 +42,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 	private double[][] llk_exponentialTerms;
 
 	private double exponentialPrior_rate;
-	private double priorGamma_scale;
+	private double priorGamma_shape;
 	private double priorGamma_rate;
 
 	private final boolean enablePriorComponent;
@@ -51,7 +51,8 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 	public SurvivalFactorizationEM_LearnerOPT() {
 		eps = SurvivalFactorizationEM_Configuration.eps;
-		save_step = SurvivalFactorizationEM_Configuration.DEFAULT_SAVE_STEP;
+		// save_step = SurvivalFactorizationEM_Configuration.DEFAULT_SAVE_STEP;
+		save_step = 1;
 		randomGen = SurvivalFactorizationEM_Configuration.randomGen;
 		enablePriorComponent = true;
 		enableContentLikelihood = true;
@@ -70,8 +71,10 @@ public class SurvivalFactorizationEM_LearnerOPT {
 		final int nVertices = cascadeData.getNNodes();
 
 		exponentialPrior_rate = nVertices;
-		priorGamma_scale = 1D + 1D / nFactors;
-		priorGamma_rate = 2 * nFactors * nFactors + 2;
+		priorGamma_shape = 1D + 1D / nFactors;
+		// priorGamma_shape = 2;
+		// priorGamma_shape = 2 * nFactors * nFactors + 2;
+		priorGamma_rate = priorGamma_shape * nFactors + 2;
 
 		// init model
 		SurvivalFactorizationEM_Model model = new SurvivalFactorizationEM_Model(
@@ -277,7 +280,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 						sum += model.Phi[w][k];
 					}
 
-				logpriors2 = (priorGamma_scale - 1) * logSum - priorGamma_rate
+				logpriors2 = (priorGamma_shape - 1) * logSum - priorGamma_rate
 						* sum;
 			}
 
@@ -606,7 +609,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 			if (enableContentLikelihood)
 				for (int w = 0; w < cascadeData.n_words; w++)
-					Phi_new[w][k] = (priorGamma_scale - 1 + Phi_new_num[w][k])
+					Phi_new[w][k] = (priorGamma_shape - 1 + Phi_new_num[w][k])
 							/ (priorGamma_rate + Phi_new_den[k]);
 		}
 
