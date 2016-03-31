@@ -105,7 +105,7 @@ public class SurvivalFactorizationEM_Model implements Serializable {
 		pi = new double[nFactors];
 
 		final double meanExpVertices = 1d / nVertices;
-		final double meanExpWords = 1d / (nFactors * nFactors + 1);
+		final double meanExpWords = 1d / (nFactors * nFactors + 1d);
 
 		for (int k = 0; k < nFactors; ++k) {
 			for (int u = 0; u < nVertices; ++u) {
@@ -117,7 +117,7 @@ public class SurvivalFactorizationEM_Model implements Serializable {
 
 			for (int w = 0; w < nWords; ++w)
 				Phi[w][k] = SurvivalFactorizationEM_Configuration.randomGen
-						.nextExp(meanExpWords);
+				.nextExp(meanExpWords);
 
 			pi[k] = SurvivalFactorizationEM_Configuration.randomGen
 					.nextDouble();
