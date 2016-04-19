@@ -51,8 +51,8 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 	public SurvivalFactorizationEM_LearnerOPT() {
 		eps = SurvivalFactorizationEM_Configuration.eps;
-		// save_step = SurvivalFactorizationEM_Configuration.DEFAULT_SAVE_STEP;
-		save_step = 1;
+		save_step = SurvivalFactorizationEM_Configuration.DEFAULT_SAVE_STEP;
+		// save_step = 1;
 		randomGen = SurvivalFactorizationEM_Configuration.randomGen;
 		enablePriorComponent = true;
 		enableContentLikelihood = true;
@@ -362,7 +362,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 					double acukDiff = currentEvent.timestamp
 							* counters.A_c_u_k[currentEvent.node][k]
-							- counters.tilde_A_c_u_k[currentEvent.node][k];
+									- counters.tilde_A_c_u_k[currentEvent.node][k];
 
 					if (acukDiff < 0)
 						if (acukDiff < SurvivalFactorizationEM_ModelCounters.NEGATIVE_TOLERANCE)
@@ -410,7 +410,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 	private SurvivalFactorizationEM_Model iterateEM(CascadeData cascadeData,
 			SurvivalFactorizationEM_Model model, int nMaxIterations)
-					throws Exception {
+			throws Exception {
 
 		System.out.println("Learning phase: starting at " + new Date());
 
@@ -457,8 +457,8 @@ public class SurvivalFactorizationEM_LearnerOPT {
 							/ prevlogLikelihood;
 
 					System.out
-					.format("######\tIteration: %d\tLogLikelihood\t%.5f (Loss: %.6f)\r\n",
-							iterationsDone, logLikelihood, improvement);
+							.format("######\tIteration: %d\tLogLikelihood\t%.5f (Loss: %.6f)\r\n",
+									iterationsDone, logLikelihood, improvement);
 					System.out.println(String.format("\tCurrent Likelihood:"
 							+ "\t%.5f\n\tPrevious Likelihood:\t%.5f",
 							logLikelihood, prevlogLikelihood));
@@ -467,8 +467,8 @@ public class SurvivalFactorizationEM_LearnerOPT {
 							/ prevlogLikelihood;
 
 					System.out
-					.format("Iteration: %d\tLogLikelihood\t%.5f (Improvement: %.6f)\r\n",
-							iterationsDone, logLikelihood, improvement);
+							.format("Iteration: %d\tLogLikelihood\t%.5f (Improvement: %.6f)\r\n",
+									iterationsDone, logLikelihood, improvement);
 				}
 
 				prevlogLikelihood = logLikelihood;
@@ -524,7 +524,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 						double acukDiff = currentEvent.timestamp
 								* counters.A_c_u_k[currentEvent.node][k]
-										- counters.tilde_A_c_u_k[currentEvent.node][k];
+								- counters.tilde_A_c_u_k[currentEvent.node][k];
 
 						if (acukDiff < 0)
 							if (acukDiff < SurvivalFactorizationEM_ModelCounters.NEGATIVE_TOLERANCE)
@@ -548,11 +548,11 @@ public class SurvivalFactorizationEM_LearnerOPT {
 					A_new_den[currentEvent.node][k] += gamma[c][k]
 							* (counters.tilde_S_c_k[k]
 									- counters.tilde_S_c_u_k[currentEvent.node][k]
-											- currentEvent.timestamp
-											* (counters.S_c_k[k] - counters.S_c_u_k[currentEvent.node][k])
-											+ cascadeData.t_max
-											* (counters.S_k[k] - counters.S_c_k[k]) - currentEvent.timestamp
-											* (counters.S_k[k] - counters.S_c_k[k]));
+									- currentEvent.timestamp
+									* (counters.S_c_k[k] - counters.S_c_u_k[currentEvent.node][k])
+									+ cascadeData.t_max
+									* (counters.S_k[k] - counters.S_c_k[k]) - currentEvent.timestamp
+									* (counters.S_k[k] - counters.S_c_k[k]));
 				}
 
 				inactiveVertices.remove(currentEvent.node);
@@ -564,7 +564,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 				for (int k = 0; k < model.nFactors; k++) {
 					double acukDiff = cascadeData.t_max
 							* counters.A_c_u_k[inactiveNode][k]
-									- counters.tilde_A_c_u_k[inactiveNode][k];
+							- counters.tilde_A_c_u_k[inactiveNode][k];
 
 					if (acukDiff < 0)
 						if (acukDiff < SurvivalFactorizationEM_ModelCounters.NEGATIVE_TOLERANCE)
@@ -610,7 +610,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 			if (enableContentLikelihood)
 				for (int w = 0; w < cascadeData.n_words; w++)
 					Phi_new[w][k] = (priorGamma_shape - 1 + Phi_new_num[w][k])
-							/ (priorGamma_rate + Phi_new_den[k]);
+					/ (priorGamma_rate + Phi_new_den[k]);
 		}
 
 		Weka_Utils.normalize(pi_new);

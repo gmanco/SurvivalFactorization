@@ -65,6 +65,7 @@ public class SurvivalFactorizationEM_Runner {
 				file_content);
 
 		System.out.println("Done.");
+
 		cascadeData.getInfo();
 
 		final long time = System.currentTimeMillis();
