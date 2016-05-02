@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix2D;
@@ -230,18 +231,16 @@ public class CascadeData {
 
 			// read dimensions
 			BufferedReader br = new BufferedReader(new FileReader(file_events));
-			String line = br.readLine();
-			String tokens[];
-			line = br.readLine();// skip header
+			String line = br.readLine(); // skip header
 
-			while (line != null) {
-				tokens = line.split("\t");
-				final int nodeId = Integer.parseInt(tokens[0]) - 1;
-				final int cascadeId = Integer.parseInt(tokens[1]) - 1;
+			while ((line = br.readLine()) != null) {
+				final StringTokenizer st = new StringTokenizer(line);
+				final int nodeId = Integer.parseInt(st.nextToken()) - 1;
+				final int cascadeId = Integer.parseInt(st.nextToken()) - 1;
 				nodeSet.add(nodeId);
 				cascadeSet.add(cascadeId);
-				line = br.readLine();
 			}
+
 			br.close();
 
 			// init variables
@@ -253,14 +252,13 @@ public class CascadeData {
 
 			// read cascades
 			br = new BufferedReader(new FileReader(file_events));
-			line = br.readLine();
-			line = br.readLine();// skip header
+			line = br.readLine(); // skip header
 
-			while (line != null) {
-				tokens = line.split("\t");
-				final int nodeId = Integer.parseInt(tokens[0]) - 1;
-				final int cascadeId = Integer.parseInt(tokens[1]) - 1;
-				final double timestamp = Double.parseDouble(tokens[2]);
+			while ((line = br.readLine()) != null) {
+				final StringTokenizer st = new StringTokenizer(line);
+				final int nodeId = Integer.parseInt(st.nextToken()) - 1;
+				final int cascadeId = Integer.parseInt(st.nextToken()) - 1;
+				final double timestamp = Double.parseDouble(st.nextToken());
 
 				// set the timestamp
 				cascadeEvents.set(nodeId, cascadeId, timestamp);
@@ -278,8 +276,6 @@ public class CascadeData {
 				// check t_max
 				if (t_max < timestamp)
 					t_max = timestamp;
-
-				line = br.readLine();
 			}
 
 			br.close();
@@ -294,5 +290,4 @@ public class CascadeData {
 		final long time = (System.currentTimeMillis() - tic) / 1000;
 		System.out.print(" Done (" + time + " secs)\n");
 	}// processEventFile
-
 }

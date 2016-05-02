@@ -27,6 +27,7 @@ public class SurvivalFactorizationEM_Runner {
 		int[] nFactors = { SurvivalFactorizationEM_Configuration.DEFAULT_N_FACTORS };
 		int nMaxIterations = SurvivalFactorizationEM_Configuration.DEFAULT_N_ITERATIONS;
 		String outputFile = SurvivalFactorizationEM_Configuration.DEFAULT_OUTPUT;
+		String assignmentFile = SurvivalFactorizationEM_Configuration.DEFAULT_ASSIGNMENT_FILE;
 
 		System.out.print("\r\n\r\nReading parameters...");
 
@@ -57,6 +58,9 @@ public class SurvivalFactorizationEM_Runner {
 		if (prop.containsKey("output"))
 			outputFile = prop.getProperty("output");
 
+		if (prop.containsKey("assignment_file"))
+			assignmentFile = prop.getProperty("assignment_file");
+
 		System.out.println("Done.");
 
 		System.out.println("\r\n\r\nLoading data...");
@@ -77,7 +81,7 @@ public class SurvivalFactorizationEM_Runner {
 			final SurvivalFactorizationEM_LearnerOPT inf = new SurvivalFactorizationEM_LearnerOPT();
 
 			final SurvivalFactorizationEM_Model model = inf.build(cascadeData,
-					k, nMaxIterations);
+					k, nMaxIterations, assignmentFile);
 
 			System.out.println("Done.");
 

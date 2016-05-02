@@ -1,0 +1,549 @@
+*** Survival Factorization EM ***
+
+
+Reading parameters...Done.
+
+
+Loading data...
+Reading event file from resources/datasets/weibo/weibo_dpu_activations_clean.txt ...  Done (0 secs)
+Done.
+*** Statistics cascade data ****
+Number of nodes: 1284
+Number of cascades 5653
+Number of words 0
+T_max 1356166096,000000
+*********************************
+
+
+Running inference (2 factors)...
+
+
+Survival Factorization EM  with 2 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 01 13:15:48 CEST 2016
+Init loglikelihood		-130129431,25097466
+Iteration: 10	LogLikelihood	-225083,98143 (Improvement: 0,998270)
+Iteration: 20	LogLikelihood	-224737,31768 (Improvement: 0,001540)
+Iteration: 30	LogLikelihood	-224600,86098 (Improvement: 0,000607)
+Iteration: 40	LogLikelihood	-224544,11962 (Improvement: 0,000253)
+Iteration: 50	LogLikelihood	-224503,20014 (Improvement: 0,000182)
+Iteration: 60	LogLikelihood	-224443,47767 (Improvement: 0,000266)
+Iteration: 70	LogLikelihood	-224400,74533 (Improvement: 0,000190)
+Iteration: 80	LogLikelihood	-224380,19900 (Improvement: 0,000092)
+Iteration: 90	LogLikelihood	-224347,10575 (Improvement: 0,000147)
+Iteration: 100	LogLikelihood	-224308,93933 (Improvement: 0,000170)
+Iteration: 110	LogLikelihood	-224274,07310 (Improvement: 0,000155)
+Iteration: 120	LogLikelihood	-224260,64627 (Improvement: 0,000060)
+Iteration: 130	LogLikelihood	-224233,81575 (Improvement: 0,000120)
+Iteration: 140	LogLikelihood	-224219,36473 (Improvement: 0,000064)
+Iteration: 150	LogLikelihood	-224185,47200 (Improvement: 0,000151)
+Iteration: 160	LogLikelihood	-224166,58170 (Improvement: 0,000084)
+Iteration: 170	LogLikelihood	-224138,56773 (Improvement: 0,000125)
+Iteration: 180	LogLikelihood	-224127,79032 (Improvement: 0,000048)
+Iteration: 190	LogLikelihood	-224114,68415 (Improvement: 0,000058)
+Iteration: 200	LogLikelihood	-224106,55934 (Improvement: 0,000036)
+Iteration: 210	LogLikelihood	-224086,93334 (Improvement: 0,000088)
+Iteration: 220	LogLikelihood	-224080,58244 (Improvement: 0,000028)
+Iteration: 230	LogLikelihood	-224070,45521 (Improvement: 0,000045)
+Iteration: 240	LogLikelihood	-224058,15013 (Improvement: 0,000055)
+Iteration: 250	LogLikelihood	-224050,31042 (Improvement: 0,000035)
+Iteration: 260	LogLikelihood	-224037,11913 (Improvement: 0,000059)
+Iteration: 270	LogLikelihood	-224020,93260 (Improvement: 0,000072)
+Iteration: 280	LogLikelihood	-224012,32299 (Improvement: 0,000038)
+Iteration: 290	LogLikelihood	-224004,81419 (Improvement: 0,000034)
+Iteration: 300	LogLikelihood	-223999,78890 (Improvement: 0,000022)
+Iteration: 310	LogLikelihood	-223996,19170 (Improvement: 0,000016)
+Iteration: 320	LogLikelihood	-223980,55744 (Improvement: 0,000070)
+Iteration: 330	LogLikelihood	-223958,68938 (Improvement: 0,000098)
+Iteration: 340	LogLikelihood	-223956,69994 (Improvement: 0,000009)
+Iteration: 350	LogLikelihood	-223955,48190 (Improvement: 0,000005)
+Iteration: 360	LogLikelihood	-223950,81424 (Improvement: 0,000021)
+Iteration: 370	LogLikelihood	-223944,31165 (Improvement: 0,000029)
+Iteration: 380	LogLikelihood	-223941,34709 (Improvement: 0,000013)
+Iteration: 390	LogLikelihood	-223927,72506 (Improvement: 0,000061)
+Iteration: 400	LogLikelihood	-223926,39521 (Improvement: 0,000006)
+Iteration: 410	LogLikelihood	-223925,89922 (Improvement: 0,000002)
+Iteration: 420	LogLikelihood	-223925,26945 (Improvement: 0,000003)
+Iteration: 430	LogLikelihood	-223923,85996 (Improvement: 0,000006)
+Iteration: 440	LogLikelihood	-223923,03432 (Improvement: 0,000004)
+Iteration: 450	LogLikelihood	-223917,24831 (Improvement: 0,000026)
+Iteration: 460	LogLikelihood	-223903,40602 (Improvement: 0,000062)
+Iteration: 470	LogLikelihood	-223903,13475 (Improvement: 0,000001)
+Iteration: 480	LogLikelihood	-223898,93893 (Improvement: 0,000019)
+Iteration: 490	LogLikelihood	-223898,38987 (Improvement: 0,000002)
+Iteration: 500	LogLikelihood	-223898,15313 (Improvement: 0,000001)
+Iteration: 510	LogLikelihood	-223898,00220 (Improvement: 0,000001)
+Learning Phase: DONE  (511 iterations, 196 secs)
+Done.
+
+
+Saving model...
+Done.
+
+
+Running inference (4 factors)...
+
+
+Survival Factorization EM  with 4 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 01 13:19:05 CEST 2016
+Init loglikelihood		-93766348,48104277
+Iteration: 10	LogLikelihood	-224312,73626 (Improvement: 0,997608)
+Iteration: 20	LogLikelihood	-223470,49077 (Improvement: 0,003755)
+Iteration: 30	LogLikelihood	-223061,35577 (Improvement: 0,001831)
+Iteration: 40	LogLikelihood	-222955,52253 (Improvement: 0,000474)
+Iteration: 50	LogLikelihood	-222891,79996 (Improvement: 0,000286)
+Iteration: 60	LogLikelihood	-222815,84051 (Improvement: 0,000341)
+Iteration: 70	LogLikelihood	-222745,87383 (Improvement: 0,000314)
+Iteration: 80	LogLikelihood	-222668,72651 (Improvement: 0,000346)
+Iteration: 90	LogLikelihood	-222617,90356 (Improvement: 0,000228)
+Iteration: 100	LogLikelihood	-222574,52467 (Improvement: 0,000195)
+Iteration: 110	LogLikelihood	-222552,05380 (Improvement: 0,000101)
+Iteration: 120	LogLikelihood	-222507,88067 (Improvement: 0,000198)
+Iteration: 130	LogLikelihood	-222488,00702 (Improvement: 0,000089)
+Iteration: 140	LogLikelihood	-222457,05625 (Improvement: 0,000139)
+Iteration: 150	LogLikelihood	-222437,05232 (Improvement: 0,000090)
+Iteration: 160	LogLikelihood	-222416,53206 (Improvement: 0,000092)
+Iteration: 170	LogLikelihood	-222404,27006 (Improvement: 0,000055)
+Iteration: 180	LogLikelihood	-222390,79033 (Improvement: 0,000061)
+Iteration: 190	LogLikelihood	-222373,91550 (Improvement: 0,000076)
+Iteration: 200	LogLikelihood	-222360,42365 (Improvement: 0,000061)
+Iteration: 210	LogLikelihood	-222352,80723 (Improvement: 0,000034)
+Iteration: 220	LogLikelihood	-222342,95760 (Improvement: 0,000044)
+Iteration: 230	LogLikelihood	-222336,07870 (Improvement: 0,000031)
+Iteration: 240	LogLikelihood	-222326,63189 (Improvement: 0,000042)
+Iteration: 250	LogLikelihood	-222324,78511 (Improvement: 0,000008)
+Iteration: 260	LogLikelihood	-222321,55638 (Improvement: 0,000015)
+Iteration: 270	LogLikelihood	-222310,92750 (Improvement: 0,000048)
+Iteration: 280	LogLikelihood	-222304,06092 (Improvement: 0,000031)
+Iteration: 290	LogLikelihood	-222303,66105 (Improvement: 0,000002)
+Iteration: 300	LogLikelihood	-222298,31076 (Improvement: 0,000024)
+Iteration: 310	LogLikelihood	-222284,44321 (Improvement: 0,000062)
+Iteration: 320	LogLikelihood	-222274,03910 (Improvement: 0,000047)
+Iteration: 330	LogLikelihood	-222266,98850 (Improvement: 0,000032)
+Iteration: 340	LogLikelihood	-222265,38077 (Improvement: 0,000007)
+Iteration: 350	LogLikelihood	-222263,87140 (Improvement: 0,000007)
+Iteration: 360	LogLikelihood	-222260,46476 (Improvement: 0,000015)
+Iteration: 370	LogLikelihood	-222259,46289 (Improvement: 0,000005)
+Iteration: 380	LogLikelihood	-222251,60035 (Improvement: 0,000035)
+Iteration: 390	LogLikelihood	-222245,94077 (Improvement: 0,000025)
+Iteration: 400	LogLikelihood	-222243,55092 (Improvement: 0,000011)
+Iteration: 410	LogLikelihood	-222239,36480 (Improvement: 0,000019)
+Iteration: 420	LogLikelihood	-222225,39076 (Improvement: 0,000063)
+Iteration: 430	LogLikelihood	-222223,99178 (Improvement: 0,000006)
+Iteration: 440	LogLikelihood	-222221,38839 (Improvement: 0,000012)
+Iteration: 450	LogLikelihood	-222213,21071 (Improvement: 0,000037)
+Iteration: 460	LogLikelihood	-222208,78355 (Improvement: 0,000020)
+Iteration: 470	LogLikelihood	-222204,17098 (Improvement: 0,000021)
+Iteration: 480	LogLikelihood	-222201,94183 (Improvement: 0,000010)
+Iteration: 490	LogLikelihood	-222194,47718 (Improvement: 0,000034)
+Iteration: 500	LogLikelihood	-222192,81220 (Improvement: 0,000007)
+Iteration: 510	LogLikelihood	-222192,56307 (Improvement: 0,000001)
+Iteration: 520	LogLikelihood	-222192,28013 (Improvement: 0,000001)
+Iteration: 530	LogLikelihood	-222187,05439 (Improvement: 0,000024)
+Iteration: 540	LogLikelihood	-222179,05513 (Improvement: 0,000036)
+Iteration: 550	LogLikelihood	-222176,59511 (Improvement: 0,000011)
+Iteration: 560	LogLikelihood	-222176,12075 (Improvement: 0,000002)
+Iteration: 570	LogLikelihood	-222174,97166 (Improvement: 0,000005)
+Iteration: 580	LogLikelihood	-222174,79351 (Improvement: 0,000001)
+Learning Phase: DONE  (581 iterations, 299 secs)
+Done.
+
+
+Saving model...
+Done.
+
+
+Running inference (8 factors)...
+
+
+Survival Factorization EM  with 8 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 01 13:24:03 CEST 2016
+Init loglikelihood		-68385081,04059824
+Iteration: 10	LogLikelihood	-223722,11333 (Improvement: 0,996728)
+Iteration: 20	LogLikelihood	-222590,59357 (Improvement: 0,005058)
+Iteration: 30	LogLikelihood	-221543,46870 (Improvement: 0,004704)
+Iteration: 40	LogLikelihood	-221303,24774 (Improvement: 0,001084)
+Iteration: 50	LogLikelihood	-221152,12287 (Improvement: 0,000683)
+Iteration: 60	LogLikelihood	-220977,29846 (Improvement: 0,000791)
+Iteration: 70	LogLikelihood	-220880,27698 (Improvement: 0,000439)
+Iteration: 80	LogLikelihood	-220786,47455 (Improvement: 0,000425)
+Iteration: 90	LogLikelihood	-220701,01473 (Improvement: 0,000387)
+Iteration: 100	LogLikelihood	-220609,05071 (Improvement: 0,000417)
+Iteration: 110	LogLikelihood	-220546,40404 (Improvement: 0,000284)
+Iteration: 120	LogLikelihood	-220520,21254 (Improvement: 0,000119)
+Iteration: 130	LogLikelihood	-220495,20726 (Improvement: 0,000113)
+Iteration: 140	LogLikelihood	-220442,95327 (Improvement: 0,000237)
+Iteration: 150	LogLikelihood	-220410,89093 (Improvement: 0,000145)
+Iteration: 160	LogLikelihood	-220404,26326 (Improvement: 0,000030)
+Iteration: 170	LogLikelihood	-220383,73610 (Improvement: 0,000093)
+Iteration: 180	LogLikelihood	-220364,12376 (Improvement: 0,000089)
+Iteration: 190	LogLikelihood	-220351,07455 (Improvement: 0,000059)
+Iteration: 200	LogLikelihood	-220332,86939 (Improvement: 0,000083)
+Iteration: 210	LogLikelihood	-220316,07917 (Improvement: 0,000076)
+Iteration: 220	LogLikelihood	-220301,21842 (Improvement: 0,000067)
+Iteration: 230	LogLikelihood	-220290,23249 (Improvement: 0,000050)
+Iteration: 240	LogLikelihood	-220279,69832 (Improvement: 0,000048)
+Iteration: 250	LogLikelihood	-220269,47894 (Improvement: 0,000046)
+Iteration: 260	LogLikelihood	-220261,35223 (Improvement: 0,000037)
+Iteration: 270	LogLikelihood	-220247,62251 (Improvement: 0,000062)
+Iteration: 280	LogLikelihood	-220240,12585 (Improvement: 0,000034)
+Iteration: 290	LogLikelihood	-220227,59258 (Improvement: 0,000057)
+Iteration: 300	LogLikelihood	-220220,34738 (Improvement: 0,000033)
+Iteration: 310	LogLikelihood	-220207,05011 (Improvement: 0,000060)
+Iteration: 320	LogLikelihood	-220195,94077 (Improvement: 0,000050)
+Iteration: 330	LogLikelihood	-220189,81689 (Improvement: 0,000028)
+Iteration: 340	LogLikelihood	-220187,16866 (Improvement: 0,000012)
+Iteration: 350	LogLikelihood	-220180,74463 (Improvement: 0,000029)
+Iteration: 360	LogLikelihood	-220171,22221 (Improvement: 0,000043)
+Iteration: 370	LogLikelihood	-220168,09065 (Improvement: 0,000014)
+Iteration: 380	LogLikelihood	-220163,12825 (Improvement: 0,000023)
+Iteration: 390	LogLikelihood	-220162,67599 (Improvement: 0,000002)
+Iteration: 400	LogLikelihood	-220156,84548 (Improvement: 0,000026)
+Iteration: 410	LogLikelihood	-220154,83820 (Improvement: 0,000009)
+Iteration: 420	LogLikelihood	-220152,33778 (Improvement: 0,000011)
+Iteration: 430	LogLikelihood	-220151,87715 (Improvement: 0,000002)
+Iteration: 440	LogLikelihood	-220149,86027 (Improvement: 0,000009)
+Iteration: 450	LogLikelihood	-220146,15516 (Improvement: 0,000017)
+Iteration: 460	LogLikelihood	-220141,09140 (Improvement: 0,000023)
+Iteration: 470	LogLikelihood	-220138,84891 (Improvement: 0,000010)
+Iteration: 480	LogLikelihood	-220129,54807 (Improvement: 0,000042)
+Iteration: 490	LogLikelihood	-220129,32240 (Improvement: 0,000001)
+Iteration: 500	LogLikelihood	-220129,15473 (Improvement: 0,000001)
+Learning Phase: DONE  (501 iterations, 350 secs)
+Done.
+
+
+Saving model...
+Done.
+
+
+Running inference (16 factors)...
+
+
+Survival Factorization EM  with 16 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 01 13:29:53 CEST 2016
+Init loglikelihood		-53296717,26289491
+Iteration: 10	LogLikelihood	-223014,61759 (Improvement: 0,995816)
+Iteration: 20	LogLikelihood	-222148,94930 (Improvement: 0,003882)
+Iteration: 30	LogLikelihood	-220209,76025 (Improvement: 0,008729)
+Iteration: 40	LogLikelihood	-219848,97565 (Improvement: 0,001638)
+Iteration: 50	LogLikelihood	-219630,86715 (Improvement: 0,000992)
+Iteration: 60	LogLikelihood	-219350,02657 (Improvement: 0,001279)
+Iteration: 70	LogLikelihood	-219164,63510 (Improvement: 0,000845)
+Iteration: 80	LogLikelihood	-219049,38752 (Improvement: 0,000526)
+Iteration: 90	LogLikelihood	-218949,76560 (Improvement: 0,000455)
+Iteration: 100	LogLikelihood	-218890,72593 (Improvement: 0,000270)
+Iteration: 110	LogLikelihood	-218830,66112 (Improvement: 0,000274)
+Iteration: 120	LogLikelihood	-218799,80521 (Improvement: 0,000141)
+Iteration: 130	LogLikelihood	-218738,63525 (Improvement: 0,000280)
+Iteration: 140	LogLikelihood	-218708,42534 (Improvement: 0,000138)
+Iteration: 150	LogLikelihood	-218683,67747 (Improvement: 0,000113)
+Iteration: 160	LogLikelihood	-218655,99432 (Improvement: 0,000127)
+Iteration: 170	LogLikelihood	-218629,26023 (Improvement: 0,000122)
+Iteration: 180	LogLikelihood	-218602,13088 (Improvement: 0,000124)
+Iteration: 190	LogLikelihood	-218580,13130 (Improvement: 0,000101)
+Iteration: 200	LogLikelihood	-218554,77231 (Improvement: 0,000116)
+Iteration: 210	LogLikelihood	-218543,82004 (Improvement: 0,000050)
+Iteration: 220	LogLikelihood	-218533,80796 (Improvement: 0,000046)
+Iteration: 230	LogLikelihood	-218526,93399 (Improvement: 0,000031)
+Iteration: 240	LogLikelihood	-218516,69613 (Improvement: 0,000047)
+Iteration: 250	LogLikelihood	-218497,97939 (Improvement: 0,000086)
+Iteration: 260	LogLikelihood	-218478,40719 (Improvement: 0,000090)
+Iteration: 270	LogLikelihood	-218460,56437 (Improvement: 0,000082)
+Iteration: 280	LogLikelihood	-218453,43751 (Improvement: 0,000033)
+Iteration: 290	LogLikelihood	-218435,93381 (Improvement: 0,000080)
+Iteration: 300	LogLikelihood	-218432,65197 (Improvement: 0,000015)
+Iteration: 310	LogLikelihood	-218429,87522 (Improvement: 0,000013)
+Iteration: 320	LogLikelihood	-218423,92803 (Improvement: 0,000027)
+Iteration: 330	LogLikelihood	-218419,59621 (Improvement: 0,000020)
+Iteration: 340	LogLikelihood	-218417,22804 (Improvement: 0,000011)
+Iteration: 350	LogLikelihood	-218412,78170 (Improvement: 0,000020)
+Iteration: 360	LogLikelihood	-218401,12982 (Improvement: 0,000053)
+Iteration: 370	LogLikelihood	-218393,40952 (Improvement: 0,000035)
+Iteration: 380	LogLikelihood	-218388,52211 (Improvement: 0,000022)
+Iteration: 390	LogLikelihood	-218380,58725 (Improvement: 0,000036)
+Iteration: 400	LogLikelihood	-218375,51923 (Improvement: 0,000023)
+Iteration: 410	LogLikelihood	-218372,80742 (Improvement: 0,000012)
+Iteration: 420	LogLikelihood	-218368,87204 (Improvement: 0,000018)
+Iteration: 430	LogLikelihood	-218361,44272 (Improvement: 0,000034)
+Iteration: 440	LogLikelihood	-218357,21091 (Improvement: 0,000019)
+Iteration: 450	LogLikelihood	-218356,43777 (Improvement: 0,000004)
+Iteration: 460	LogLikelihood	-218353,81702 (Improvement: 0,000012)
+Iteration: 470	LogLikelihood	-218349,42028 (Improvement: 0,000020)
+Iteration: 480	LogLikelihood	-218345,34325 (Improvement: 0,000019)
+Iteration: 490	LogLikelihood	-218343,79998 (Improvement: 0,000007)
+Iteration: 500	LogLikelihood	-218336,24877 (Improvement: 0,000035)
+Iteration: 510	LogLikelihood	-218334,70585 (Improvement: 0,000007)
+Iteration: 520	LogLikelihood	-218323,82021 (Improvement: 0,000050)
+Iteration: 530	LogLikelihood	-218318,30849 (Improvement: 0,000025)
+Iteration: 540	LogLikelihood	-218316,36986 (Improvement: 0,000009)
+Iteration: 550	LogLikelihood	-218313,65495 (Improvement: 0,000012)
+Iteration: 560	LogLikelihood	-218312,18643 (Improvement: 0,000007)
+Iteration: 570	LogLikelihood	-218295,58950 (Improvement: 0,000076)
+Iteration: 580	LogLikelihood	-218289,07819 (Improvement: 0,000030)
+Iteration: 590	LogLikelihood	-218286,24669 (Improvement: 0,000013)
+Iteration: 600	LogLikelihood	-218280,46127 (Improvement: 0,000027)
+Iteration: 610	LogLikelihood	-218279,25399 (Improvement: 0,000006)
+Iteration: 620	LogLikelihood	-218276,65216 (Improvement: 0,000012)
+Iteration: 630	LogLikelihood	-218274,92246 (Improvement: 0,000008)
+Iteration: 640	LogLikelihood	-218267,76738 (Improvement: 0,000033)
+Iteration: 650	LogLikelihood	-218266,96896 (Improvement: 0,000004)
+Iteration: 660	LogLikelihood	-218266,93367 (Improvement: 0,000000)
+Learning Phase: DONE  (661 iterations, 888 secs)
+Done.
+
+
+Saving model...
+Done.
+
+
+Running inference (32 factors)...
+
+
+Survival Factorization EM  with 32 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 01 13:44:41 CEST 2016
+Init loglikelihood		-38832532,52779187
+Iteration: 10	LogLikelihood	-222277,83959 (Improvement: 0,994276)
+Iteration: 20	LogLikelihood	-221700,70280 (Improvement: 0,002596)
+Iteration: 30	LogLikelihood	-218848,82754 (Improvement: 0,012864)
+Iteration: 40	LogLikelihood	-218126,10542 (Improvement: 0,003302)
+Iteration: 50	LogLikelihood	-217612,31322 (Improvement: 0,002355)
+Iteration: 60	LogLikelihood	-217264,23486 (Improvement: 0,001600)
+Iteration: 70	LogLikelihood	-217055,40447 (Improvement: 0,000961)
+Iteration: 80	LogLikelihood	-216916,87540 (Improvement: 0,000638)
+Iteration: 90	LogLikelihood	-216798,30914 (Improvement: 0,000547)
+Iteration: 100	LogLikelihood	-216740,74096 (Improvement: 0,000266)
+Iteration: 110	LogLikelihood	-216699,12463 (Improvement: 0,000192)
+Iteration: 120	LogLikelihood	-216669,26822 (Improvement: 0,000138)
+Iteration: 130	LogLikelihood	-216644,09021 (Improvement: 0,000116)
+Iteration: 140	LogLikelihood	-216618,18156 (Improvement: 0,000120)
+Iteration: 150	LogLikelihood	-216603,29246 (Improvement: 0,000069)
+Iteration: 160	LogLikelihood	-216574,35693 (Improvement: 0,000134)
+Iteration: 170	LogLikelihood	-216555,22140 (Improvement: 0,000088)
+Iteration: 180	LogLikelihood	-216544,21923 (Improvement: 0,000051)
+Iteration: 190	LogLikelihood	-216525,05146 (Improvement: 0,000089)
+Iteration: 200	LogLikelihood	-216520,62000 (Improvement: 0,000020)
+Iteration: 210	LogLikelihood	-216508,36697 (Improvement: 0,000057)
+Iteration: 220	LogLikelihood	-216488,39982 (Improvement: 0,000092)
+Iteration: 230	LogLikelihood	-216470,93150 (Improvement: 0,000081)
+Iteration: 240	LogLikelihood	-216466,50180 (Improvement: 0,000020)
+Iteration: 250	LogLikelihood	-216448,44650 (Improvement: 0,000083)
+Iteration: 260	LogLikelihood	-216439,51947 (Improvement: 0,000041)
+Iteration: 270	LogLikelihood	-216436,44173 (Improvement: 0,000014)
+Iteration: 280	LogLikelihood	-216431,01196 (Improvement: 0,000025)
+Iteration: 290	LogLikelihood	-216427,94724 (Improvement: 0,000014)
+Iteration: 300	LogLikelihood	-216408,05838 (Improvement: 0,000092)
+Iteration: 310	LogLikelihood	-216392,06598 (Improvement: 0,000074)
+Iteration: 320	LogLikelihood	-216378,08526 (Improvement: 0,000065)
+Iteration: 330	LogLikelihood	-216369,50742 (Improvement: 0,000040)
+Iteration: 340	LogLikelihood	-216365,35061 (Improvement: 0,000019)
+Iteration: 350	LogLikelihood	-216349,24346 (Improvement: 0,000074)
+Iteration: 360	LogLikelihood	-216346,89927 (Improvement: 0,000011)
+Iteration: 370	LogLikelihood	-216335,58458 (Improvement: 0,000052)
+Iteration: 380	LogLikelihood	-216332,06130 (Improvement: 0,000016)
+Iteration: 390	LogLikelihood	-216326,61578 (Improvement: 0,000025)
+Iteration: 400	LogLikelihood	-216319,60296 (Improvement: 0,000032)
+Iteration: 410	LogLikelihood	-216312,89454 (Improvement: 0,000031)
+Iteration: 420	LogLikelihood	-216309,09932 (Improvement: 0,000018)
+Iteration: 430	LogLikelihood	-216299,36237 (Improvement: 0,000045)
+Iteration: 440	LogLikelihood	-216289,93353 (Improvement: 0,000044)
+Iteration: 450	LogLikelihood	-216280,58692 (Improvement: 0,000043)
+Iteration: 460	LogLikelihood	-216275,19793 (Improvement: 0,000025)
+Iteration: 470	LogLikelihood	-216272,03381 (Improvement: 0,000015)
+Iteration: 480	LogLikelihood	-216259,85153 (Improvement: 0,000056)
+Iteration: 490	LogLikelihood	-216256,99241 (Improvement: 0,000013)
+Iteration: 500	LogLikelihood	-216255,33558 (Improvement: 0,000008)
+Iteration: 510	LogLikelihood	-216248,02478 (Improvement: 0,000034)
+Iteration: 520	LogLikelihood	-216246,20755 (Improvement: 0,000008)
+Iteration: 530	LogLikelihood	-216240,61481 (Improvement: 0,000026)
+Iteration: 540	LogLikelihood	-216235,76118 (Improvement: 0,000022)
+Iteration: 550	LogLikelihood	-216233,45088 (Improvement: 0,000011)
+Iteration: 560	LogLikelihood	-216232,35522 (Improvement: 0,000005)
+Iteration: 570	LogLikelihood	-216230,98338 (Improvement: 0,000006)
+Iteration: 580	LogLikelihood	-216230,58426 (Improvement: 0,000002)
+Iteration: 590	LogLikelihood	-216230,38836 (Improvement: 0,000001)
+Learning Phase: DONE  (591 iterations, 1526 secs)
+Done.
+
+
+Saving model...
+Done.
+
+
+Running inference (64 factors)...
+
+
+Survival Factorization EM  with 64 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 01 14:10:07 CEST 2016
+Init loglikelihood		-31500964,26058819
+Iteration: 10	LogLikelihood	-220934,93569 (Improvement: 0,992986)
+Iteration: 20	LogLikelihood	-220647,17759 (Improvement: 0,001302)
+Iteration: 30	LogLikelihood	-217202,11648 (Improvement: 0,015613)
+Iteration: 40	LogLikelihood	-215866,62038 (Improvement: 0,006149)
+Iteration: 50	LogLikelihood	-215154,70651 (Improvement: 0,003298)
+Iteration: 60	LogLikelihood	-214775,92303 (Improvement: 0,001761)
+Iteration: 70	LogLikelihood	-214563,25498 (Improvement: 0,000990)
+Iteration: 80	LogLikelihood	-214449,57972 (Improvement: 0,000530)
+Iteration: 90	LogLikelihood	-214387,28993 (Improvement: 0,000290)
+Iteration: 100	LogLikelihood	-214336,48826 (Improvement: 0,000237)
+Iteration: 110	LogLikelihood	-214299,06741 (Improvement: 0,000175)
+Iteration: 120	LogLikelihood	-214252,37912 (Improvement: 0,000218)
+Iteration: 130	LogLikelihood	-214221,54614 (Improvement: 0,000144)
+Iteration: 140	LogLikelihood	-214181,25517 (Improvement: 0,000188)
+Iteration: 150	LogLikelihood	-214137,71250 (Improvement: 0,000203)
+Iteration: 160	LogLikelihood	-214106,73221 (Improvement: 0,000145)
+Iteration: 170	LogLikelihood	-214083,51217 (Improvement: 0,000108)
+Iteration: 180	LogLikelihood	-214063,64074 (Improvement: 0,000093)
+Iteration: 190	LogLikelihood	-214048,35229 (Improvement: 0,000071)
+Iteration: 200	LogLikelihood	-214018,35167 (Improvement: 0,000140)
+Iteration: 210	LogLikelihood	-213991,15960 (Improvement: 0,000127)
+Iteration: 220	LogLikelihood	-213954,85816 (Improvement: 0,000170)
+Iteration: 230	LogLikelihood	-213944,18875 (Improvement: 0,000050)
+Iteration: 240	LogLikelihood	-213930,05400 (Improvement: 0,000066)
+Iteration: 250	LogLikelihood	-213919,57682 (Improvement: 0,000049)
+Iteration: 260	LogLikelihood	-213898,41261 (Improvement: 0,000099)
+Iteration: 270	LogLikelihood	-213876,67333 (Improvement: 0,000102)
+Iteration: 280	LogLikelihood	-213862,99789 (Improvement: 0,000064)
+Iteration: 290	LogLikelihood	-213854,99493 (Improvement: 0,000037)
+Iteration: 300	LogLikelihood	-213848,34884 (Improvement: 0,000031)
+Iteration: 310	LogLikelihood	-213833,46203 (Improvement: 0,000070)
+Iteration: 320	LogLikelihood	-213819,61375 (Improvement: 0,000065)
+Iteration: 330	LogLikelihood	-213808,16440 (Improvement: 0,000054)
+Iteration: 340	LogLikelihood	-213797,68535 (Improvement: 0,000049)
+Iteration: 350	LogLikelihood	-213789,22958 (Improvement: 0,000040)
+Iteration: 360	LogLikelihood	-213781,98387 (Improvement: 0,000034)
+Iteration: 370	LogLikelihood	-213776,41300 (Improvement: 0,000026)
+Iteration: 380	LogLikelihood	-213774,96845 (Improvement: 0,000007)
+Iteration: 390	LogLikelihood	-213767,30761 (Improvement: 0,000036)
+Iteration: 400	LogLikelihood	-213751,13486 (Improvement: 0,000076)
+Iteration: 410	LogLikelihood	-213745,25167 (Improvement: 0,000028)
+Iteration: 420	LogLikelihood	-213740,01318 (Improvement: 0,000025)
+Iteration: 430	LogLikelihood	-213735,36760 (Improvement: 0,000022)
+Iteration: 440	LogLikelihood	-213724,44128 (Improvement: 0,000051)
+Iteration: 450	LogLikelihood	-213715,27929 (Improvement: 0,000043)
+Iteration: 460	LogLikelihood	-213707,60650 (Improvement: 0,000036)
+Iteration: 470	LogLikelihood	-213700,30837 (Improvement: 0,000034)
+Iteration: 480	LogLikelihood	-213696,81349 (Improvement: 0,000016)
+Iteration: 490	LogLikelihood	-213692,00836 (Improvement: 0,000022)
+Iteration: 500	LogLikelihood	-213686,33978 (Improvement: 0,000027)
+Iteration: 510	LogLikelihood	-213683,91810 (Improvement: 0,000011)
+Iteration: 520	LogLikelihood	-213682,76758 (Improvement: 0,000005)
+Iteration: 530	LogLikelihood	-213681,45877 (Improvement: 0,000006)
+Iteration: 540	LogLikelihood	-213679,40567 (Improvement: 0,000010)
+Iteration: 550	LogLikelihood	-213677,80156 (Improvement: 0,000008)
+Iteration: 560	LogLikelihood	-213677,54971 (Improvement: 0,000001)
+Iteration: 570	LogLikelihood	-213673,03681 (Improvement: 0,000021)
+Iteration: 580	LogLikelihood	-213664,05841 (Improvement: 0,000042)
+Iteration: 590	LogLikelihood	-213662,24891 (Improvement: 0,000008)
+Iteration: 600	LogLikelihood	-213661,03295 (Improvement: 0,000006)
+Iteration: 610	LogLikelihood	-213659,79824 (Improvement: 0,000006)
+Iteration: 620	LogLikelihood	-213659,74284 (Improvement: 0,000000)
+Learning Phase: DONE  (621 iterations, 3403 secs)
+Done.
+
+
+Saving model...
+Done.
+
+
+Running inference (128 factors)...
+
+
+Survival Factorization EM  with 128 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 01 15:06:49 CEST 2016
+Init loglikelihood		-24450683,21745696
+Iteration: 10	LogLikelihood	-219245,81519 (Improvement: 0,991033)
+Iteration: 20	LogLikelihood	-218979,70915 (Improvement: 0,001214)
+Iteration: 30	LogLikelihood	-215345,06643 (Improvement: 0,016598)
+Iteration: 40	LogLikelihood	-213367,96120 (Improvement: 0,009181)
+Iteration: 50	LogLikelihood	-212439,94872 (Improvement: 0,004349)
+Iteration: 60	LogLikelihood	-211996,17777 (Improvement: 0,002089)
+Iteration: 70	LogLikelihood	-211785,28906 (Improvement: 0,000995)
+Iteration: 80	LogLikelihood	-211663,25559 (Improvement: 0,000576)
+Iteration: 90	LogLikelihood	-211595,45711 (Improvement: 0,000320)
+Iteration: 100	LogLikelihood	-211548,65235 (Improvement: 0,000221)
+Iteration: 110	LogLikelihood	-211491,80731 (Improvement: 0,000269)
+Iteration: 120	LogLikelihood	-211476,15438 (Improvement: 0,000074)
+Iteration: 130	LogLikelihood	-211447,78674 (Improvement: 0,000134)
+Iteration: 140	LogLikelihood	-211422,86325 (Improvement: 0,000118)
+Iteration: 150	LogLikelihood	-211390,47193 (Improvement: 0,000153)
+Iteration: 160	LogLikelihood	-211361,24406 (Improvement: 0,000138)
+Iteration: 170	LogLikelihood	-211342,98770 (Improvement: 0,000086)
+Iteration: 180	LogLikelihood	-211320,58842 (Improvement: 0,000106)
+Iteration: 190	LogLikelihood	-211297,91435 (Improvement: 0,000107)
+Iteration: 200	LogLikelihood	-211288,61817 (Improvement: 0,000044)
+Iteration: 210	LogLikelihood	-211258,72704 (Improvement: 0,000141)
+Iteration: 220	LogLikelihood	-211244,41332 (Improvement: 0,000068)
+Iteration: 230	LogLikelihood	-211221,10692 (Improvement: 0,000110)
+Iteration: 240	LogLikelihood	-211208,63044 (Improvement: 0,000059)
+Iteration: 250	LogLikelihood	-211200,29249 (Improvement: 0,000039)
+Iteration: 260	LogLikelihood	-211186,40378 (Improvement: 0,000066)
+Iteration: 270	LogLikelihood	-211172,83259 (Improvement: 0,000064)
+Iteration: 280	LogLikelihood	-211161,35242 (Improvement: 0,000054)
+Iteration: 290	LogLikelihood	-211153,98158 (Improvement: 0,000035)
+Iteration: 300	LogLikelihood	-211143,95745 (Improvement: 0,000047)
+Iteration: 310	LogLikelihood	-211135,74732 (Improvement: 0,000039)
+Iteration: 320	LogLikelihood	-211130,88464 (Improvement: 0,000023)
+Iteration: 330	LogLikelihood	-211125,16905 (Improvement: 0,000027)
+Iteration: 340	LogLikelihood	-211115,80132 (Improvement: 0,000044)
+Iteration: 350	LogLikelihood	-211103,42938 (Improvement: 0,000059)
+Iteration: 360	LogLikelihood	-211096,04034 (Improvement: 0,000035)
+Iteration: 370	LogLikelihood	-211082,71879 (Improvement: 0,000063)
+Iteration: 380	LogLikelihood	-211064,94368 (Improvement: 0,000084)
+Iteration: 390	LogLikelihood	-211061,60427 (Improvement: 0,000016)
+Iteration: 400	LogLikelihood	-211059,59500 (Improvement: 0,000010)
+Iteration: 410	LogLikelihood	-211057,50369 (Improvement: 0,000010)
+Iteration: 420	LogLikelihood	-211049,57681 (Improvement: 0,000038)
+Iteration: 430	LogLikelihood	-211037,29176 (Improvement: 0,000058)
+Iteration: 440	LogLikelihood	-211030,22817 (Improvement: 0,000033)
+Iteration: 450	LogLikelihood	-211027,18885 (Improvement: 0,000014)
+Iteration: 460	LogLikelihood	-211021,45529 (Improvement: 0,000027)
+Iteration: 470	LogLikelihood	-211013,98620 (Improvement: 0,000035)
+Iteration: 480	LogLikelihood	-211008,10859 (Improvement: 0,000028)
+Iteration: 490	LogLikelihood	-211000,72320 (Improvement: 0,000035)
+Iteration: 500	LogLikelihood	-210991,79977 (Improvement: 0,000042)
+Iteration: 510	LogLikelihood	-210986,65096 (Improvement: 0,000024)
+Iteration: 520	LogLikelihood	-210984,15455 (Improvement: 0,000012)
+Iteration: 530	LogLikelihood	-210980,86421 (Improvement: 0,000016)
+Iteration: 540	LogLikelihood	-210978,80861 (Improvement: 0,000010)
+Iteration: 550	LogLikelihood	-210977,85879 (Improvement: 0,000005)
+Iteration: 560	LogLikelihood	-210976,20849 (Improvement: 0,000008)
+Iteration: 570	LogLikelihood	-210975,28267 (Improvement: 0,000004)
+Iteration: 580	LogLikelihood	-210967,49887 (Improvement: 0,000037)
+Iteration: 590	LogLikelihood	-210961,51453 (Improvement: 0,000028)
+Iteration: 600	LogLikelihood	-210956,23486 (Improvement: 0,000025)
+Iteration: 610	LogLikelihood	-210943,76681 (Improvement: 0,000059)
+Iteration: 620	LogLikelihood	-210936,05048 (Improvement: 0,000037)
+Iteration: 630	LogLikelihood	-210935,35155 (Improvement: 0,000003)
+Iteration: 640	LogLikelihood	-210934,68313 (Improvement: 0,000003)
+Iteration: 650	LogLikelihood	-210926,71293 (Improvement: 0,000038)
+Iteration: 660	LogLikelihood	-210923,62361 (Improvement: 0,000015)
+Iteration: 670	LogLikelihood	-210918,45194 (Improvement: 0,000025)
+Iteration: 680	LogLikelihood	-210918,14310 (Improvement: 0,000001)
+Iteration: 690	LogLikelihood	-210916,71788 (Improvement: 0,000007)
+Iteration: 700	LogLikelihood	-210910,28364 (Improvement: 0,000031)
+Iteration: 710	LogLikelihood	-210908,88642 (Improvement: 0,000007)
+Iteration: 720	LogLikelihood	-210906,99803 (Improvement: 0,000009)
+Iteration: 730	LogLikelihood	-210901,63449 (Improvement: 0,000025)
+Iteration: 740	LogLikelihood	-210896,94993 (Improvement: 0,000022)
+Iteration: 750	LogLikelihood	-210895,51113 (Improvement: 0,000007)
+Iteration: 760	LogLikelihood	-210886,37157 (Improvement: 0,000043)
+Iteration: 770	LogLikelihood	-210882,36248 (Improvement: 0,000019)
+Iteration: 780	LogLikelihood	-210879,53555 (Improvement: 0,000013)
+Iteration: 790	LogLikelihood	-210879,03724 (Improvement: 0,000002)
+Iteration: 800	LogLikelihood	-210878,45507 (Improvement: 0,000003)
+Iteration: 810	LogLikelihood	-210877,18328 (Improvement: 0,000006)
+Iteration: 820	LogLikelihood	-210876,79219 (Improvement: 0,000002)
+Iteration: 830	LogLikelihood	-210876,71341 (Improvement: 0,000000)
+Learning Phase: DONE  (831 iterations, 11587 secs)
+Done.
+
+
+Saving model...
+Done.

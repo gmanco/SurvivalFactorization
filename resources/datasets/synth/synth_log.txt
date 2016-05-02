@@ -1,0 +1,1426 @@
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc1024.k128.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 636
+Number of cascades 1024
+Number of words 0
+T_max 74,022172
+*********************************
+
+
+Running inference (128 factors), file:random.nn874.nc1024.k128.cascades...
+
+
+Survival Factorization EM  with 128 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:10:15 CEST 2016
+Init loglikelihood		-166909,03628731
+Iteration: 10	LogLikelihood	-5563,30748 (Improvement: 0,966669)
+Iteration: 20	LogLikelihood	-5550,71163 (Improvement: 0,002264)
+Iteration: 30	LogLikelihood	-5549,77662 (Improvement: 0,000168)
+Iteration: 40	LogLikelihood	-5549,70188 (Improvement: 0,000013)
+Iteration: 50	LogLikelihood	-5549,69587 (Improvement: 0,000001)
+Iteration: 60	LogLikelihood	-5549,69538 (Improvement: 0,000000)
+Learning Phase: DONE  (61 iterations, 48 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc1024.k16.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 588
+Number of cascades 1024
+Number of words 0
+T_max 95,634207
+*********************************
+
+
+Running inference (16 factors), file:random.nn874.nc1024.k16.cascades...
+
+
+Survival Factorization EM  with 16 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:11:03 CEST 2016
+Init loglikelihood		-32215,28663015
+Iteration: 10	LogLikelihood	-13510,72214 (Improvement: 0,580611)
+Iteration: 20	LogLikelihood	-13506,53726 (Improvement: 0,000310)
+Iteration: 30	LogLikelihood	-13504,90241 (Improvement: 0,000121)
+Iteration: 40	LogLikelihood	-13504,89713 (Improvement: 0,000000)
+Learning Phase: DONE  (41 iterations, 6 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc1024.k2.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 533
+Number of cascades 1024
+Number of words 0
+T_max 99,705850
+*********************************
+
+
+Running inference (2 factors), file:random.nn874.nc1024.k2.cascades...
+
+
+Survival Factorization EM  with 2 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:11:09 CEST 2016
+Init loglikelihood		-23224,91579347
+Iteration: 10	LogLikelihood	-18751,92535 (Improvement: 0,192594)
+Iteration: 20	LogLikelihood	-18747,00795 (Improvement: 0,000262)
+Iteration: 30	LogLikelihood	-18746,88272 (Improvement: 0,000007)
+Iteration: 40	LogLikelihood	-18746,84657 (Improvement: 0,000002)
+Iteration: 50	LogLikelihood	-18746,82752 (Improvement: 0,000001)
+Iteration: 60	LogLikelihood	-18746,81518 (Improvement: 0,000001)
+Learning Phase: DONE  (61 iterations, 2 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc1024.k32.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 598
+Number of cascades 1024
+Number of words 0
+T_max 81,186332
+*********************************
+
+
+Running inference (32 factors), file:random.nn874.nc1024.k32.cascades...
+
+
+Survival Factorization EM  with 32 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:11:11 CEST 2016
+Init loglikelihood		-47905,34264360
+Iteration: 10	LogLikelihood	-10444,66573 (Improvement: 0,781973)
+Iteration: 20	LogLikelihood	-10439,64350 (Improvement: 0,000481)
+Iteration: 30	LogLikelihood	-10439,62634 (Improvement: 0,000002)
+Iteration: 40	LogLikelihood	-10439,62369 (Improvement: 0,000000)
+Learning Phase: DONE  (41 iterations, 8 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc1024.k4.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 541
+Number of cascades 1024
+Number of words 0
+T_max 95,934749
+*********************************
+
+
+Running inference (4 factors), file:random.nn874.nc1024.k4.cascades...
+
+
+Survival Factorization EM  with 4 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:11:19 CEST 2016
+Init loglikelihood		-22291,67929796
+Iteration: 10	LogLikelihood	-16700,46105 (Improvement: 0,250821)
+Iteration: 20	LogLikelihood	-16692,99697 (Improvement: 0,000447)
+Iteration: 30	LogLikelihood	-16692,39360 (Improvement: 0,000036)
+Iteration: 40	LogLikelihood	-16688,28871 (Improvement: 0,000246)
+Iteration: 50	LogLikelihood	-16688,28682 (Improvement: 0,000000)
+Learning Phase: DONE  (51 iterations, 3 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc1024.k64.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 638
+Number of cascades 1024
+Number of words 0
+T_max 93,727765
+*********************************
+
+
+Running inference (64 factors), file:random.nn874.nc1024.k64.cascades...
+
+
+Survival Factorization EM  with 64 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:11:22 CEST 2016
+Init loglikelihood		-88558,35974733
+Iteration: 10	LogLikelihood	-7908,07491 (Improvement: 0,910702)
+Iteration: 20	LogLikelihood	-7902,65280 (Improvement: 0,000686)
+Iteration: 30	LogLikelihood	-7901,41150 (Improvement: 0,000157)
+Iteration: 40	LogLikelihood	-7901,36261 (Improvement: 0,000006)
+Iteration: 50	LogLikelihood	-7901,36179 (Improvement: 0,000000)
+Learning Phase: DONE  (51 iterations, 17 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc1024.k8.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 563
+Number of cascades 1024
+Number of words 0
+T_max 99,267288
+*********************************
+
+
+Running inference (8 factors), file:random.nn874.nc1024.k8.cascades...
+
+
+Survival Factorization EM  with 8 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:11:39 CEST 2016
+Init loglikelihood		-24225,95154653
+Iteration: 10	LogLikelihood	-14848,88755 (Improvement: 0,387067)
+Iteration: 20	LogLikelihood	-14846,19074 (Improvement: 0,000182)
+Iteration: 30	LogLikelihood	-14846,14738 (Improvement: 0,000003)
+Iteration: 40	LogLikelihood	-14846,14329 (Improvement: 0,000000)
+Learning Phase: DONE  (41 iterations, 3 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc16384.k128.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 874
+Number of cascades 16384
+Number of words 0
+T_max 99,708991
+*********************************
+
+
+Running inference (128 factors), file:random.nn874.nc16384.k128.cascades...
+
+
+Survival Factorization EM  with 128 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:11:42 CEST 2016
+Init loglikelihood		-303946,03469823
+Iteration: 10	LogLikelihood	-70631,23150 (Improvement: 0,767619)
+Iteration: 20	LogLikelihood	-70479,79611 (Improvement: 0,002144)
+Iteration: 30	LogLikelihood	-70471,94490 (Improvement: 0,000111)
+Iteration: 40	LogLikelihood	-70471,42180 (Improvement: 0,000007)
+Iteration: 50	LogLikelihood	-70471,38583 (Improvement: 0,000001)
+Learning Phase: DONE  (51 iterations, 1024 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc16384.k16.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 866
+Number of cascades 16384
+Number of words 0
+T_max 99,921817
+*********************************
+
+
+Running inference (16 factors), file:random.nn874.nc16384.k16.cascades...
+
+
+Survival Factorization EM  with 16 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:28:46 CEST 2016
+Init loglikelihood		-230241,98149216
+Iteration: 10	LogLikelihood	-162652,67884 (Improvement: 0,293558)
+Iteration: 20	LogLikelihood	-161973,54669 (Improvement: 0,004175)
+Iteration: 30	LogLikelihood	-161892,88906 (Improvement: 0,000498)
+Iteration: 40	LogLikelihood	-161881,75832 (Improvement: 0,000069)
+Iteration: 50	LogLikelihood	-161861,15907 (Improvement: 0,000127)
+Iteration: 60	LogLikelihood	-161852,12472 (Improvement: 0,000056)
+Iteration: 70	LogLikelihood	-161806,46402 (Improvement: 0,000282)
+Iteration: 80	LogLikelihood	-161805,89378 (Improvement: 0,000004)
+Iteration: 90	LogLikelihood	-161804,58076 (Improvement: 0,000008)
+Iteration: 100	LogLikelihood	-161801,97908 (Improvement: 0,000016)
+Iteration: 110	LogLikelihood	-161801,96993 (Improvement: 0,000000)
+Learning Phase: DONE  (111 iterations, 280 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc16384.k2.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 735
+Number of cascades 16384
+Number of words 0
+T_max 99,977913
+*********************************
+
+
+Running inference (2 factors), file:random.nn874.nc16384.k2.cascades...
+
+
+Survival Factorization EM  with 2 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:33:26 CEST 2016
+Init loglikelihood		-379096,81955998
+Iteration: 10	LogLikelihood	-309589,77887 (Improvement: 0,183349)
+Iteration: 20	LogLikelihood	-309457,95135 (Improvement: 0,000426)
+Iteration: 30	LogLikelihood	-309366,00048 (Improvement: 0,000297)
+Iteration: 40	LogLikelihood	-309347,85970 (Improvement: 0,000059)
+Iteration: 50	LogLikelihood	-309338,58995 (Improvement: 0,000030)
+Iteration: 60	LogLikelihood	-309334,91003 (Improvement: 0,000012)
+Iteration: 70	LogLikelihood	-309326,91925 (Improvement: 0,000026)
+Iteration: 80	LogLikelihood	-309326,85130 (Improvement: 0,000000)
+Learning Phase: DONE  (81 iterations, 72 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc16384.k32.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 874
+Number of cascades 16384
+Number of words 0
+T_max 99,075012
+*********************************
+
+
+Running inference (32 factors), file:random.nn874.nc16384.k32.cascades...
+
+
+Survival Factorization EM  with 32 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:34:38 CEST 2016
+Init loglikelihood		-223561,60536853
+Iteration: 10	LogLikelihood	-134782,32001 (Improvement: 0,397113)
+Iteration: 20	LogLikelihood	-134323,40076 (Improvement: 0,003405)
+Iteration: 30	LogLikelihood	-134287,88888 (Improvement: 0,000264)
+Iteration: 40	LogLikelihood	-134274,91756 (Improvement: 0,000097)
+Iteration: 50	LogLikelihood	-134264,52526 (Improvement: 0,000077)
+Iteration: 60	LogLikelihood	-134264,50870 (Improvement: 0,000000)
+Learning Phase: DONE  (61 iterations, 243 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc16384.k4.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 790
+Number of cascades 16384
+Number of words 0
+T_max 99,518054
+*********************************
+
+
+Running inference (4 factors), file:random.nn874.nc16384.k4.cascades...
+
+
+Survival Factorization EM  with 4 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:38:41 CEST 2016
+Init loglikelihood		-285389,30418840
+Iteration: 10	LogLikelihood	-227698,86233 (Improvement: 0,202146)
+Iteration: 20	LogLikelihood	-227297,13469 (Improvement: 0,001764)
+Iteration: 30	LogLikelihood	-227152,39773 (Improvement: 0,000637)
+Iteration: 40	LogLikelihood	-227131,34833 (Improvement: 0,000093)
+Iteration: 50	LogLikelihood	-227130,28678 (Improvement: 0,000005)
+Iteration: 60	LogLikelihood	-227129,97456 (Improvement: 0,000001)
+Iteration: 70	LogLikelihood	-227129,19186 (Improvement: 0,000003)
+Iteration: 80	LogLikelihood	-227120,51872 (Improvement: 0,000038)
+Iteration: 90	LogLikelihood	-227119,28240 (Improvement: 0,000005)
+Iteration: 100	LogLikelihood	-227119,26813 (Improvement: 0,000000)
+Learning Phase: DONE  (101 iterations, 117 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc16384.k64.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 874
+Number of cascades 16384
+Number of words 0
+T_max 99,945476
+*********************************
+
+
+Running inference (64 factors), file:random.nn874.nc16384.k64.cascades...
+
+
+Survival Factorization EM  with 64 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:40:38 CEST 2016
+Init loglikelihood		-227758,88123856
+Iteration: 10	LogLikelihood	-95380,41852 (Improvement: 0,581222)
+Iteration: 20	LogLikelihood	-95222,52354 (Improvement: 0,001655)
+Iteration: 30	LogLikelihood	-95208,57526 (Improvement: 0,000146)
+######	Iteration: 40	LogLikelihood	-95208,91606 (Loss: 0,000004)
+	Current Likelihood:	-95208,91606
+	Previous Likelihood:	-95208,57526
+######	Iteration: 50	LogLikelihood	-95209,13869 (Loss: 0,000002)
+	Current Likelihood:	-95209,13869
+	Previous Likelihood:	-95208,91606
+######	Iteration: 60	LogLikelihood	-95209,32048 (Loss: 0,000002)
+	Current Likelihood:	-95209,32048
+	Previous Likelihood:	-95209,13869
+######	Iteration: 70	LogLikelihood	-95209,35075 (Loss: 0,000000)
+	Current Likelihood:	-95209,35075
+	Previous Likelihood:	-95209,32048
+Learning Phase: DONE  (71 iterations, 553 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc16384.k8.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 853
+Number of cascades 16384
+Number of words 0
+T_max 99,931073
+*********************************
+
+
+Running inference (8 factors), file:random.nn874.nc16384.k8.cascades...
+
+
+Survival Factorization EM  with 8 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:49:50 CEST 2016
+Init loglikelihood		-265284,90085356
+Iteration: 10	LogLikelihood	-201965,66528 (Improvement: 0,238684)
+Iteration: 20	LogLikelihood	-201369,98229 (Improvement: 0,002949)
+Iteration: 30	LogLikelihood	-201133,33001 (Improvement: 0,001175)
+Iteration: 40	LogLikelihood	-201076,23470 (Improvement: 0,000284)
+Iteration: 50	LogLikelihood	-201062,79277 (Improvement: 0,000067)
+Iteration: 60	LogLikelihood	-201056,31323 (Improvement: 0,000032)
+Iteration: 70	LogLikelihood	-201049,22250 (Improvement: 0,000035)
+Iteration: 80	LogLikelihood	-201045,39843 (Improvement: 0,000019)
+Iteration: 90	LogLikelihood	-201037,77597 (Improvement: 0,000038)
+Iteration: 100	LogLikelihood	-201036,68879 (Improvement: 0,000005)
+Iteration: 110	LogLikelihood	-201031,27781 (Improvement: 0,000027)
+######	Iteration: 120	LogLikelihood	-201031,27797 (Loss: 0,000000)
+	Current Likelihood:	-201031,27797
+	Previous Likelihood:	-201031,27781
+Learning Phase: DONE  (121 iterations, 207 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc2048.k128.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 782
+Number of cascades 2048
+Number of words 0
+T_max 89,047080
+*********************************
+
+
+Running inference (128 factors), file:random.nn874.nc2048.k128.cascades...
+
+
+Survival Factorization EM  with 128 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:53:18 CEST 2016
+Init loglikelihood		-211754,77232684
+Iteration: 10	LogLikelihood	-11722,32497 (Improvement: 0,944642)
+Iteration: 20	LogLikelihood	-11696,78414 (Improvement: 0,002179)
+Iteration: 30	LogLikelihood	-11695,72198 (Improvement: 0,000091)
+Iteration: 40	LogLikelihood	-11695,65054 (Improvement: 0,000006)
+Iteration: 50	LogLikelihood	-11695,64493 (Improvement: 0,000000)
+Learning Phase: DONE  (51 iterations, 99 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc2048.k16.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 671
+Number of cascades 2048
+Number of words 0
+T_max 99,512161
+*********************************
+
+
+Running inference (16 factors), file:random.nn874.nc2048.k16.cascades...
+
+
+Survival Factorization EM  with 16 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:54:57 CEST 2016
+Init loglikelihood		-46526,16325209
+Iteration: 10	LogLikelihood	-23343,79675 (Improvement: 0,498265)
+Iteration: 20	LogLikelihood	-23329,62338 (Improvement: 0,000607)
+Iteration: 30	LogLikelihood	-23329,60776 (Improvement: 0,000001)
+Learning Phase: DONE  (31 iterations, 8 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc2048.k2.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 603
+Number of cascades 2048
+Number of words 0
+T_max 99,877344
+*********************************
+
+
+Running inference (2 factors), file:random.nn874.nc2048.k2.cascades...
+
+
+Survival Factorization EM  with 2 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:55:04 CEST 2016
+Init loglikelihood		-46047,38319250
+Iteration: 10	LogLikelihood	-37788,21106 (Improvement: 0,179362)
+Iteration: 20	LogLikelihood	-37763,16612 (Improvement: 0,000663)
+Iteration: 30	LogLikelihood	-37761,42514 (Improvement: 0,000046)
+Iteration: 40	LogLikelihood	-37761,38774 (Improvement: 0,000001)
+Learning Phase: DONE  (41 iterations, 4 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc2048.k32.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 722
+Number of cascades 2048
+Number of words 0
+T_max 89,556337
+*********************************
+
+
+Running inference (32 factors), file:random.nn874.nc2048.k32.cascades...
+
+
+Survival Factorization EM  with 32 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:55:08 CEST 2016
+Init loglikelihood		-65630,63216792
+Iteration: 10	LogLikelihood	-19361,16347 (Improvement: 0,704998)
+Iteration: 20	LogLikelihood	-19351,52273 (Improvement: 0,000498)
+Iteration: 30	LogLikelihood	-19351,50282 (Improvement: 0,000001)
+Iteration: 40	LogLikelihood	-19351,50268 (Improvement: 0,000000)
+Learning Phase: DONE  (41 iterations, 16 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc2048.k4.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 613
+Number of cascades 2048
+Number of words 0
+T_max 94,729155
+*********************************
+
+
+Running inference (4 factors), file:random.nn874.nc2048.k4.cascades...
+
+
+Survival Factorization EM  with 4 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:55:24 CEST 2016
+Init loglikelihood		-37877,29883750
+Iteration: 10	LogLikelihood	-29119,79488 (Improvement: 0,231207)
+Iteration: 20	LogLikelihood	-29111,20492 (Improvement: 0,000295)
+######	Iteration: 30	LogLikelihood	-29111,21069 (Loss: 0,000000)
+	Current Likelihood:	-29111,21069
+	Previous Likelihood:	-29111,20492
+Learning Phase: DONE  (31 iterations, 3 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc2048.k64.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 765
+Number of cascades 2048
+Number of words 0
+T_max 88,713658
+*********************************
+
+
+Running inference (64 factors), file:random.nn874.nc2048.k64.cascades...
+
+
+Survival Factorization EM  with 64 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:55:28 CEST 2016
+Init loglikelihood		-111959,87048732
+Iteration: 10	LogLikelihood	-14932,69781 (Improvement: 0,866625)
+Iteration: 20	LogLikelihood	-14915,45344 (Improvement: 0,001155)
+Iteration: 30	LogLikelihood	-14915,32389 (Improvement: 0,000009)
+Iteration: 40	LogLikelihood	-14915,31310 (Improvement: 0,000001)
+Learning Phase: DONE  (41 iterations, 31 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc2048.k8.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 642
+Number of cascades 2048
+Number of words 0
+T_max 99,828603
+*********************************
+
+
+Running inference (8 factors), file:random.nn874.nc2048.k8.cascades...
+
+
+Survival Factorization EM  with 8 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:55:58 CEST 2016
+Init loglikelihood		-37394,19985562
+Iteration: 10	LogLikelihood	-25306,96391 (Improvement: 0,323238)
+Iteration: 20	LogLikelihood	-25301,93288 (Improvement: 0,000199)
+Iteration: 30	LogLikelihood	-25301,84700 (Improvement: 0,000003)
+Iteration: 40	LogLikelihood	-25301,83117 (Improvement: 0,000001)
+Learning Phase: DONE  (41 iterations, 6 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc32768.k128.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 874
+Number of cascades 32768
+Number of words 0
+T_max 99,998800
+*********************************
+
+
+Running inference (128 factors), file:random.nn874.nc32768.k128.cascades...
+
+
+Survival Factorization EM  with 128 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 19:56:05 CEST 2016
+Init loglikelihood		-389492,81001348
+Iteration: 10	LogLikelihood	-135261,33510 (Improvement: 0,652724)
+Iteration: 20	LogLikelihood	-134816,75543 (Improvement: 0,003287)
+Iteration: 30	LogLikelihood	-134790,01412 (Improvement: 0,000198)
+Iteration: 40	LogLikelihood	-134787,37078 (Improvement: 0,000020)
+Iteration: 50	LogLikelihood	-134787,34068 (Improvement: 0,000000)
+Learning Phase: DONE  (51 iterations, 1843 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc32768.k16.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 874
+Number of cascades 32768
+Number of words 0
+T_max 99,816559
+*********************************
+
+
+Running inference (16 factors), file:random.nn874.nc32768.k16.cascades...
+
+
+Survival Factorization EM  with 16 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 20:26:48 CEST 2016
+Init loglikelihood		-488913,66287188
+Iteration: 10	LogLikelihood	-359704,06527 (Improvement: 0,264279)
+Iteration: 20	LogLikelihood	-358420,94812 (Improvement: 0,003567)
+Iteration: 30	LogLikelihood	-358088,66295 (Improvement: 0,000927)
+Iteration: 40	LogLikelihood	-357908,14595 (Improvement: 0,000504)
+Iteration: 50	LogLikelihood	-357786,48748 (Improvement: 0,000340)
+Iteration: 60	LogLikelihood	-357740,30498 (Improvement: 0,000129)
+Iteration: 70	LogLikelihood	-357730,81913 (Improvement: 0,000027)
+Iteration: 80	LogLikelihood	-357727,18384 (Improvement: 0,000010)
+Iteration: 90	LogLikelihood	-357723,72510 (Improvement: 0,000010)
+Iteration: 100	LogLikelihood	-357722,21478 (Improvement: 0,000004)
+Iteration: 110	LogLikelihood	-357720,29833 (Improvement: 0,000005)
+Iteration: 120	LogLikelihood	-357715,81128 (Improvement: 0,000013)
+Iteration: 130	LogLikelihood	-357712,73361 (Improvement: 0,000009)
+Iteration: 140	LogLikelihood	-357705,75639 (Improvement: 0,000020)
+Iteration: 150	LogLikelihood	-357701,56194 (Improvement: 0,000012)
+Iteration: 160	LogLikelihood	-357699,98018 (Improvement: 0,000004)
+Iteration: 170	LogLikelihood	-357699,60333 (Improvement: 0,000001)
+Iteration: 180	LogLikelihood	-357699,16781 (Improvement: 0,000001)
+Iteration: 190	LogLikelihood	-357698,57243 (Improvement: 0,000002)
+Iteration: 200	LogLikelihood	-357696,01883 (Improvement: 0,000007)
+Iteration: 210	LogLikelihood	-357695,66552 (Improvement: 0,000001)
+Learning Phase: DONE  (211 iterations, 1040 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc32768.k2.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 829
+Number of cascades 32768
+Number of words 0
+T_max 99,943548
+*********************************
+
+
+Running inference (2 factors), file:random.nn874.nc32768.k2.cascades...
+
+
+Survival Factorization EM  with 2 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 20:44:08 CEST 2016
+Init loglikelihood		-694934,55935432
+Iteration: 10	LogLikelihood	-568850,30735 (Improvement: 0,181433)
+Iteration: 20	LogLikelihood	-568343,41654 (Improvement: 0,000891)
+Iteration: 30	LogLikelihood	-568293,25966 (Improvement: 0,000088)
+Iteration: 40	LogLikelihood	-568288,36294 (Improvement: 0,000009)
+Iteration: 50	LogLikelihood	-568282,09458 (Improvement: 0,000011)
+Iteration: 60	LogLikelihood	-568278,18861 (Improvement: 0,000007)
+Iteration: 70	LogLikelihood	-568278,06058 (Improvement: 0,000000)
+Learning Phase: DONE  (71 iterations, 142 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc32768.k32.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 874
+Number of cascades 32768
+Number of words 0
+T_max 99,995243
+*********************************
+
+
+Running inference (32 factors), file:random.nn874.nc32768.k32.cascades...
+
+
+Survival Factorization EM  with 32 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 20:46:30 CEST 2016
+Init loglikelihood		-396670,14706087
+Iteration: 10	LogLikelihood	-266467,78284 (Improvement: 0,328238)
+Iteration: 20	LogLikelihood	-265638,82640 (Improvement: 0,003111)
+Iteration: 30	LogLikelihood	-265492,95611 (Improvement: 0,000549)
+Iteration: 40	LogLikelihood	-265406,72384 (Improvement: 0,000325)
+Iteration: 50	LogLikelihood	-265376,98184 (Improvement: 0,000112)
+Iteration: 60	LogLikelihood	-265367,57738 (Improvement: 0,000035)
+Iteration: 70	LogLikelihood	-265367,03634 (Improvement: 0,000002)
+Iteration: 80	LogLikelihood	-265365,78428 (Improvement: 0,000005)
+Iteration: 90	LogLikelihood	-265363,76981 (Improvement: 0,000008)
+Iteration: 100	LogLikelihood	-265360,07240 (Improvement: 0,000014)
+######	Iteration: 110	LogLikelihood	-265360,07277 (Loss: 0,000000)
+	Current Likelihood:	-265360,07277
+	Previous Likelihood:	-265360,07240
+Learning Phase: DONE  (111 iterations, 836 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc32768.k4.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 848
+Number of cascades 32768
+Number of words 0
+T_max 99,773345
+*********************************
+
+
+Running inference (4 factors), file:random.nn874.nc32768.k4.cascades...
+
+
+Survival Factorization EM  with 4 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:00:27 CEST 2016
+Init loglikelihood		-598915,30913936
+Iteration: 10	LogLikelihood	-480821,94812 (Improvement: 0,197179)
+Iteration: 20	LogLikelihood	-479626,97004 (Improvement: 0,002485)
+Iteration: 30	LogLikelihood	-479404,69938 (Improvement: 0,000463)
+Iteration: 40	LogLikelihood	-479363,22349 (Improvement: 0,000087)
+Iteration: 50	LogLikelihood	-479350,94216 (Improvement: 0,000026)
+Iteration: 60	LogLikelihood	-479339,90688 (Improvement: 0,000023)
+Iteration: 70	LogLikelihood	-479333,33234 (Improvement: 0,000014)
+Iteration: 80	LogLikelihood	-479331,91058 (Improvement: 0,000003)
+Iteration: 90	LogLikelihood	-479330,24361 (Improvement: 0,000003)
+Iteration: 100	LogLikelihood	-479329,19495 (Improvement: 0,000002)
+Iteration: 110	LogLikelihood	-479328,62742 (Improvement: 0,000001)
+Iteration: 120	LogLikelihood	-479327,73298 (Improvement: 0,000002)
+Iteration: 130	LogLikelihood	-479327,55618 (Improvement: 0,000000)
+Learning Phase: DONE  (131 iterations, 324 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc32768.k64.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 874
+Number of cascades 32768
+Number of words 0
+T_max 99,607237
+*********************************
+
+
+Running inference (64 factors), file:random.nn874.nc32768.k64.cascades...
+
+
+Survival Factorization EM  with 64 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:05:51 CEST 2016
+Init loglikelihood		-369947,73874878
+Iteration: 10	LogLikelihood	-197500,56517 (Improvement: 0,466139)
+Iteration: 20	LogLikelihood	-197037,39778 (Improvement: 0,002345)
+Iteration: 30	LogLikelihood	-196974,50693 (Improvement: 0,000319)
+Iteration: 40	LogLikelihood	-196961,97226 (Improvement: 0,000064)
+Iteration: 50	LogLikelihood	-196961,39072 (Improvement: 0,000003)
+Iteration: 60	LogLikelihood	-196961,38519 (Improvement: 0,000000)
+Learning Phase: DONE  (61 iterations, 901 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc32768.k8.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 872
+Number of cascades 32768
+Number of words 0
+T_max 99,851195
+*********************************
+
+
+Running inference (8 factors), file:random.nn874.nc32768.k8.cascades...
+
+
+Survival Factorization EM  with 8 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:20:52 CEST 2016
+Init loglikelihood		-498153,37217610
+Iteration: 10	LogLikelihood	-383224,92401 (Improvement: 0,230709)
+Iteration: 20	LogLikelihood	-381626,31051 (Improvement: 0,004171)
+Iteration: 30	LogLikelihood	-381124,40196 (Improvement: 0,001315)
+Iteration: 40	LogLikelihood	-380922,26323 (Improvement: 0,000530)
+Iteration: 50	LogLikelihood	-380891,19555 (Improvement: 0,000082)
+Iteration: 60	LogLikelihood	-380882,12449 (Improvement: 0,000024)
+Iteration: 70	LogLikelihood	-380867,14691 (Improvement: 0,000039)
+Iteration: 80	LogLikelihood	-380857,75991 (Improvement: 0,000025)
+Iteration: 90	LogLikelihood	-380849,73733 (Improvement: 0,000021)
+Iteration: 100	LogLikelihood	-380845,84939 (Improvement: 0,000010)
+Iteration: 110	LogLikelihood	-380840,10131 (Improvement: 0,000015)
+Iteration: 120	LogLikelihood	-380838,37927 (Improvement: 0,000005)
+Iteration: 130	LogLikelihood	-380837,00930 (Improvement: 0,000004)
+Iteration: 140	LogLikelihood	-380835,77575 (Improvement: 0,000003)
+Iteration: 150	LogLikelihood	-380834,54651 (Improvement: 0,000003)
+Iteration: 160	LogLikelihood	-380829,17017 (Improvement: 0,000014)
+Iteration: 170	LogLikelihood	-380827,46430 (Improvement: 0,000004)
+Iteration: 180	LogLikelihood	-380817,92502 (Improvement: 0,000025)
+Iteration: 190	LogLikelihood	-380815,16427 (Improvement: 0,000007)
+Iteration: 200	LogLikelihood	-380812,70330 (Improvement: 0,000006)
+Iteration: 210	LogLikelihood	-380809,83081 (Improvement: 0,000008)
+Iteration: 220	LogLikelihood	-380806,61683 (Improvement: 0,000008)
+Iteration: 230	LogLikelihood	-380803,20829 (Improvement: 0,000009)
+Iteration: 240	LogLikelihood	-380799,20111 (Improvement: 0,000011)
+Iteration: 250	LogLikelihood	-380796,16032 (Improvement: 0,000008)
+Iteration: 260	LogLikelihood	-380796,07887 (Improvement: 0,000000)
+Learning Phase: DONE  (261 iterations, 886 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc4096.k128.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 861
+Number of cascades 4096
+Number of words 0
+T_max 99,265247
+*********************************
+
+
+Running inference (128 factors), file:random.nn874.nc4096.k128.cascades...
+
+
+Survival Factorization EM  with 128 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:35:38 CEST 2016
+Init loglikelihood		-241407,72820294
+Iteration: 10	LogLikelihood	-21901,07533 (Improvement: 0,909278)
+Iteration: 20	LogLikelihood	-21869,36462 (Improvement: 0,001448)
+Iteration: 30	LogLikelihood	-21867,76220 (Improvement: 0,000073)
+Iteration: 40	LogLikelihood	-21867,66760 (Improvement: 0,000004)
+Iteration: 50	LogLikelihood	-21867,66184 (Improvement: 0,000000)
+Learning Phase: DONE  (51 iterations, 229 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc4096.k16.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 767
+Number of cascades 4096
+Number of words 0
+T_max 99,778167
+*********************************
+
+
+Running inference (16 factors), file:random.nn874.nc4096.k16.cascades...
+
+
+Survival Factorization EM  with 16 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:39:27 CEST 2016
+Init loglikelihood		-76407,16679587
+Iteration: 10	LogLikelihood	-46422,42604 (Improvement: 0,392434)
+Iteration: 20	LogLikelihood	-46385,27985 (Improvement: 0,000800)
+Iteration: 30	LogLikelihood	-46384,90555 (Improvement: 0,000008)
+Iteration: 40	LogLikelihood	-46384,82914 (Improvement: 0,000002)
+Iteration: 50	LogLikelihood	-46384,80075 (Improvement: 0,000001)
+Learning Phase: DONE  (51 iterations, 28 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc4096.k2.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 648
+Number of cascades 4096
+Number of words 0
+T_max 99,272932
+*********************************
+
+
+Running inference (2 factors), file:random.nn874.nc4096.k2.cascades...
+
+
+Survival Factorization EM  with 2 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:39:55 CEST 2016
+Init loglikelihood		-93967,50817144
+Iteration: 10	LogLikelihood	-76574,48568 (Improvement: 0,185096)
+Iteration: 20	LogLikelihood	-76534,68343 (Improvement: 0,000520)
+Iteration: 30	LogLikelihood	-76532,03684 (Improvement: 0,000035)
+Iteration: 40	LogLikelihood	-76512,97669 (Improvement: 0,000249)
+Iteration: 50	LogLikelihood	-76511,21301 (Improvement: 0,000023)
+Iteration: 60	LogLikelihood	-76511,05240 (Improvement: 0,000002)
+Iteration: 70	LogLikelihood	-76511,01860 (Improvement: 0,000000)
+Learning Phase: DONE  (71 iterations, 14 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc4096.k32.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 819
+Number of cascades 4096
+Number of words 0
+T_max 99,386839
+*********************************
+
+
+Running inference (32 factors), file:random.nn874.nc4096.k32.cascades...
+
+
+Survival Factorization EM  with 32 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:40:09 CEST 2016
+Init loglikelihood		-94527,26723244
+Iteration: 10	LogLikelihood	-38733,19245 (Improvement: 0,590243)
+Iteration: 20	LogLikelihood	-38719,08225 (Improvement: 0,000364)
+Iteration: 30	LogLikelihood	-38719,03084 (Improvement: 0,000001)
+Iteration: 40	LogLikelihood	-38719,03044 (Improvement: 0,000000)
+Learning Phase: DONE  (41 iterations, 37 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc4096.k4.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 662
+Number of cascades 4096
+Number of words 0
+T_max 99,873002
+*********************************
+
+
+Running inference (4 factors), file:random.nn874.nc4096.k4.cascades...
+
+
+Survival Factorization EM  with 4 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:40:46 CEST 2016
+Init loglikelihood		-75086,47946447
+Iteration: 10	LogLikelihood	-59822,74768 (Improvement: 0,203282)
+Iteration: 20	LogLikelihood	-59745,09200 (Improvement: 0,001298)
+Iteration: 30	LogLikelihood	-59737,37791 (Improvement: 0,000129)
+Iteration: 40	LogLikelihood	-59734,19737 (Improvement: 0,000053)
+Iteration: 50	LogLikelihood	-59730,59327 (Improvement: 0,000060)
+Iteration: 60	LogLikelihood	-59730,51919 (Improvement: 0,000001)
+Iteration: 70	LogLikelihood	-59730,50857 (Improvement: 0,000000)
+Learning Phase: DONE  (71 iterations, 17 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc4096.k64.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 844
+Number of cascades 4096
+Number of words 0
+T_max 98,101316
+*********************************
+
+
+Running inference (64 factors), file:random.nn874.nc4096.k64.cascades...
+
+
+Survival Factorization EM  with 64 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:41:03 CEST 2016
+Init loglikelihood		-136233,95336457
+Iteration: 10	LogLikelihood	-27249,33401 (Improvement: 0,799981)
+Iteration: 20	LogLikelihood	-27236,98286 (Improvement: 0,000453)
+Iteration: 30	LogLikelihood	-27236,73288 (Improvement: 0,000009)
+Iteration: 40	LogLikelihood	-27236,72670 (Improvement: 0,000000)
+Learning Phase: DONE  (41 iterations, 66 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc4096.k8.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 709
+Number of cascades 4096
+Number of words 0
+T_max 99,895982
+*********************************
+
+
+Running inference (8 factors), file:random.nn874.nc4096.k8.cascades...
+
+
+Survival Factorization EM  with 8 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:42:09 CEST 2016
+Init loglikelihood		-75346,02790845
+Iteration: 10	LogLikelihood	-54642,50321 (Improvement: 0,274779)
+Iteration: 20	LogLikelihood	-54612,35407 (Improvement: 0,000552)
+Iteration: 30	LogLikelihood	-54610,45107 (Improvement: 0,000035)
+Iteration: 40	LogLikelihood	-54610,38626 (Improvement: 0,000001)
+Iteration: 50	LogLikelihood	-54610,36780 (Improvement: 0,000000)
+Learning Phase: DONE  (51 iterations, 18 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc512.k128.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 452
+Number of cascades 512
+Number of words 0
+T_max 99,156179
+*********************************
+
+
+Running inference (128 factors), file:random.nn874.nc512.k128.cascades...
+
+
+Survival Factorization EM  with 128 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:42:27 CEST 2016
+Init loglikelihood		-118312,55553917
+Iteration: 10	LogLikelihood	-2701,38490 (Improvement: 0,977167)
+Iteration: 20	LogLikelihood	-2692,20420 (Improvement: 0,003399)
+Iteration: 30	LogLikelihood	-2691,53973 (Improvement: 0,000247)
+Iteration: 40	LogLikelihood	-2691,47582 (Improvement: 0,000024)
+Iteration: 50	LogLikelihood	-2691,46956 (Improvement: 0,000002)
+Iteration: 60	LogLikelihood	-2691,46895 (Improvement: 0,000000)
+Learning Phase: DONE  (61 iterations, 14 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc512.k16.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 455
+Number of cascades 512
+Number of words 0
+T_max 96,890628
+*********************************
+
+
+Running inference (16 factors), file:random.nn874.nc512.k16.cascades...
+
+
+Survival Factorization EM  with 16 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:42:41 CEST 2016
+Init loglikelihood		-19935,53411988
+Iteration: 10	LogLikelihood	-5856,45267 (Improvement: 0,706230)
+Iteration: 20	LogLikelihood	-5855,55012 (Improvement: 0,000154)
+Iteration: 30	LogLikelihood	-5855,54307 (Improvement: 0,000001)
+Iteration: 40	LogLikelihood	-5855,54260 (Improvement: 0,000000)
+Learning Phase: DONE  (41 iterations, 2 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc512.k2.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 434
+Number of cascades 512
+Number of words 0
+T_max 96,614234
+*********************************
+
+
+Running inference (2 factors), file:random.nn874.nc512.k2.cascades...
+
+
+Survival Factorization EM  with 2 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:42:43 CEST 2016
+Init loglikelihood		-11532,47375463
+Iteration: 10	LogLikelihood	-9249,74470 (Improvement: 0,197939)
+Iteration: 20	LogLikelihood	-9248,61556 (Improvement: 0,000122)
+Iteration: 30	LogLikelihood	-9248,54918 (Improvement: 0,000007)
+Iteration: 40	LogLikelihood	-9248,54319 (Improvement: 0,000001)
+Learning Phase: DONE  (41 iterations, 1 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc512.k32.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 424
+Number of cascades 512
+Number of words 0
+T_max 55,845234
+*********************************
+
+
+Running inference (32 factors), file:random.nn874.nc512.k32.cascades...
+
+
+Survival Factorization EM  with 32 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:42:43 CEST 2016
+Init loglikelihood		-31892,47632098
+Iteration: 10	LogLikelihood	-5281,68683 (Improvement: 0,834391)
+Iteration: 20	LogLikelihood	-5281,09090 (Improvement: 0,000113)
+Iteration: 30	LogLikelihood	-5281,08745 (Improvement: 0,000001)
+Learning Phase: DONE  (31 iterations, 2 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc512.k4.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 479
+Number of cascades 512
+Number of words 0
+T_max 94,398036
+*********************************
+
+
+Running inference (4 factors), file:random.nn874.nc512.k4.cascades...
+
+
+Survival Factorization EM  with 4 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:42:45 CEST 2016
+Init loglikelihood		-12561,69346339
+Iteration: 10	LogLikelihood	-8700,58151 (Improvement: 0,307372)
+Iteration: 20	LogLikelihood	-8699,79326 (Improvement: 0,000091)
+Iteration: 30	LogLikelihood	-8699,76613 (Improvement: 0,000003)
+Iteration: 40	LogLikelihood	-8699,76327 (Improvement: 0,000000)
+Learning Phase: DONE  (41 iterations, 1 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc512.k64.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 458
+Number of cascades 512
+Number of words 0
+T_max 76,667672
+*********************************
+
+
+Running inference (64 factors), file:random.nn874.nc512.k64.cascades...
+
+
+Survival Factorization EM  with 64 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:42:46 CEST 2016
+Init loglikelihood		-61945,64231063
+Iteration: 10	LogLikelihood	-3877,93906 (Improvement: 0,937398)
+Iteration: 20	LogLikelihood	-3875,57168 (Improvement: 0,000610)
+Iteration: 30	LogLikelihood	-3875,51985 (Improvement: 0,000013)
+Iteration: 40	LogLikelihood	-3875,51860 (Improvement: 0,000000)
+Learning Phase: DONE  (41 iterations, 5 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc512.k8.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 437
+Number of cascades 512
+Number of words 0
+T_max 96,376125
+*********************************
+
+
+Running inference (8 factors), file:random.nn874.nc512.k8.cascades...
+
+
+Survival Factorization EM  with 8 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:42:51 CEST 2016
+Init loglikelihood		-13404,13328076
+Iteration: 10	LogLikelihood	-6604,87951 (Improvement: 0,507251)
+Iteration: 20	LogLikelihood	-6604,09326 (Improvement: 0,000119)
+Iteration: 30	LogLikelihood	-6604,08877 (Improvement: 0,000001)
+Learning Phase: DONE  (31 iterations, 1 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc8192.k128.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 873
+Number of cascades 8192
+Number of words 0
+T_max 97,256180
+*********************************
+
+
+Running inference (128 factors), file:random.nn874.nc8192.k128.cascades...
+
+
+Survival Factorization EM  with 128 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:42:52 CEST 2016
+Init loglikelihood		-265992,82044407
+Iteration: 10	LogLikelihood	-41355,23299 (Improvement: 0,844525)
+Iteration: 20	LogLikelihood	-41272,19066 (Improvement: 0,002008)
+Iteration: 30	LogLikelihood	-41269,72991 (Improvement: 0,000060)
+Iteration: 40	LogLikelihood	-41269,58757 (Improvement: 0,000003)
+Iteration: 50	LogLikelihood	-41269,57903 (Improvement: 0,000000)
+Learning Phase: DONE  (51 iterations, 458 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc8192.k16.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 840
+Number of cascades 8192
+Number of words 0
+T_max 99,524411
+*********************************
+
+
+Running inference (16 factors), file:random.nn874.nc8192.k16.cascades...
+
+
+Survival Factorization EM  with 16 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:50:30 CEST 2016
+Init loglikelihood		-138083,66058397
+Iteration: 10	LogLikelihood	-90984,63618 (Improvement: 0,341090)
+Iteration: 20	LogLikelihood	-90859,96874 (Improvement: 0,001370)
+Iteration: 30	LogLikelihood	-90850,06458 (Improvement: 0,000109)
+Iteration: 40	LogLikelihood	-90848,34178 (Improvement: 0,000019)
+Iteration: 50	LogLikelihood	-90842,63321 (Improvement: 0,000063)
+Iteration: 60	LogLikelihood	-90842,44876 (Improvement: 0,000002)
+Iteration: 70	LogLikelihood	-90842,22611 (Improvement: 0,000002)
+Iteration: 80	LogLikelihood	-90841,94622 (Improvement: 0,000003)
+Iteration: 90	LogLikelihood	-90841,56217 (Improvement: 0,000004)
+Iteration: 100	LogLikelihood	-90840,90983 (Improvement: 0,000007)
+Iteration: 110	LogLikelihood	-90838,58935 (Improvement: 0,000026)
+Iteration: 120	LogLikelihood	-90837,24329 (Improvement: 0,000015)
+######	Iteration: 130	LogLikelihood	-90837,24388 (Loss: 0,000000)
+	Current Likelihood:	-90837,24388
+	Previous Likelihood:	-90837,24329
+Learning Phase: DONE  (131 iterations, 156 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc8192.k2.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 691
+Number of cascades 8192
+Number of words 0
+T_max 99,916907
+*********************************
+
+
+Running inference (2 factors), file:random.nn874.nc8192.k2.cascades...
+
+
+Survival Factorization EM  with 2 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:53:07 CEST 2016
+Init loglikelihood		-170968,76311609
+Iteration: 10	LogLikelihood	-142045,96784 (Improvement: 0,169170)
+Iteration: 20	LogLikelihood	-141930,13501 (Improvement: 0,000815)
+Iteration: 30	LogLikelihood	-141918,14574 (Improvement: 0,000084)
+Iteration: 40	LogLikelihood	-141914,19776 (Improvement: 0,000028)
+Iteration: 50	LogLikelihood	-141911,89027 (Improvement: 0,000016)
+Iteration: 60	LogLikelihood	-141909,74392 (Improvement: 0,000015)
+Iteration: 70	LogLikelihood	-141908,24886 (Improvement: 0,000011)
+Iteration: 80	LogLikelihood	-141907,55833 (Improvement: 0,000005)
+Iteration: 90	LogLikelihood	-141907,55346 (Improvement: 0,000000)
+Learning Phase: DONE  (91 iterations, 38 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc8192.k32.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 867
+Number of cascades 8192
+Number of words 0
+T_max 95,955343
+*********************************
+
+
+Running inference (32 factors), file:random.nn874.nc8192.k32.cascades...
+
+
+Survival Factorization EM  with 32 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:53:44 CEST 2016
+Init loglikelihood		-141100,52799819
+Iteration: 10	LogLikelihood	-72577,74142 (Improvement: 0,485631)
+Iteration: 20	LogLikelihood	-72513,38290 (Improvement: 0,000887)
+Iteration: 30	LogLikelihood	-72513,02788 (Improvement: 0,000005)
+Iteration: 40	LogLikelihood	-72512,89153 (Improvement: 0,000002)
+Iteration: 50	LogLikelihood	-72512,82527 (Improvement: 0,000001)
+Learning Phase: DONE  (51 iterations, 96 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc8192.k4.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 736
+Number of cascades 8192
+Number of words 0
+T_max 99,878821
+*********************************
+
+
+Running inference (4 factors), file:random.nn874.nc8192.k4.cascades...
+
+
+Survival Factorization EM  with 4 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:55:21 CEST 2016
+Init loglikelihood		-141185,24662660
+Iteration: 10	LogLikelihood	-112589,85291 (Improvement: 0,202538)
+Iteration: 20	LogLikelihood	-112368,36405 (Improvement: 0,001967)
+Iteration: 30	LogLikelihood	-112335,79899 (Improvement: 0,000290)
+Iteration: 40	LogLikelihood	-112332,43526 (Improvement: 0,000030)
+Iteration: 50	LogLikelihood	-112327,28267 (Improvement: 0,000046)
+Iteration: 60	LogLikelihood	-112323,05426 (Improvement: 0,000038)
+Iteration: 70	LogLikelihood	-112322,92802 (Improvement: 0,000001)
+Iteration: 80	LogLikelihood	-112321,69238 (Improvement: 0,000011)
+Iteration: 90	LogLikelihood	-112321,69186 (Improvement: 0,000000)
+Learning Phase: DONE  (91 iterations, 48 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc8192.k64.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 873
+Number of cascades 8192
+Number of words 0
+T_max 99,961865
+*********************************
+
+
+Running inference (64 factors), file:random.nn874.nc8192.k64.cascades...
+
+
+Survival Factorization EM  with 64 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:56:09 CEST 2016
+Init loglikelihood		-164100,16201625
+Iteration: 10	LogLikelihood	-47538,92785 (Improvement: 0,710305)
+Iteration: 20	LogLikelihood	-47504,73286 (Improvement: 0,000719)
+Iteration: 30	LogLikelihood	-47500,11327 (Improvement: 0,000097)
+Iteration: 40	LogLikelihood	-47496,47792 (Improvement: 0,000077)
+Iteration: 50	LogLikelihood	-47496,47673 (Improvement: 0,000000)
+Learning Phase: DONE  (51 iterations, 172 secs)
+Done.
+
+
+Saving model...
+Done.
+Reading event file from /Users/ettore/Downloads/data/random.nn874.nc8192.k8.cascades ...  Done (0 secs)
+*** Statistics cascade data ****
+Number of nodes: 783
+Number of cascades 8192
+Number of words 0
+T_max 99,779106
+*********************************
+
+
+Running inference (8 factors), file:random.nn874.nc8192.k8.cascades...
+
+
+Survival Factorization EM  with 8 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Fri Apr 29 21:59:00 CEST 2016
+Init loglikelihood		-136457,07985822
+Iteration: 10	LogLikelihood	-102709,12319 (Improvement: 0,247316)
+Iteration: 20	LogLikelihood	-102520,54583 (Improvement: 0,001836)
+Iteration: 30	LogLikelihood	-102457,67376 (Improvement: 0,000613)
+Iteration: 40	LogLikelihood	-102446,22198 (Improvement: 0,000112)
+Iteration: 50	LogLikelihood	-102438,94066 (Improvement: 0,000071)
+Iteration: 60	LogLikelihood	-102434,74401 (Improvement: 0,000041)
+Iteration: 70	LogLikelihood	-102431,47290 (Improvement: 0,000032)
+Iteration: 80	LogLikelihood	-102427,38295 (Improvement: 0,000040)
+Iteration: 90	LogLikelihood	-102427,14171 (Improvement: 0,000002)
+######	Iteration: 100	LogLikelihood	-102427,14958 (Loss: 0,000000)
+	Current Likelihood:	-102427,14958
+	Previous Likelihood:	-102427,14171
+Learning Phase: DONE  (101 iterations, 77 secs)
+Done.
+
+
+Saving model...
+Done.

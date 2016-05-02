@@ -1,5 +1,7 @@
 package survivalFactorizationEM;
 
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -60,7 +62,8 @@ public class SurvivalFactorizationEM_LearnerOPT {
 	}
 
 	public SurvivalFactorizationEM_Model build(CascadeData cascadeData,
-			int nFactors, int nMaxIterations) throws Exception {
+			int nFactors, int nMaxIterations, String assignmentFile)
+					throws Exception {
 
 		System.out.println("Survival Factorization EM  with " + nFactors
 				+ " latent factors");
@@ -82,7 +85,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 		buildUtilityVariables(cascadeData, model);
 
-		model = iterateEM(cascadeData, model, nMaxIterations);
+		model = iterateEM(cascadeData, model, nMaxIterations, assignmentFile);
 
 		return model;
 	}
@@ -409,8 +412,8 @@ public class SurvivalFactorizationEM_LearnerOPT {
 	}
 
 	private SurvivalFactorizationEM_Model iterateEM(CascadeData cascadeData,
-			SurvivalFactorizationEM_Model model, int nMaxIterations)
-			throws Exception {
+			SurvivalFactorizationEM_Model model, int nMaxIterations,
+			String assignmentFile) throws Exception {
 
 		System.out.println("Learning phase: starting at " + new Date());
 
@@ -488,6 +491,26 @@ public class SurvivalFactorizationEM_LearnerOPT {
 		final long learningTime = System.currentTimeMillis() - initTime;
 		System.out.format("Learning Phase: DONE  (%d iterations, %.0f secs)\n",
 				iterationsDone, (double) learningTime / 1000);
+
+		if (assignmentFile != null) {
+			final PrintWriter pw = new PrintWriter(new FileWriter(
+					assignmentFile));
+
+			for (int c = 0; c < nCascades; c++) {
+				int iMax = 0;
+				double max = gamma[c][0];
+
+				for (int k = 1; k < nFactors; k++)
+					if (gamma[c][k] > max) {
+						max = gamma[c][k];
+						iMax = k;
+					}
+
+				pw.println(iMax);
+			}
+
+			pw.close();
+		}
 
 		return model;
 	}
