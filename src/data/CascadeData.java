@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
@@ -15,12 +17,44 @@ import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix2D;
 public class CascadeData {
 
 	public static void main(String[] args) throws Exception {
-		final String file_events = "/Users/barbieri/Dropbox/shared ICAR/SurvivalFactorization/exp/meme_tracker/debug/cleaned_debug_activations";
-		final String file_content = "/Users/barbieri/Dropbox/shared ICAR/SurvivalFactorization/exp/meme_tracker/debug/cleaned_debug_content";
+		final String file_events = "resources/datasets/memeTracker/v1/cleaned_activations";
+		final String file_content = "resources/datasets/memeTracker/v1/cleaned_content";
 
 		final CascadeData data = new CascadeData(file_events, file_content);
 		data.getInfo();
 
+		int min_nodes = Integer.MAX_VALUE;
+		int min_words = Integer.MAX_VALUE;
+		int min_cascades = Integer.MAX_VALUE;
+
+		final HashMap<Integer, Integer> node_count = new HashMap<Integer, Integer>(
+				data.n_nodes);
+
+		for (int c = 0; c < data.getNCascades(); c++) {
+			final List<CascadeEvent> cascade = data.getCascadeEvents(c);
+			final List<WordOccurrence> words = data.getCascadeContent(c);
+
+			if (cascade.size() < min_nodes)
+				min_nodes = cascade.size();
+
+			if (words.size() < min_words)
+				min_words = words.size();
+
+			for (final CascadeEvent e : cascade) {
+				final Integer count = node_count.get(e.node);
+
+				if (count == null)
+					node_count.put(e.node, 1);
+				else
+					node_count.put(e.node, count + 1);
+			}
+		}
+
+		for (final Map.Entry<Integer, Integer> e : node_count.entrySet())
+			if (e.getValue() < min_cascades)
+				min_cascades = e.getValue();
+
+		System.out.println(min_nodes + " " + min_words + " " + min_cascades);
 	}
 
 	/*
