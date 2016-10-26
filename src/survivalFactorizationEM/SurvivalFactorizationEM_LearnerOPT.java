@@ -2,6 +2,8 @@ package survivalFactorizationEM;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -23,91 +25,114 @@ public class SurvivalFactorizationEM_LearnerOPT {
 			Arrays.fill(element, 0);
 	}
 
+	private static boolean sumZero(double[][] m) {
+		double sum = 0;
+
+		for (final double[] v : m)
+			for (final double d : v)
+				sum += Math.abs(d);
+
+		return sum <= 1e-70;
+	}
+
+	private static String toString(double[] a) {
+		if (a == null)
+			return "";
+
+		final int iMax = a.length - 1;
+
+		if (iMax < 0)
+			return "";
+
+		final DecimalFormat df = new DecimalFormat("#");
+		df.setMaximumFractionDigits(4);
+		final DecimalFormatSymbols dfs = df.getDecimalFormatSymbols();
+		dfs.setDecimalSeparator('.');
+		df.setDecimalFormatSymbols(dfs);
+		df.format(5);
+
+		final StringBuilder b = new StringBuilder();
+
+		for (int i = 0;; ++i) {
+			b.append(df.format(a[i]));
+
+			if (i == iMax)
+				return b.toString();
+
+			b.append("\t");
+		}
+	}
+
 	private final int save_step;
+
 	private final double eps;
 	private final Randoms randomGen;
-
 	private double[][] A_new_num;
+
 	private double[][] A_new_den;
 	private double[][] A_new;
-
 	private double[][] S_new_num;
+
 	private double[][] S_new_den;
 	private double[][] S_new;
-
 	private double[][] Phi_new_num;
+
 	private double[] Phi_new_den;
+
 	private double[][] Phi_new;
 
 	private double[] pi_new;
-
 	private double[][] llk_exponentialTerms;
-
 	private double exponentialPrior_rate;
+
 	private double priorGamma_shape;
 	private double priorGamma_rate;
-
 	private final boolean enablePriorComponent;
+
 	private final boolean enableContentLikelihood;
+
 	private final boolean storeTemporaryModels;
 
 	public SurvivalFactorizationEM_LearnerOPT() {
 		eps = SurvivalFactorizationEM_Configuration.eps;
 		save_step = SurvivalFactorizationEM_Configuration.DEFAULT_SAVE_STEP;
+
+		// XXX
 		// save_step = 1;
+
 		randomGen = SurvivalFactorizationEM_Configuration.randomGen;
 		enablePriorComponent = true;
-		enableContentLikelihood = true;
+		enableContentLikelihood = false;
 		storeTemporaryModels = false;
 	}
 
-	public SurvivalFactorizationEM_Model build(CascadeData cascadeData,
-			int nFactors, int nMaxIterations, String assignmentFile)
-					throws Exception {
+	private void assign(String assignmentFile, int nCascades, int nFactors,
+			double[][] gamma) throws Exception {
 
-		System.out.println("Survival Factorization EM  with " + nFactors
-				+ " latent factors");
+		if (assignmentFile != null) {
+			final PrintWriter pw = new PrintWriter(new FileWriter(
+					assignmentFile));
+			final PrintWriter pwFull = new PrintWriter(new FileWriter(
+					assignmentFile + ".full"));
 
-		System.out.println("Max number of  Iterations: " + nMaxIterations);
+			for (int c = 0; c < nCascades; c++) {
+				int iMax = 0;
+				double max = gamma[c][0];
 
-		final int nWords = cascadeData.getNWords();
-		final int nVertices = cascadeData.getNNodes();
+				for (int k = 1; k < nFactors; k++)
+					if (gamma[c][k] > max) {
+						max = gamma[c][k];
+						iMax = k;
+					}
 
-		exponentialPrior_rate = nVertices;
-		priorGamma_shape = 1D + 1D / nFactors;
-		// priorGamma_shape = 2;
-		// priorGamma_shape = 2 * nFactors * nFactors + 2;
-		priorGamma_rate = priorGamma_shape * nFactors + 2;
+				pwFull.println(c + 1 + "\t" + (iMax + 1) + "\t"
+						+ toString(gamma[c]));
+				pw.println(iMax + 1);
+			}
 
-		// init model
-		SurvivalFactorizationEM_Model model = new SurvivalFactorizationEM_Model(
-				nVertices, nWords, nFactors);
-
-		buildUtilityVariables(cascadeData, model);
-
-		model = iterateEM(cascadeData, model, nMaxIterations, assignmentFile);
-
-		return model;
-	}
-
-	private void buildUtilityVariables(CascadeData cascadeData,
-			SurvivalFactorizationEM_Model model) {
-
-		A_new_num = new double[cascadeData.n_nodes][model.nFactors];
-		A_new_den = new double[cascadeData.n_nodes][model.nFactors];
-		A_new = new double[cascadeData.n_nodes][model.nFactors];
-
-		S_new_num = new double[cascadeData.n_nodes][model.nFactors];
-		S_new_den = new double[cascadeData.n_nodes][model.nFactors];
-		S_new = new double[cascadeData.n_nodes][model.nFactors];
-
-		Phi_new_num = new double[cascadeData.n_words][model.nFactors];
-		Phi_new_den = new double[model.nFactors];
-		Phi_new = new double[cascadeData.n_words][model.nFactors];
-
-		pi_new = new double[model.nFactors];
-
-		llk_exponentialTerms = new double[cascadeData.n_cascades][model.nFactors];
+			pw.close();
+			pwFull.close();
+		}
 	}
 
 	// Something's gone wrong
@@ -230,6 +255,55 @@ public class SurvivalFactorizationEM_LearnerOPT {
 	//
 	// return logLikelihood;
 	// }
+
+	public SurvivalFactorizationEM_Model build(CascadeData cascadeData,
+			int nFactors, int nMaxIterations, String assignmentFile)
+			throws Exception {
+
+		System.out.println("Survival Factorization EM  with " + nFactors
+				+ " latent factors");
+
+		System.out.println("Max number of  Iterations: " + nMaxIterations);
+
+		final int nWords = cascadeData.getNWords();
+		final int nVertices = cascadeData.getNNodes();
+
+		exponentialPrior_rate = nVertices;
+		priorGamma_shape = 1D + 1D / nFactors;
+		// priorGamma_shape = 2;
+		// priorGamma_shape = 2 * nFactors * nFactors + 2;
+		priorGamma_rate = priorGamma_shape * nFactors + 2;
+
+		// init model
+		SurvivalFactorizationEM_Model model = new SurvivalFactorizationEM_Model(
+				nVertices, nWords, nFactors);
+
+		buildUtilityVariables(cascadeData, model);
+
+		model = iterateEM(cascadeData, model, nMaxIterations, assignmentFile);
+
+		return model;
+	}
+
+	private void buildUtilityVariables(CascadeData cascadeData,
+			SurvivalFactorizationEM_Model model) {
+
+		A_new_num = new double[cascadeData.n_nodes][model.nFactors];
+		A_new_den = new double[cascadeData.n_nodes][model.nFactors];
+		A_new = new double[cascadeData.n_nodes][model.nFactors];
+
+		S_new_num = new double[cascadeData.n_nodes][model.nFactors];
+		S_new_den = new double[cascadeData.n_nodes][model.nFactors];
+		S_new = new double[cascadeData.n_nodes][model.nFactors];
+
+		Phi_new_num = new double[cascadeData.n_words][model.nFactors];
+		Phi_new_den = new double[model.nFactors];
+		Phi_new = new double[cascadeData.n_words][model.nFactors];
+
+		pi_new = new double[model.nFactors];
+
+		llk_exponentialTerms = new double[cascadeData.n_cascades][model.nFactors];
+	}
 
 	private double computeLogLikelihood(CascadeData cascadeData,
 			SurvivalFactorizationEM_Model model,
@@ -365,7 +439,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 					double acukDiff = currentEvent.timestamp
 							* counters.A_c_u_k[currentEvent.node][k]
-									- counters.tilde_A_c_u_k[currentEvent.node][k];
+							- counters.tilde_A_c_u_k[currentEvent.node][k];
 
 					if (acukDiff < 0)
 						if (acukDiff < SurvivalFactorizationEM_ModelCounters.NEGATIVE_TOLERANCE)
@@ -444,7 +518,10 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 		System.out.format("Init loglikelihood\t\t%.8f\r\n", prevlogLikelihood);
 
-		do {// for each iteration
+		// XXX
+		// assign(assignmentFile + "_it_" + 0, nCascades, nFactors, gamma);
+
+		do {
 			gamma = E_Step(cascadeData, model);
 			model = M_Step(cascadeData, model, gamma, counters);
 			final double logLikelihood = computeLogLikelihood(cascadeData,
@@ -460,7 +537,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 							/ prevlogLikelihood;
 
 					System.out
-							.format("######\tIteration: %d\tLogLikelihood\t%.5f (Loss: %.6f)\r\n",
+							.format("######\tIteration: %d\tLogLikelihood\t%.5f (Loss: %.4f)\r\n",
 									iterationsDone, logLikelihood, improvement);
 					System.out.println(String.format("\tCurrent Likelihood:"
 							+ "\t%.5f\n\tPrevious Likelihood:\t%.5f",
@@ -470,7 +547,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 							/ prevlogLikelihood;
 
 					System.out
-							.format("Iteration: %d\tLogLikelihood\t%.5f (Improvement: %.6f)\r\n",
+							.format("Iteration: %d\tLogLikelihood\t%.5f (Improvement: %.4f)\r\n",
 									iterationsDone, logLikelihood, improvement);
 				}
 
@@ -482,6 +559,10 @@ public class SurvivalFactorizationEM_LearnerOPT {
 					} catch (final Exception e) {
 						e.printStackTrace();
 					}
+
+				// XXX
+				// assign(assignmentFile + "_it_" + iterationsDone, nCascades,
+				// nFactors, gamma);
 			}
 
 			++iterationsDone;
@@ -492,25 +573,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 		System.out.format("Learning Phase: DONE  (%d iterations, %.0f secs)\n",
 				iterationsDone, (double) learningTime / 1000);
 
-		if (assignmentFile != null) {
-			final PrintWriter pw = new PrintWriter(new FileWriter(
-					assignmentFile));
-
-			for (int c = 0; c < nCascades; c++) {
-				int iMax = 0;
-				double max = gamma[c][0];
-
-				for (int k = 1; k < nFactors; k++)
-					if (gamma[c][k] > max) {
-						max = gamma[c][k];
-						iMax = k;
-					}
-
-				pw.println(iMax);
-			}
-
-			pw.close();
-		}
+		assign(assignmentFile, nCascades, nFactors, gamma);
 
 		return model;
 	}
@@ -547,7 +610,7 @@ public class SurvivalFactorizationEM_LearnerOPT {
 
 						double acukDiff = currentEvent.timestamp
 								* counters.A_c_u_k[currentEvent.node][k]
-								- counters.tilde_A_c_u_k[currentEvent.node][k];
+										- counters.tilde_A_c_u_k[currentEvent.node][k];
 
 						if (acukDiff < 0)
 							if (acukDiff < SurvivalFactorizationEM_ModelCounters.NEGATIVE_TOLERANCE)
@@ -571,11 +634,11 @@ public class SurvivalFactorizationEM_LearnerOPT {
 					A_new_den[currentEvent.node][k] += gamma[c][k]
 							* (counters.tilde_S_c_k[k]
 									- counters.tilde_S_c_u_k[currentEvent.node][k]
-									- currentEvent.timestamp
-									* (counters.S_c_k[k] - counters.S_c_u_k[currentEvent.node][k])
-									+ cascadeData.t_max
-									* (counters.S_k[k] - counters.S_c_k[k]) - currentEvent.timestamp
-									* (counters.S_k[k] - counters.S_c_k[k]));
+											- currentEvent.timestamp
+											* (counters.S_c_k[k] - counters.S_c_u_k[currentEvent.node][k])
+											+ cascadeData.t_max
+											* (counters.S_k[k] - counters.S_c_k[k]) - currentEvent.timestamp
+											* (counters.S_k[k] - counters.S_c_k[k]));
 				}
 
 				inactiveVertices.remove(currentEvent.node);
@@ -585,17 +648,16 @@ public class SurvivalFactorizationEM_LearnerOPT {
 			// for each inactive node (update S_den)
 			for (final int inactiveNode : inactiveVertices)
 				for (int k = 0; k < model.nFactors; k++) {
-					double acukDiff = cascadeData.t_max
-							* counters.A_c_u_k[inactiveNode][k]
-							- counters.tilde_A_c_u_k[inactiveNode][k];
+					double ackDiff = cascadeData.t_max * counters.A_c_k[k]
+							- counters.tilde_A_c_k[k];
 
-					if (acukDiff < 0)
-						if (acukDiff < SurvivalFactorizationEM_ModelCounters.NEGATIVE_TOLERANCE)
+					if (ackDiff < 0)
+						if (ackDiff < SurvivalFactorizationEM_ModelCounters.NEGATIVE_TOLERANCE)
 							throw new RuntimeException("Inconsistent value");
 						else
-							acukDiff = 0;
+							ackDiff = 0;
 
-					S_new_den[inactiveNode][k] += gamma[c][k] * acukDiff;
+					S_new_den[inactiveNode][k] += gamma[c][k] * ackDiff;
 				}
 
 			// update Phi_new
@@ -631,9 +693,11 @@ public class SurvivalFactorizationEM_LearnerOPT {
 			}
 
 			if (enableContentLikelihood)
-				for (int w = 0; w < cascadeData.n_words; w++)
-					Phi_new[w][k] = (priorGamma_shape - 1 + Phi_new_num[w][k])
-					/ (priorGamma_rate + Phi_new_den[k]);
+				for (int w = 0; w < cascadeData.n_words; w++) {
+					final double vv = (priorGamma_shape - 1 + Phi_new_num[w][k])
+							/ (priorGamma_rate + Phi_new_den[k]);
+					Phi_new[w][k] = vv;
+				}
 		}
 
 		Weka_Utils.normalize(pi_new);

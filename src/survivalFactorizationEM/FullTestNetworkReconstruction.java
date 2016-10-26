@@ -14,9 +14,17 @@ public class FullTestNetworkReconstruction {
 
 	private static double computeLinkPrediction(
 			SurvivalFactorizationEM_Model model, int source, int destination) {
+
 		double score = 0.0;
-		for (int k = 0; k < model.nFactors; k++)
-			score += model.pi[k] * model.S[source][k] * model.A[destination][k];
+
+		try {
+			for (int k = 0; k < model.nFactors; k++)
+				score += model.pi[k] * model.S[source][k]
+						* model.A[destination][k];
+		} catch (final Exception ex) {
+			score = 0;
+		}
+
 		return score;
 	}
 
@@ -37,6 +45,7 @@ public class FullTestNetworkReconstruction {
 		final String outputFolder = prop.getProperty("output_folder");
 		final String[] outputFiles = parseArray(prop
 				.getProperty("output_files"));
+		final String skipHeader = prop.getProperty("skip_header");
 
 		if (modelFiles.length != outputFiles.length) {
 			System.err.println("model_files and"
@@ -58,12 +67,18 @@ public class FullTestNetworkReconstruction {
 			final PrintWriter pw = new PrintWriter(new FileWriter(outputFile));
 			final BufferedReader br = new BufferedReader(new FileReader(
 					testFile));
-			String line = br.readLine();
+
+			if (skipHeader != null
+					&& (skipHeader.equalsIgnoreCase("t") || skipHeader
+							.equalsIgnoreCase("true")))
+				br.readLine(); // skip header
 
 			pw.println("Prediction\tClass");
 
 			String tokens[];
-			while (line != null) {
+			String line;
+
+			while ((line = br.readLine()) != null) {
 				tokens = line.split("\t");
 				final int source = Integer.parseInt(tokens[0]) - 1;
 				final int destination = Integer.parseInt(tokens[1]) - 1;
@@ -72,11 +87,8 @@ public class FullTestNetworkReconstruction {
 						destination);
 
 				pw.println("" + score + "\t" + label);
-
-				line = br.readLine();
 			}
 
-			pw.flush();
 			pw.close();
 			br.close();
 			System.out.println("DONE");

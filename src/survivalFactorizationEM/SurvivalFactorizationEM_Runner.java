@@ -81,7 +81,7 @@ public class SurvivalFactorizationEM_Runner {
 			final SurvivalFactorizationEM_LearnerOPT inf = new SurvivalFactorizationEM_LearnerOPT();
 
 			final SurvivalFactorizationEM_Model model = inf.build(cascadeData,
-					k, nMaxIterations, assignmentFile);
+					k, nMaxIterations, assignmentFile + "_" + k + "f.clusters");
 
 			System.out.println("Done.");
 
