@@ -1,0 +1,216 @@
+*** Survival Factorization EM ***
+
+
+Reading parameters...Done.
+
+
+Loading data...
+Reading event file from resources/datasets/random/random.txt.remapped.cascades.remapped ...  Done (0 secs)
+Done.
+*** Statistics cascade data ****
+Number of nodes: 778
+Number of cascades 1024
+Number of words 0
+T_max 94,360969
+*********************************
+
+
+Running inference (2 factors)...
+
+
+Survival Factorization EM  with 2 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Thu Apr 28 16:17:19 CEST 2016
+Init loglikelihood		-130312,87282199
+Iteration: 10	LogLikelihood	-91248,76899 (Improvement: 0,299772)
+Iteration: 20	LogLikelihood	-91070,18171 (Improvement: 0,001957)
+Iteration: 30	LogLikelihood	-91029,95425 (Improvement: 0,000442)
+Iteration: 40	LogLikelihood	-91007,28747 (Improvement: 0,000249)
+Iteration: 50	LogLikelihood	-91002,20825 (Improvement: 0,000056)
+Iteration: 60	LogLikelihood	-91000,11870 (Improvement: 0,000023)
+Iteration: 70	LogLikelihood	-90999,04622 (Improvement: 0,000012)
+Iteration: 80	LogLikelihood	-90998,48476 (Improvement: 0,000006)
+Iteration: 90	LogLikelihood	-90998,08695 (Improvement: 0,000004)
+Iteration: 100	LogLikelihood	-90998,00110 (Improvement: 0,000001)
+Learning Phase: DONE  (101 iterations, 7 secs)
+Done.
+
+
+Saving model...
+Done.
+
+
+Running inference (4 factors)...
+
+
+Survival Factorization EM  with 4 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Thu Apr 28 16:17:26 CEST 2016
+Init loglikelihood		-131424,52037138
+Iteration: 10	LogLikelihood	-92086,71759 (Improvement: 0,299319)
+Iteration: 20	LogLikelihood	-91775,30940 (Improvement: 0,003382)
+Iteration: 30	LogLikelihood	-91727,15966 (Improvement: 0,000525)
+Iteration: 40	LogLikelihood	-91703,95797 (Improvement: 0,000253)
+Iteration: 50	LogLikelihood	-91692,20729 (Improvement: 0,000128)
+Iteration: 60	LogLikelihood	-91689,24072 (Improvement: 0,000032)
+Iteration: 70	LogLikelihood	-91687,63299 (Improvement: 0,000018)
+Iteration: 80	LogLikelihood	-91686,68295 (Improvement: 0,000010)
+Iteration: 90	LogLikelihood	-91681,63912 (Improvement: 0,000055)
+Iteration: 100	LogLikelihood	-91681,27301 (Improvement: 0,000004)
+Iteration: 110	LogLikelihood	-91681,02198 (Improvement: 0,000003)
+Iteration: 120	LogLikelihood	-91680,84275 (Improvement: 0,000002)
+Iteration: 130	LogLikelihood	-91680,71090 (Improvement: 0,000001)
+Iteration: 140	LogLikelihood	-91680,61166 (Improvement: 0,000001)
+Iteration: 150	LogLikelihood	-91680,53556 (Improvement: 0,000001)
+Learning Phase: DONE  (151 iterations, 10 secs)
+Done.
+
+
+Saving model...
+Done.
+
+
+Running inference (8 factors)...
+
+
+Survival Factorization EM  with 8 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Thu Apr 28 16:17:36 CEST 2016
+Init loglikelihood		-137572,74786724
+Iteration: 10	LogLikelihood	-88667,88285 (Improvement: 0,355484)
+Iteration: 20	LogLikelihood	-88465,47608 (Improvement: 0,002283)
+Iteration: 30	LogLikelihood	-88432,41364 (Improvement: 0,000374)
+Iteration: 40	LogLikelihood	-88416,85771 (Improvement: 0,000176)
+Iteration: 50	LogLikelihood	-88412,59569 (Improvement: 0,000048)
+Iteration: 60	LogLikelihood	-88410,79902 (Improvement: 0,000020)
+Iteration: 70	LogLikelihood	-88409,89189 (Improvement: 0,000010)
+Iteration: 80	LogLikelihood	-88409,37238 (Improvement: 0,000006)
+Iteration: 90	LogLikelihood	-88409,04654 (Improvement: 0,000004)
+Iteration: 100	LogLikelihood	-88408,82916 (Improvement: 0,000002)
+Iteration: 110	LogLikelihood	-88408,67986 (Improvement: 0,000002)
+Iteration: 120	LogLikelihood	-88408,61826 (Improvement: 0,000001)
+Learning Phase: DONE  (121 iterations, 13 secs)
+Done.
+
+
+Saving model...
+Done.
+
+
+Running inference (16 factors)...
+
+
+Survival Factorization EM  with 16 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Thu Apr 28 16:17:49 CEST 2016
+Init loglikelihood		-148878,27679597
+Iteration: 10	LogLikelihood	-89394,83774 (Improvement: 0,399544)
+Iteration: 20	LogLikelihood	-89116,73952 (Improvement: 0,003111)
+Iteration: 30	LogLikelihood	-89059,10940 (Improvement: 0,000647)
+Iteration: 40	LogLikelihood	-89039,05486 (Improvement: 0,000225)
+Iteration: 50	LogLikelihood	-89027,21021 (Improvement: 0,000133)
+Iteration: 60	LogLikelihood	-89022,89517 (Improvement: 0,000048)
+Iteration: 70	LogLikelihood	-89020,68349 (Improvement: 0,000025)
+Iteration: 80	LogLikelihood	-89019,37214 (Improvement: 0,000015)
+Iteration: 90	LogLikelihood	-89015,81347 (Improvement: 0,000040)
+Iteration: 100	LogLikelihood	-89015,45912 (Improvement: 0,000004)
+Iteration: 110	LogLikelihood	-89015,26789 (Improvement: 0,000002)
+Iteration: 120	LogLikelihood	-89015,15079 (Improvement: 0,000001)
+Iteration: 130	LogLikelihood	-89015,07785 (Improvement: 0,000001)
+Learning Phase: DONE  (131 iterations, 24 secs)
+Done.
+
+
+Saving model...
+Done.
+
+
+Running inference (32 factors)...
+
+
+Survival Factorization EM  with 32 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Thu Apr 28 16:18:13 CEST 2016
+Init loglikelihood		-172163,22821405
+Iteration: 10	LogLikelihood	-89916,11830 (Improvement: 0,477728)
+Iteration: 20	LogLikelihood	-89644,12911 (Improvement: 0,003025)
+Iteration: 30	LogLikelihood	-89557,66203 (Improvement: 0,000965)
+Iteration: 40	LogLikelihood	-89534,78682 (Improvement: 0,000255)
+Iteration: 50	LogLikelihood	-89527,30354 (Improvement: 0,000084)
+Iteration: 60	LogLikelihood	-89524,06067 (Improvement: 0,000036)
+Iteration: 70	LogLikelihood	-89522,40507 (Improvement: 0,000018)
+Iteration: 80	LogLikelihood	-89521,51135 (Improvement: 0,000010)
+Iteration: 90	LogLikelihood	-89520,99139 (Improvement: 0,000006)
+Iteration: 100	LogLikelihood	-89520,67077 (Improvement: 0,000004)
+Iteration: 110	LogLikelihood	-89520,47723 (Improvement: 0,000002)
+Iteration: 120	LogLikelihood	-89520,42679 (Improvement: 0,000001)
+Learning Phase: DONE  (121 iterations, 39 secs)
+Done.
+
+
+Saving model...
+Done.
+
+
+Running inference (64 factors)...
+
+
+Survival Factorization EM  with 64 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Thu Apr 28 16:18:53 CEST 2016
+Init loglikelihood		-221085,70495770
+Iteration: 10	LogLikelihood	-89415,67787 (Improvement: 0,595561)
+Iteration: 20	LogLikelihood	-89164,84808 (Improvement: 0,002805)
+Iteration: 30	LogLikelihood	-89104,76301 (Improvement: 0,000674)
+Iteration: 40	LogLikelihood	-89081,42563 (Improvement: 0,000262)
+Iteration: 50	LogLikelihood	-89071,01796 (Improvement: 0,000117)
+Iteration: 60	LogLikelihood	-89056,72934 (Improvement: 0,000160)
+Iteration: 70	LogLikelihood	-89053,99110 (Improvement: 0,000031)
+Iteration: 80	LogLikelihood	-89052,77559 (Improvement: 0,000014)
+Iteration: 90	LogLikelihood	-89052,15760 (Improvement: 0,000007)
+Iteration: 100	LogLikelihood	-89051,82244 (Improvement: 0,000004)
+Iteration: 110	LogLikelihood	-89051,63180 (Improvement: 0,000002)
+Iteration: 120	LogLikelihood	-89048,83664 (Improvement: 0,000031)
+Iteration: 130	LogLikelihood	-89048,67239 (Improvement: 0,000002)
+Iteration: 140	LogLikelihood	-89048,62573 (Improvement: 0,000001)
+Learning Phase: DONE  (141 iterations, 97 secs)
+Done.
+
+
+Saving model...
+Done.
+
+
+Running inference (128 factors)...
+
+
+Survival Factorization EM  with 128 latent factors
+Max number of  Iterations: 1000
+Learning phase: starting at Thu Apr 28 16:20:29 CEST 2016
+Init loglikelihood		-319528,63002210
+Iteration: 10	LogLikelihood	-90016,03921 (Improvement: 0,718285)
+Iteration: 20	LogLikelihood	-89755,22319 (Improvement: 0,002897)
+Iteration: 30	LogLikelihood	-89642,94320 (Improvement: 0,001251)
+Iteration: 40	LogLikelihood	-89622,73772 (Improvement: 0,000225)
+Iteration: 50	LogLikelihood	-89613,40687 (Improvement: 0,000104)
+Iteration: 60	LogLikelihood	-89608,87770 (Improvement: 0,000051)
+Iteration: 70	LogLikelihood	-89606,52904 (Improvement: 0,000026)
+Iteration: 80	LogLikelihood	-89605,24613 (Improvement: 0,000014)
+Iteration: 90	LogLikelihood	-89604,53064 (Improvement: 0,000008)
+Iteration: 100	LogLikelihood	-89604,11867 (Improvement: 0,000005)
+Iteration: 110	LogLikelihood	-89603,86999 (Improvement: 0,000003)
+Iteration: 120	LogLikelihood	-89603,71215 (Improvement: 0,000002)
+Iteration: 130	LogLikelihood	-89603,60703 (Improvement: 0,000001)
+Iteration: 140	LogLikelihood	-89600,74982 (Improvement: 0,000032)
+Iteration: 150	LogLikelihood	-89600,42426 (Improvement: 0,000004)
+Iteration: 160	LogLikelihood	-89600,38124 (Improvement: 0,000000)
+Learning Phase: DONE  (161 iterations, 278 secs)
+Done.
+
+
+Saving model...
+Done.
+
+
+All models were built.
+Elapsed time: 0 days, 0 hours, 7 minutes, 48 seconds, 745 milliseconds
