@@ -65,7 +65,7 @@ public class CascadeCompletion {
 
 					System.out.println(delay);
 
-					// TODO
+					// FIXME this part is implemented in R
 				}
 			}
 
